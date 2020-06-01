@@ -1,5 +1,1 @@
-import homeApi from './home';
-
-export default {
-  ...homeApi
-}
+export * from './home';

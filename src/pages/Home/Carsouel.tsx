@@ -6,19 +6,21 @@ import SnapCarsouel, {
   Pagination
 } from 'react-native-snap-carousel';
 import { screenWidth, wp, hp } from '@/utils/index';
+import { ICarsouel } from '@/types/home/IHomeState';
 
 const sliderWidth = screenWidth;
 const itemWidth = wp(90) + wp(2) * 2;
 const imgHeight = hp(26);
-const data = [
-  'https://img.alicdn.com/tfs/TB1ig6sIkT2gK0jSZFkXXcIQFXa-520-280.jpg',
-  'https://aecpm.alicdn.com/simba/img/TB1XotJXQfb_uJkSnhJSuvdDVXa.jpg',
-  'https://aecpm.alicdn.com/simba/img/TB1JNHwKFXXXXafXVXXSutbFXXX.jpg',
-  'https://aecpm.alicdn.com/simba/img/TB183NQapLM8KJjSZFBSutJHVXa.jpg',
-  'https://img.alicdn.com/tfs/TB16EMmIhD1gK0jSZFKXXcJrVXa-520-280.jpg'
-];
 
-class Carsouel extends React.Component {
+interface IProps {
+  carsouel: ICarsouel[];
+}
+
+interface IState {
+  activeSlide: number;
+}
+
+class Carsouel extends React.Component<IProps, IState> {
   state = {
     activeSlide: 0
   };
@@ -46,24 +48,14 @@ class Carsouel extends React.Component {
     );
   };
 
-  pagination = () => {
-    const { activeSlide } = this.state;
-    return (
-      <View style={styles.paginationWrapper}>
-        <Pagination
-          containerStyle={styles.paginationContainer}
-          dotContainerStyle={styles.dotContainner}
-          dotStyle={styles.dot}
-          activeDotIndex={activeSlide}
-          dotsLength={data.length}
-          inactiveDotScale={0.7}
-          inactiveDotOpacity={0.4}
-        />
-      </View>
-    );
-  };
-
   render() {
+    const { activeSlide } = this.state;
+    const { carsouel } = this.props;
+    const data = [];
+    for (let i in carsouel) {
+      data.push(carsouel[i].thumb.url);
+    }
+
     return (
       <View>
         <SnapCarsouel
@@ -76,7 +68,17 @@ class Carsouel extends React.Component {
           loop
           autoplay
         />
-        {this.pagination()}
+        <View style={styles.paginationWrapper}>
+          <Pagination
+            containerStyle={styles.paginationContainer}
+            dotContainerStyle={styles.dotContainner}
+            dotStyle={styles.dot}
+            activeDotIndex={activeSlide}
+            dotsLength={data.length}
+            inactiveDotScale={0.7}
+            inactiveDotOpacity={0.4}
+          />
+        </View>
       </View>
     );
   }
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: 'rgba(255, 255, 255, .9)',
+    backgroundColor: 'rgba(255, 255, 255, .9)'
   }
 });
 

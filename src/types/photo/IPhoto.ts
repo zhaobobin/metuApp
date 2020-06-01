@@ -1,4 +1,4 @@
-export interface ICarsouel {
+export interface IPhoto {
   view_number: number;
   favor_number: number;
   collect_number: number;

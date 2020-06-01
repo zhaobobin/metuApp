@@ -1,11 +1,11 @@
 import { Model, Effect } from 'dva-core-ts';
 import { Reducer } from 'redux';
-import { Request } from '@/utils/index';
-import { ICarsouel } from '@/types/home/IHomeState';
-import api from '@/api/index';
+import { IPhoto } from '@/types/photo/IPhoto';
+import { homeApi } from '@/api/index';
 
 export interface HomeState {
-  carsouel: ICarsouel[];
+  carsouel: IPhoto[];
+  popular: IPhoto[];
 }
 
 interface HomeModel extends Model {
@@ -13,6 +13,7 @@ interface HomeModel extends Model {
   state: HomeState;
   effects: {
     queryCarsouel: Effect;
+    queryPopular: Effect;
   };
   reducers: {
     setState: Reducer<HomeState>;
@@ -20,7 +21,8 @@ interface HomeModel extends Model {
 }
 
 const initialState = {
-  carsouel: []
+  carsouel: [],
+  popular: []
 };
 
 const homeModel: HomeModel = {
@@ -28,13 +30,20 @@ const homeModel: HomeModel = {
   state: initialState,
   effects: {
     *queryCarsouel({ payload }, { call, put }) {
-      const res = yield call(params => {
-        return Request(api.getHomeCarsouel, { method: 'GET', body: params });
-      }, payload);
+      const res = yield call(homeApi.getHomeCarsouel, payload);
       yield put({
         type: 'setState',
         payload: {
           carsouel: res.data
+        }
+      });
+    },
+    *queryPopular({ payload }, { call, put }) {
+      const res = yield call(homeApi.getPopularPhotos, payload);
+      yield put({
+        type: 'setState',
+        payload: {
+          popular: res.data.list
         }
       });
     }

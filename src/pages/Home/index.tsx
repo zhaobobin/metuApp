@@ -1,13 +1,14 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Button } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootStackNavigation } from '@/navigator/index';
 import { RootState } from '@/models/index';
 import Carousel from './Carsouel';
+import Popular from './Popular';
 
 const mapStateToProps = (state: RootState) => ({
-  home: state.home,
-  loading: state.loading.effects['home/carsouel']
+  carsouel: state.home.carsouel,
+  loading: state.loading.effects['home/queryCarsouel']
 });
 
 const connector = connect(mapStateToProps);
@@ -36,18 +37,18 @@ class Home extends React.Component<IProps> {
 
   render() {
 
-    const { home } = this.props;
-    // console.log(home.carsouel)
+    const { carsouel } = this.props;
+
     return (
       <View>
-        <Text>Home</Text>
+        <Carousel carsouel={carsouel} />
+        <Popular />
         <Button
           title="跳转到详情页"
           onPress={() => {
             this.props.navigation.navigate('Detail', { id: '123' });
           }}
         />
-        <Carousel />
       </View>
     );
   }

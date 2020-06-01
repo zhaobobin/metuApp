@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RouteProp, TabNavigationState } from '@react-navigation/native';
 import { RootStackNavigation, RootStackParamList } from './index';
 // tab page
-import Home from '@/pages/Home/Home';
+import HomeTabs from './HomeTabs';
 import Listen from '@/pages/Listen/Listen';
 import Found from '@/pages/Found/Found';
 import Account from '@/pages/Account/Account';
@@ -11,7 +11,7 @@ import Account from '@/pages/Account/Account';
 import Icon from '@/assets/iconfont';
 
 export type BottomTabParamList = {
-  Home: undefined;
+  HomeTabs: undefined;
   Listen: undefined;
   Found: undefined;
   Account: undefined;
@@ -39,9 +39,9 @@ export default class BottomTabs extends React.Component<IProps> {
   getHeaderTitle = (route: Route) => {
     const routeName = route.state
       ? route.state.routes[route.state.index].name
-      : route.params?.screen || 'Home';
+      : route.params?.screen || 'HomeTabs';
     switch (routeName) {
-      case 'Home':
+      case 'HomeTabs':
         return '首页';
       case 'Listen':
         return '我听';
@@ -61,8 +61,8 @@ export default class BottomTabs extends React.Component<IProps> {
           activeTintColor: '#1890ff'
         }}>
         <Tab.Screen
-          name="Home"
-          component={Home}
+          name="HomeTabs"
+          component={HomeTabs}
           options={{
             tabBarLabel: '首页',
             tabBarIcon: ({ color, size }) => (

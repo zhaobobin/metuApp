@@ -1,38 +1,49 @@
 import { Model, Effect } from 'dva-core-ts';
 import { Reducer } from 'redux';
+import { Request } from '@/utils/index';
+import { ICarsouel } from '@/types/home/IHomeState';
+import api from '@/api/index';
 
 export interface HomeState {
-  num: number;
+  carsouel: ICarsouel[];
 }
 
 interface HomeModel extends Model {
   namespace: 'home';
   state: HomeState;
   effects: {
-    asyncAdd: Effect;
+    queryCarsouel: Effect;
   };
   reducers: {
-    add: Reducer<HomeState>;
+    setState: Reducer<HomeState>;
   };
 }
 
 const initialState = {
-  num: 0
+  carsouel: []
 };
 
 const homeModel: HomeModel = {
   namespace: 'home',
   state: initialState,
   effects: {
-    *asyncAdd({payload}, {call, put}) {
-      
+    *queryCarsouel({ payload }, { call, put }) {
+      const res = yield call(params => {
+        return Request(api.getHomeCarsouel, { method: 'GET', body: params });
+      }, payload);
+      yield put({
+        type: 'setState',
+        payload: {
+          carsouel: res.data
+        }
+      });
     }
   },
   reducers: {
-    add(state = initialState, { payload }) {
+    setState(state = initialState, { payload }) {
       return {
         ...state,
-        num: state.num + payload.num
+        ...payload
       };
     }
   }

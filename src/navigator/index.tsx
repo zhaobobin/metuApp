@@ -1,3 +1,6 @@
+/**
+ * index > BottomTabs > HomeTabs
+ */
 import React from 'react';
 import { Platform, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -5,8 +8,7 @@ import {
   createStackNavigator,
   StackNavigationProp,
   HeaderStyleInterpolators,
-  CardStyleInterpolators,
-  HeaderTitle
+  CardStyleInterpolators
 } from '@react-navigation/stack';
 import BottomTabs from '@/navigator/BottomTabs';
 import Detail from '@/pages/Home/Detail';

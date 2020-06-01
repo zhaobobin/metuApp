@@ -3,7 +3,11 @@ import createLoading from 'dva-loading-ts';
 import models from '@/models/index';
 
 // 1、创建dva实例
-const app = create();
+const app = create({
+  onError(error) {
+    console.log(error);
+  }
+});
 // 2、装载models对象
 models.forEach(model => {
   app.model(model);

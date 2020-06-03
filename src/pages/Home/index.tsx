@@ -1,14 +1,16 @@
 import React from 'react';
-import { View, Button } from 'react-native';
+import { View, FlatList, ListRenderItemInfo } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootStackNavigation } from '@/navigator/index';
 import { RootState } from '@/models/index';
+import { IPhoto } from '@/types/photo/IPhoto';
 import Carousel from './Carsouel';
 import Popular from './Popular';
+import ChannelItem from './ChannelItem';
 
 const mapStateToProps = (state: RootState) => ({
-  carsouel: state.home.carsouel,
-  loading: state.loading.effects['home/queryCarsouel']
+  channel: state.home.channel,
+  loading: state.loading.effects['home/queryChannel']
 });
 
 const connector = connect(mapStateToProps);
@@ -19,37 +21,62 @@ interface IProps extends ModelState {
   navigation: RootStackNavigation;
 }
 
-// @connect((state => ({
-//   home: state.home,
-//   loading: state.loading.effects['home/add']
-// }))
 class Home extends React.Component<IProps> {
-
   componentDidMount() {
-    this.getCarsouel();
+    this.getChannel();
   }
 
-  getCarsouel = () => {
+  getChannel = (page?: number, per_page?: number, loadMore?: boolean) => {
     this.props.dispatch({
-      type: 'home/queryCarsouel'
+      type: 'home/queryChannel',
+      payload: {
+        page,
+        per_page,
+        loadMore
+      }
     });
-  }
+  };
 
-  render() {
+  refresh = () => {
 
-    const { carsouel } = this.props;
+  };
 
+  loadMore = () => {
+    const { channel } = this.props;
+    const page = channel.pageInfo.page + 1;
+    this.getChannel(page, 10, true);
+  };
+
+  renderHeader = () => {
     return (
       <View>
-        <Carousel carsouel={carsouel} />
-        <Popular />
-        <Button
-          title="跳转到详情页"
-          onPress={() => {
-            this.props.navigation.navigate('Detail', { id: '123' });
-          }}
-        />
+        <Carousel />
+        <Popular onPress={this.goPhotoDetail} />
       </View>
+    );
+  };
+
+  renderItem = ({ item }: ListRenderItemInfo<IPhoto>) => {
+    return <ChannelItem item={item} onPress={this.goPhotoDetail} />;
+  };
+
+  goPhotoDetail = (item: IPhoto) => {
+    this.props.navigation.navigate('Detail', { id: item._id });
+  };
+
+  _keyExtractor = (item: IPhoto) => item._id;
+
+  render() {
+    const { channel } = this.props;
+    return (
+      <FlatList
+        data={channel.list}
+        renderItem={this.renderItem}
+        keyExtractor={this._keyExtractor}
+        ListHeaderComponent={this.renderHeader}
+        onEndReached={this.loadMore}
+        onEndReachedThreshold={0.2}
+      />
     );
   }
 }

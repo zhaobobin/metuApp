@@ -1,3 +1,17 @@
+import { IPhoto } from '@/types/photo/IPhoto';
+import { IPageInfo } from '@/types/CommonTypes';
+
+export interface IHomeState {
+  carsouel: IPhoto[];
+  popular: IPhoto[];
+  channel: IChannel;
+}
+
+export interface IChannel {
+  list: IPhoto[];
+  pageInfo: IPageInfo;
+}
+
 export interface ICarsouel {
   view_number: number;
   favor_number: number;

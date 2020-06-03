@@ -9,6 +9,7 @@ import ENV from '@/config/env';
 
 type RequestMethod = 'get' | 'post' | 'put' | 'patch' | 'delete';
 interface IOptions {
+  url: string;
   method: RequestMethod;
   headers?: Record<string | number | symbol, any>;
   params?: Record<string | number | symbol, any>;
@@ -22,9 +23,9 @@ function checkStatus(response: any) {
   throw error;
 }
 
-export default async function Request(url: string, options: IOptions) {
+export default async function Request(options: IOptions) {
   // base_url
-  url = ENV.api.test + url;
+  let url = ENV.api.test + options.url;
 
   options.headers = {
     Accept: 'application/json'

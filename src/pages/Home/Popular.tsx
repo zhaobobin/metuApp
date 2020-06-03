@@ -5,24 +5,25 @@ import {
   StyleSheet,
   Image,
   FlatList,
-  TouchableOpacity
+  ListRenderItemInfo
 } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '@/models/index';
 import { IPhoto } from '@/types/photo/IPhoto';
 import Touchable from '@/components/Touchable';
+import IconArrowRight from '@/assets/iconfont/IconArrowRight';
 
 const mapStateToProps = (state: RootState) => ({
   popular: state.home.popular,
-  loading: state.loading.effects['home/carsouel']
+  loading: state.loading.effects['home/queryPopular']
 });
 
 const connector = connect(mapStateToProps);
 
-type IProps = ConnectedProps<typeof connector>;
+type ModelState = ConnectedProps<typeof connector>;
 
-interface IRenderItem {
-  item: IPhoto;
+interface IProps extends ModelState {
+  onPress: (item: IPhoto) => void;
 }
 
 class Popular extends React.Component<IProps> {
@@ -36,27 +37,48 @@ class Popular extends React.Component<IProps> {
     });
   };
 
-  renderItem = ({ item }: IRenderItem) => {
+  refresh = () => {};
+
+  onPressImage = (item: IPhoto) => {
+    this.props.onPress(item);
+  };
+
+  renderItem = ({ item }: ListRenderItemInfo<IPhoto>) => {
+    const { onPress } = this.props;
     return (
-      <Touchable style={styles.item} onPress={this.onPressImage}>
+      <Touchable style={styles.item} onPress={() => onPress(item)}>
         <Image source={{ uri: item.thumb.url }} style={styles.image} />
         <Text numberOfLines={2}>{item.title}</Text>
       </Touchable>
     );
   };
 
-  onPressImage = () => {};
+  _keyExtractor = (item: IPhoto) => item._id;
 
   render() {
     const { popular } = this.props;
     return (
       <View style={styles.container}>
-        <FlatList
-          numColumns={3}
-          data={popular}
-          renderItem={this.renderItem}
-          keyExtractor={item => item._id}
-        />
+        <View style={styles.head}>
+          <View style={styles.title}>
+            <Text style={styles.titleText}>热门推荐</Text>
+          </View>
+          <View style={styles.more}>
+            <Text style={styles.moreText}>更多</Text>
+            <IconArrowRight color="#6f6f6f" />
+          </View>
+        </View>
+        <View style={styles.body}>
+          <FlatList
+            numColumns={3}
+            data={popular}
+            renderItem={this.renderItem}
+            keyExtractor={this._keyExtractor}
+          />
+        </View>
+        <Touchable style={styles.refresh} onPress={this.refresh}>
+          <Text style={styles.refreshText}>换一批</Text>
+        </Touchable>
       </View>
     );
   }
@@ -68,10 +90,31 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 8
   },
+  head: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 15,
+    borderBottomColor: '#efefef',
+    borderBottomWidth: StyleSheet.hairlineWidth
+  },
+  title: {},
+  titleText: {
+    color: '#333'
+  },
+  more: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  moreText: {
+    color: '#6f6f6f'
+  },
+  body: {
+    padding: 10
+  },
   item: {
     flex: 1,
     marginVertical: 6,
-    marginHorizontal: 6,
+    marginHorizontal: 8,
     alignItems: 'center'
   },
   image: {
@@ -79,6 +122,15 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 100,
     borderRadius: 8
+  },
+  refresh: {
+    padding: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  refreshText: {
+    color: '#999'
   }
 });
 

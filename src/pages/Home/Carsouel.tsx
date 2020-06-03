@@ -5,6 +5,8 @@ import SnapCarsouel, {
   AdditionalParallaxProps,
   Pagination
 } from 'react-native-snap-carousel';
+import { connect, ConnectedProps } from 'react-redux';
+import { RootState } from '@/models/index';
 import { screenWidth, wp, hp } from '@/utils/index';
 import { ICarsouel } from '@/types/home/IHomeState';
 
@@ -12,7 +14,16 @@ const sliderWidth = screenWidth;
 const itemWidth = wp(90) + wp(2) * 2;
 const imgHeight = hp(26);
 
-interface IProps {
+const mapStateToProps = (state: RootState) => ({
+  carsouel: state.home.carsouel,
+  loading: state.loading.effects['home/queryCarsouel']
+});
+
+const connector = connect(mapStateToProps);
+
+type ModelState = ConnectedProps<typeof connector>;
+
+interface IProps extends ModelState {
   carsouel: ICarsouel[];
 }
 
@@ -23,6 +34,16 @@ interface IState {
 class Carsouel extends React.Component<IProps, IState> {
   state = {
     activeSlide: 0
+  };
+
+  componentDidMount() {
+    this.getCarsouel();
+  }
+
+  getCarsouel = () => {
+    this.props.dispatch({
+      type: 'home/queryCarsouel'
+    });
   };
 
   onSnapToItem = (index: number) => {
@@ -117,4 +138,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Carsouel;
+export default connector(Carsouel);

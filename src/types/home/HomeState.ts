@@ -1,4 +1,11 @@
-export interface IPhoto {
+import { IPageInfo, IPhoto } from '@/types/CommonTypes';
+
+export interface IChannel {
+  list: IPhoto[];
+  pageInfo: IPageInfo;
+}
+
+export interface ICarsouel {
   view_number: number;
   favor_number: number;
   collect_number: number;

@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '@/models/index';
-import { IPhoto } from '@/types/photo/IPhoto';
+import { IPhoto } from '@/types/CommonTypes';
 import Touchable from '@/components/Touchable';
 import IconArrowRight from '@/assets/iconfont/IconArrowRight';
 

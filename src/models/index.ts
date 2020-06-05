@@ -1,11 +1,11 @@
 import { DvaLoadingState } from 'dva-loading-ts';
-import home, { HomeState } from './home';
+import home, { IHomeState } from './home';
 
 const models = [home];
 
 export type RootState = {
   loading: DvaLoadingState;
-  home: HomeState;
+  home: IHomeState;
 };
 
 export default models;

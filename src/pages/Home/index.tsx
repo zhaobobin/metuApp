@@ -1,15 +1,22 @@
 import React from 'react';
-import { View, FlatList, ListRenderItemInfo } from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  ListRenderItemInfo,
+  StyleSheet
+} from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootStackNavigation } from '@/navigator/index';
 import { RootState } from '@/models/index';
-import { IPhoto } from '@/types/photo/IPhoto';
+import { IPhoto } from '@/types/CommonTypes';
 import Carousel from './Carsouel';
 import Popular from './Popular';
 import ChannelItem from './ChannelItem';
 
 const mapStateToProps = (state: RootState) => ({
-  channel: state.home.channel,
+  list: state.home.channel.list,
+  hasMore: state.home.channel.pageInfo.has_more,
   loading: state.loading.effects['home/queryChannel']
 });
 
@@ -21,39 +28,46 @@ interface IProps extends ModelState {
   navigation: RootStackNavigation;
 }
 
-class Home extends React.Component<IProps> {
+interface IState {
+  refreshing: boolean;
+}
+
+class Home extends React.Component<IProps, IState> {
+  state = {
+    refreshing: false
+  };
+
   componentDidMount() {
     this.getChannel();
   }
 
-  getChannel = (page?: number, per_page?: number, loadMore?: boolean) => {
+  getChannel = (loadMore?: boolean) => {
     this.props.dispatch({
       type: 'home/queryChannel',
       payload: {
-        page,
-        per_page,
         loadMore
+      },
+      callback: () => {
+        setTimeout(() => {
+          this.setState({
+            refreshing: false
+          });
+        }, 1000);
       }
     });
   };
 
-  refresh = () => {
-
+  onRefresh = () => {
+    this.setState({
+      refreshing: true
+    });
+    this.getChannel();
   };
 
   loadMore = () => {
-    const { channel } = this.props;
-    const page = channel.pageInfo.page + 1;
-    this.getChannel(page, 10, true);
-  };
-
-  renderHeader = () => {
-    return (
-      <View>
-        <Carousel />
-        <Popular onPress={this.goPhotoDetail} />
-      </View>
-    );
+    const { hasMore, loading } = this.props;
+    if (loading || !hasMore) return;
+    this.getChannel(true);
   };
 
   renderItem = ({ item }: ListRenderItemInfo<IPhoto>) => {
@@ -66,19 +80,75 @@ class Home extends React.Component<IProps> {
 
   _keyExtractor = (item: IPhoto) => item._id;
 
+  renderHeader = () => {
+    return (
+      <View>
+        <Carousel />
+        <Popular onPress={this.goPhotoDetail} />
+      </View>
+    );
+  };
+
+  renderFooter = () => {
+    const { list, hasMore, loading } = this.props;
+    if (!hasMore) {
+      return (
+        <View style={styles.end}>
+          <Text>已经没有了</Text>
+        </View>
+      );
+    }
+    if (loading && hasMore && list.length > 0) {
+      return (
+        <View style={styles.loading}>
+          <Text>正在加载中...</Text>
+        </View>
+      );
+    }
+    return null;
+  };
+
+  renderEmpty = () => {
+    const { loading } = this.props;
+    if (loading) {
+      return null;
+    }
+    return (
+      <View style={styles.end}>
+        <Text>暂无数据</Text>
+      </View>
+    );
+  };
+
   render() {
-    const { channel } = this.props;
+    const { list } = this.props;
+    const { refreshing } = this.state;
     return (
       <FlatList
-        data={channel.list}
+        data={list}
         renderItem={this.renderItem}
         keyExtractor={this._keyExtractor}
         ListHeaderComponent={this.renderHeader}
+        ListFooterComponent={this.renderFooter}
+        ListEmptyComponent={this.renderEmpty}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
+        onRefresh={this.onRefresh}
+        refreshing={refreshing}
       />
     );
   }
 }
+
+const styles = StyleSheet.create({
+  end: {
+    alignItems: 'center',
+    paddingVertical: 10
+  },
+  loading: {
+    alignItems: 'center',
+    paddingVertical: 10
+  }
+});
 
 export default connector(Home);

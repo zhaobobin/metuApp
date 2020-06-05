@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-import { IPhoto } from '@/types/photo/IPhoto';
+import { IPhoto } from '@/types/CommonTypes';
 import Touchable from '@/components/Touchable';
 import Icon from '@/assets/iconfont';
 

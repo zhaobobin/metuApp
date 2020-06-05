@@ -29,17 +29,34 @@ interface IProps {
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 export default class BottomTabs extends React.Component<IProps> {
-  componentDidUpdate() {
-    const { navigation, route } = this.props;
-    navigation.setOptions({
-      headerTitle: this.getHeaderTitle(route)
-    });
+
+  componentDidMount() {
+    this.renderHeader();
   }
 
-  getHeaderTitle = (route: Route) => {
+  componentDidUpdate() {
+    this.renderHeader();
+  }
+
+  renderHeader = () => {
+    const { navigation, route } = this.props;
     const routeName = route.state
       ? route.state.routes[route.state.index].name
       : route.params?.screen || 'HomeTabs';
+    if (routeName === 'HomeTabs') {
+      navigation.setOptions({
+        headerTransparent: true,
+        headerTitle: ''
+      });
+    } else {
+      navigation.setOptions({
+        headerTransparent: false,
+        headerTitle: this.getHeaderTitle(routeName)
+      });
+    }
+  }
+
+  getHeaderTitle = (routeName: string) => {
     switch (routeName) {
       case 'HomeTabs':
         return '首页';
@@ -66,7 +83,7 @@ export default class BottomTabs extends React.Component<IProps> {
           options={{
             tabBarLabel: '首页',
             tabBarIcon: ({ color, size }) => (
-              <Icon name="icon-home"  size={size} color={color} />
+              <Icon name="icon-home" size={size} color={color} />
             )
           }}
         />

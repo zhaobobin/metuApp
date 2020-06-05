@@ -8,7 +8,7 @@ import SnapCarsouel, {
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '@/models/index';
 import { screenWidth, wp, hp } from '@/utils/index';
-import { ICarsouel } from '@/types/home/IHomeState';
+import { ICarsouel } from '@/types/home/HomeState';
 
 const sliderWidth = screenWidth;
 const itemWidth = wp(90) + wp(2) * 2;
@@ -16,7 +16,7 @@ const imgHeight = hp(26);
 
 const mapStateToProps = (state: RootState) => ({
   carsouel: state.home.carsouel,
-  loading: state.loading.effects['home/queryCarsouel']
+  carsouelActiveIndex: state.home.carsouelActiveIndex
 });
 
 const connector = connect(mapStateToProps);
@@ -27,15 +27,7 @@ interface IProps extends ModelState {
   carsouel: ICarsouel[];
 }
 
-interface IState {
-  activeSlide: number;
-}
-
-class Carsouel extends React.Component<IProps, IState> {
-  state = {
-    activeSlide: 0
-  };
-
+class Carsouel extends React.Component<IProps> {
   componentDidMount() {
     this.getCarsouel();
   }
@@ -47,8 +39,11 @@ class Carsouel extends React.Component<IProps, IState> {
   };
 
   onSnapToItem = (index: number) => {
-    this.setState({
-      activeSlide: index
+    this.props.dispatch({
+      type: 'home/setState',
+      payload: {
+        carsouelActiveIndex: index
+      }
     });
   };
 
@@ -70,8 +65,7 @@ class Carsouel extends React.Component<IProps, IState> {
   };
 
   render() {
-    const { activeSlide } = this.state;
-    const { carsouel } = this.props;
+    const { carsouel, carsouelActiveIndex } = this.props;
     const data = [];
     for (let i in carsouel) {
       data.push(carsouel[i].thumb.url);
@@ -94,7 +88,7 @@ class Carsouel extends React.Component<IProps, IState> {
             containerStyle={styles.paginationContainer}
             dotContainerStyle={styles.dotContainner}
             dotStyle={styles.dot}
-            activeDotIndex={activeSlide}
+            activeDotIndex={carsouelActiveIndex}
             dotsLength={data.length}
             inactiveDotScale={0.7}
             inactiveDotOpacity={0.4}

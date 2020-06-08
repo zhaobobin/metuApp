@@ -4,16 +4,18 @@ import { RouteProp, TabNavigationState } from '@react-navigation/native';
 import { RootStackNavigation, RootStackParamList } from './index';
 // tab page
 import HomeTabs from './HomeTabs';
-import Listen from '@/pages/Listen/Listen';
-import Found from '@/pages/Found/Found';
+import Found from '@/pages/Found/index';
+import Publish from '@/pages/Publish/index';
+import Message from '@/pages/Message/index';
 import Account from '@/pages/Account/Account';
 // icon svg
 import Icon from '@/assets/iconfont';
 
 export type BottomTabParamList = {
   HomeTabs: undefined;
-  Listen: undefined;
   Found: undefined;
+  Publish: undefined;
+  Message: undefined;
   Account: undefined;
 };
 
@@ -29,7 +31,6 @@ interface IProps {
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 export default class BottomTabs extends React.Component<IProps> {
-
   componentDidMount() {
     this.renderHeader();
   }
@@ -54,16 +55,18 @@ export default class BottomTabs extends React.Component<IProps> {
         headerTitle: this.getHeaderTitle(routeName)
       });
     }
-  }
+  };
 
   getHeaderTitle = (routeName: string) => {
     switch (routeName) {
       case 'HomeTabs':
         return '首页';
-      case 'Listen':
-        return '我听';
       case 'Found':
         return '发现';
+      case 'Publish':
+        return '发布';
+      case 'Message':
+        return '消息';
       case 'Account':
         return '我的';
       default:
@@ -88,20 +91,30 @@ export default class BottomTabs extends React.Component<IProps> {
           }}
         />
         <Tab.Screen
-          name="Listen"
-          component={Listen}
+          name="Found"
+          component={Found}
           options={{
-            tabBarLabel: '我听',
+            tabBarLabel: '发现',
             tabBarIcon: ({ color, size }) => (
               <Icon name="icon-hot" size={size} color={color} />
             )
           }}
         />
         <Tab.Screen
-          name="Found"
-          component={Found}
+          name="Publish"
+          component={Publish}
           options={{
-            tabBarLabel: '发现',
+            tabBarLabel: '发布',
+            tabBarIcon: ({ color, size }) => (
+              <Icon name="icon-hot" size={size} color={color} />
+            )
+          }}
+        />
+        <Tab.Screen
+          name="Message"
+          component={Message}
+          options={{
+            tabBarLabel: '消息',
             tabBarIcon: ({ color, size }) => (
               <Icon name="icon-search" size={size} color={color} />
             )

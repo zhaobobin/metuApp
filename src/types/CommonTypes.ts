@@ -1,3 +1,4 @@
+// 分页信息
 export interface IPageInfo {
   page: number;
   per_page?: number;
@@ -6,34 +7,81 @@ export interface IPageInfo {
 }
 
 export interface IPhoto {
+  _id: string;
+  title: string;
+  thumb: IThumb;
+  author: IAuthor;
   view_number: number;
   favor_number: number;
   collect_number: number;
   comment_number: number;
   editor: number;
   status: number;
-  _id: string;
-  title: string;
-  thumb: {
-    url: string;
-    width: number;
-    height: number;
-  };
-  author?: {
-    type: string;
-    level: number;
-    point: number;
-    status: number;
-    _id: string;
-    nickname: string;
-    username: string;
-    create_at: string;
-    update_at: string;
-  };
   create_at: string;
   update_at: string;
-};
+}
 
-export interface IArticle {
-  
+// 影集、专辑信息
+export interface IPhotoDetail extends IPhoto {
+  images: IImage[];
+}
+
+// 图片详情信息
+export interface IImage {
+  _id: string;
+  status: number;
+  title: string;
+  description: string;
+  exif: string;
+  camera: string;
+  lens: string;
+  url: string;
+  exposure: {
+    FNumber: string;
+    ExposureTime: string;
+    ISOSpeedRatings: string;
+  };
+  author: string;
+  create_at: string;
+  update_at: string;
+}
+
+// 缩略图
+export interface IThumb {
+  url: string;
+  width: number;
+  height: number;
+}
+
+export interface IArticle {}
+
+// 作者
+export interface IAuthor {
+  _id: string;
+  type: string;
+  level: number;
+  point: number;
+  status: number;
+  tags: string[];
+  nickname: string;
+  username: string;
+  create_at: string;
+  update_at: string;
+}
+
+// 用户信息
+export interface IUserInfo {
+  _id: string;
+  type: string;
+  level: number;
+  point: number;
+  status: number;
+  tags: string[];
+  following_number?: number;
+  followers_number?: number;
+  mobile?: string;
+  nickname: string;
+  username: string;
+  create_at: string;
+  update_at: string;
 }

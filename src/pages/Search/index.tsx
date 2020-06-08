@@ -16,14 +16,14 @@ interface IProps extends ModelState {
   navigation: RootStackNavigation;
 }
 
-class Tpl extends React.Component<IProps> {
+class Search extends React.Component<IProps> {
   render() {
     return (
       <View>
-        <Text>tpl</Text>
+        <Text>Search</Text>
       </View>
     );
   }
 }
 
-export default connector(Tpl);
+export default connector(Search);

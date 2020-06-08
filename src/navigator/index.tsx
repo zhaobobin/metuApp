@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { Platform, StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, RouteProp } from '@react-navigation/native';
 import {
   createStackNavigator,
   StackNavigationProp,
@@ -11,14 +11,19 @@ import {
   CardStyleInterpolators
 } from '@react-navigation/stack';
 import BottomTabs from '@/navigator/BottomTabs';
-import Detail from '@/pages/Home/Detail';
+import { IPhoto } from '@/types/CommonTypes';
+import PhotoDetail from '@/pages/Photo/PhotoDetail';
+import UserDetail from '@/pages/User/UserDetail';
 
 export type RootStackParamList = {
   BottomTabs: {
     screen?: string;
   };
-  Detail: {
-    id: number | string;
+  PhotoDetail: {
+    item: IPhoto;
+  };
+  UserDetail: {
+    id: string;
   };
 };
 export type RootStackNavigation = StackNavigationProp<RootStackParamList>;
@@ -26,6 +31,16 @@ export type RootStackNavigation = StackNavigationProp<RootStackParamList>;
 const Stack = createStackNavigator<RootStackParamList>();
 
 export default class Navigator extends React.Component {
+  getPhotoDetailOptions = ({
+    route
+  }: {
+    route: RouteProp<RootStackParamList, 'PhotoDetail'>;
+  }) => {
+    return {
+      headerTitle: route.params.item.title
+    };
+  };
+
   render() {
     return (
       <NavigationContainer>
@@ -33,6 +48,7 @@ export default class Navigator extends React.Component {
           headerMode="float"
           screenOptions={{
             headerTitleAlign: 'center',
+            headerBackTitleVisible: false,
             headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
             gestureEnabled: true,
@@ -52,10 +68,15 @@ export default class Navigator extends React.Component {
             options={{ headerTitle: '首页' }}
           />
           <Stack.Screen
-            name="Detail"
-            component={Detail}
+            name="PhotoDetail"
+            component={PhotoDetail}
+            options={this.getPhotoDetailOptions}
+          />
+          <Stack.Screen
+            name="UserDetail"
+            component={UserDetail}
             options={{
-              headerTitle: '详情'
+              headerTitle: '用户详情'
             }}
           />
         </Stack.Navigator>

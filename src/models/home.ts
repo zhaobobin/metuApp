@@ -8,6 +8,7 @@ import { IChannel } from '@/types/home/HomeState';
 export interface IHomeState {
   carsouel: IPhoto[];
   carsouelActiveIndex: number; // 当前轮播图下标
+  gradientVisible: boolean; // 首页渐变色组件是否显示
   popular: IPhoto[];
   channel: IChannel;
 }
@@ -31,6 +32,7 @@ const homeModel: HomeModel = {
   state: {
     carsouel: [],
     carsouelActiveIndex: 0,
+    gradientVisible: true,
     popular: [],
     channel: {
       list: [],

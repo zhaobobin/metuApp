@@ -4,7 +4,9 @@ import {
   Text,
   FlatList,
   ListRenderItemInfo,
-  StyleSheet
+  StyleSheet,
+  NativeSyntheticEvent,
+  NativeScrollEvent
 } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootStackNavigation } from '@/navigator/index';
@@ -13,11 +15,13 @@ import { IPhoto } from '@/types/CommonTypes';
 import Carousel from './Carsouel';
 import Popular from './Popular';
 import ChannelItem from './ChannelItem';
+import { sliderHeight } from './Carsouel';
 
 const mapStateToProps = (state: RootState) => ({
+  loading: state.loading.effects['home/queryChannel'],
   list: state.home.channel.list,
-  hasMore: state.home.channel.pageInfo.has_more,
-  loading: state.loading.effects['home/queryChannel']
+  gradientVisible: state.home.gradientVisible,
+  hasMore: state.home.channel.pageInfo.has_more
 });
 
 const connector = connect(mapStateToProps);
@@ -75,7 +79,7 @@ class Home extends React.Component<IProps, IState> {
   };
 
   goPhotoDetail = (item: IPhoto) => {
-    this.props.navigation.navigate('Detail', { id: item._id });
+    this.props.navigation.navigate('PhotoDetail', { item });
   };
 
   _keyExtractor = (item: IPhoto) => item._id;
@@ -120,6 +124,20 @@ class Home extends React.Component<IProps, IState> {
     );
   };
 
+  onScroll = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const offsetY = nativeEvent.contentOffset.y;
+    let newGradientVisible = offsetY < sliderHeight;
+    const { gradientVisible } = this.props;
+    if (gradientVisible !== newGradientVisible) {
+      this.props.dispatch({
+        type: 'home/setState',
+        payload: {
+          gradientVisible: newGradientVisible
+        }
+      });
+    }
+  };
+
   render() {
     const { list } = this.props;
     const { refreshing } = this.state;
@@ -135,6 +153,7 @@ class Home extends React.Component<IProps, IState> {
         onEndReachedThreshold={0.2}
         onRefresh={this.onRefresh}
         refreshing={refreshing}
+        onScroll={this.onScroll}
       />
     );
   }

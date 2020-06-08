@@ -5,45 +5,29 @@ import SnapCarsouel, {
   AdditionalParallaxProps,
   Pagination
 } from 'react-native-snap-carousel';
-import { connect, ConnectedProps } from 'react-redux';
-import { RootState } from '@/models/index';
 import { screenWidth, wp, hp } from '@/utils/index';
-import { IPhoto } from '@/types/CommonTypes';
+import { IImage } from '@/types/CommonTypes';
 
 const sliderWidth = screenWidth;
-const itemWidth = wp(90) + wp(2) * 2;
-export const sliderHeight = hp(26);
+const itemWidth = wp(100);
+export const sliderHeight = hp(50);
 
-const mapStateToProps = (state: RootState) => ({
-  carsouel: state.home.carsouel,
-  carsouelActiveIndex: state.home.carsouelActiveIndex
-});
-
-const connector = connect(mapStateToProps);
-
-type ModelState = ConnectedProps<typeof connector>;
-
-interface IProps extends ModelState {
-  carsouel: IPhoto[];
+interface IProps {
+  images: IImage[];
 }
 
-class Carsouel extends React.Component<IProps> {
-  componentDidMount() {
-    this.getCarsouel();
-  }
+interface IState {
+  carsouelActiveIndex: number;
+}
 
-  getCarsouel = () => {
-    this.props.dispatch({
-      type: 'home/queryCarsouel'
-    });
+class PhotoSwiper extends React.Component<IProps, IState> {
+  state = {
+    carsouelActiveIndex: 0
   };
 
   onSnapToItem = (index: number) => {
-    this.props.dispatch({
-      type: 'home/setState',
-      payload: {
-        carsouelActiveIndex: index
-      }
+    this.setState({
+      carsouelActiveIndex: index
     });
   };
 
@@ -56,7 +40,7 @@ class Carsouel extends React.Component<IProps> {
         source={{ uri: item }}
         style={styles.image}
         containerStyle={styles.imageContainer}
-        // parallaxFactor={0.5}
+        parallaxFactor={0}
         showSpinner
         spinnerColor="rgba(0, 0, 0, .3)"
         {...parallaxProps}
@@ -65,10 +49,11 @@ class Carsouel extends React.Component<IProps> {
   };
 
   render() {
-    const { carsouel, carsouelActiveIndex } = this.props;
+    const { carsouelActiveIndex } = this.state;
+    const { images } = this.props;
     const data = [];
-    for (let i in carsouel) {
-      data.push(carsouel[i].thumb.url);
+    for (let i in images) {
+      data.push(images[i].url);
     }
 
     return (
@@ -81,7 +66,6 @@ class Carsouel extends React.Component<IProps> {
           onSnapToItem={this.onSnapToItem}
           hasParallaxImages
           loop
-          // autoplay
         />
         <View style={styles.paginationWrapper}>
           <Pagination
@@ -102,8 +86,7 @@ class Carsouel extends React.Component<IProps> {
 const styles = StyleSheet.create({
   imageContainer: {
     width: itemWidth,
-    height: sliderHeight,
-    borderRadius: 8
+    height: sliderHeight
   },
   image: {
     ...StyleSheet.absoluteFillObject,
@@ -132,4 +115,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connector(Carsouel);
+export default PhotoSwiper;

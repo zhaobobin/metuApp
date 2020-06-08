@@ -32,4 +32,4 @@ export interface ICarsouel {
   };
   create_at: string;
   update_at: string;
-};
+}

@@ -2,7 +2,7 @@ import { Dimensions } from 'react-native';
 import { Encrypt, Decrypt } from '@/utils/Crypto';
 import Request from '@/utils/Request';
 import Storage from '@/utils/Storage';
-import Validator from '@/utils/Validator'
+import Validator from '@/utils/Validator';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 

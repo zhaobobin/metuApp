@@ -2,7 +2,6 @@
  * 表单校验
  */
 const Validator = {
-
   /**
    * Form字段错误检查
    * @param fieldsError
@@ -52,24 +51,28 @@ const Validator = {
   checkPsdLevel: function (value: string) {
     // 0： 表示第一个级别， 1：表示第二个级别， 2：表示第三个级别， 3： 表示第四个级别， 4：表示第五个级别
     let modes = 0;
-    if (value.length < 8) {//最初级别
+    if (value.length < 8) {
+      //最初级别
       return modes;
     }
-    if (/\d/.test(value)) {//如果用户输入的密码 包含了数字
+    if (/\d/.test(value)) {
+      //如果用户输入的密码 包含了数字
       modes++;
     }
-    if (/[a-z]/.test(value)) {//如果用户输入的密码 包含了小写的a到z
+    if (/[a-z]/.test(value)) {
+      //如果用户输入的密码 包含了小写的a到z
       modes++;
     }
-    if (/\W/.test(value)) {//如果是非数字 字母 下划线
+    if (/\W/.test(value)) {
+      //如果是非数字 字母 下划线
       modes++;
     }
-    if (/[A-Z]/.test(value)) {//如果用户输入的密码 包含了大写的A到Z
+    if (/[A-Z]/.test(value)) {
+      //如果用户输入的密码 包含了大写的A到Z
       modes++;
     }
     return modes;
   }
-
-}
+};
 
 export default Validator;

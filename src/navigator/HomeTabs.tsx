@@ -1,25 +1,30 @@
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import {
   createMaterialTopTabNavigator,
-  MaterialTopTabBarOptions
+  MaterialTopTabNavigationProp
 } from '@react-navigation/material-top-tabs';
-import Home from '@/pages/Home/index';
 import TopTabBarWrapper from '@/pages/Home/TopTabBarWrapper';
-import { StyleSheet } from 'react-native';
+import Home from '@/pages/Home/index';
 
-const Tab = createMaterialTopTabNavigator();
+export type HomeTabParamList = {
+  [key: string]: {
+    modelNamespace: string;
+    category: string;
+  };
+};
+
+export type HomeTabNavigation = MaterialTopTabNavigationProp<HomeTabParamList>;
+
+const Tab = createMaterialTopTabNavigator<HomeTabParamList>();
 
 class HomeTabs extends React.Component {
-  renderTabBar = (props: MaterialTopTabBarOptions) => {
-    return <TopTabBarWrapper {...props} />;
-  };
-
   render() {
     return (
       <Tab.Navigator
         lazy
         sceneContainerStyle={styles.sceneContainerStyle}
-        tabBar={this.renderTabBar}
+        tabBar={props => <TopTabBarWrapper {...props} />}
         tabBarOptions={{
           scrollEnabled: true,
           tabStyle: {
@@ -35,7 +40,9 @@ class HomeTabs extends React.Component {
           activeTintColor: '#1890ff',
           inactiveTintColor: '#999'
         }}>
-        <Tab.Screen name="推荐" component={Home} />
+        <Tab.Screen name="关注" component={Home} />
+        {/* <Tab.Screen name="推荐" component={Home} />
+        <Tab.Screen name="热榜" component={Home} /> */}
       </Tab.Navigator>
     );
   }
@@ -45,6 +52,6 @@ const styles = StyleSheet.create({
   sceneContainerStyle: {
     backgroundColor: 'transparent'
   }
-})
+});
 
 export default HomeTabs;

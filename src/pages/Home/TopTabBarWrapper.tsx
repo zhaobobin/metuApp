@@ -1,10 +1,13 @@
+/**
+ * 首页TabBar容器
+ */
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '@/models/index';
 import {
   MaterialTopTabBar,
-  MaterialTopTabBarOptions
+  MaterialTopTabBarProps
 } from '@react-navigation/material-top-tabs';
 import LinearAnimatedGradientTransition from 'react-native-linear-animated-gradient-transition';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
@@ -19,7 +22,7 @@ const connector = connect(mapStateToProps);
 
 type ModelState = ConnectedProps<typeof connector>;
 
-type IProps = MaterialTopTabBarOptions & ModelState;
+type IProps = MaterialTopTabBarProps & ModelState;
 
 const gradientColor = [
   ['#a1c4fd', '#c2e9fb'],

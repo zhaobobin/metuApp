@@ -14,6 +14,7 @@ import BottomTabs from '@/navigator/BottomTabs';
 import { IPhoto } from '@/types/CommonTypes';
 import PhotoDetail from '@/pages/Photo/PhotoDetail';
 import UserDetail from '@/pages/User/UserDetail';
+import Animated from 'react-native-reanimated';
 
 export type RootStackParamList = {
   BottomTabs: {
@@ -30,7 +31,8 @@ export type RootStackNavigation = StackNavigationProp<RootStackParamList>;
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-export default class Navigator extends React.Component {
+class Navigator extends React.Component {
+  // 图片详情 标题配置
   getPhotoDetailOptions = ({
     route
   }: {
@@ -38,6 +40,20 @@ export default class Navigator extends React.Component {
   }) => {
     return {
       headerTitle: route.params.item.title
+    };
+  };
+
+  // 用户详情 标题配置
+  getUserDetailOptions = () => {
+    return {
+      headerTitle: '用户详情',
+      headerTransparent: true,
+      headerTitleStyle: {
+        opacity: 0
+      },
+      headerBackground: () => {
+        return <Animated.View style={styles.userDetailBg} />;
+      }
     };
   };
 
@@ -75,12 +91,20 @@ export default class Navigator extends React.Component {
           <Stack.Screen
             name="UserDetail"
             component={UserDetail}
-            options={{
-              headerTitle: '用户详情'
-            }}
+            options={this.getUserDetailOptions}
           />
         </Stack.Navigator>
       </NavigationContainer>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  userDetailBg: {
+    flex: 1,
+    backgroundColor: '#fff',
+    opacity: 0
+  }
+});
+
+export default Navigator;

@@ -65,23 +65,16 @@ export interface IAuthor {
   tags: string[];
   nickname: string;
   username: string;
+  avatar_url?: string;
+  cover_url?: string;
   create_at: string;
   update_at: string;
 }
 
 // 用户信息
-export interface IUserInfo {
-  _id: string;
-  type: string;
-  level: number;
-  point: number;
-  status: number;
-  tags: string[];
+export interface IUserInfo extends IAuthor {
+  mobile?: string;
+  headline?: string;
   following_number?: number;
   followers_number?: number;
-  mobile?: string;
-  nickname: string;
-  username: string;
-  create_at: string;
-  update_at: string;
 }

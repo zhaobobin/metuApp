@@ -57,7 +57,6 @@ class UserPhotos extends React.Component<IProps, IState> {
       page,
       per_page
     });
-    console.log(res);
     if (res.code === 0) {
       let newList = res.data.list;
       if (loadMore) {

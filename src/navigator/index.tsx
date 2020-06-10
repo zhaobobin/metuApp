@@ -48,6 +48,7 @@ class Navigator extends React.Component {
     return {
       headerTitle: '用户详情',
       headerTransparent: true,
+      headerTintColor: '#fff',
       headerTitleStyle: {
         opacity: 0
       },
@@ -64,6 +65,7 @@ class Navigator extends React.Component {
           headerMode="float"
           screenOptions={{
             headerTitleAlign: 'center',
+            headerTintColor: '#666',
             headerBackTitleVisible: false,
             headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

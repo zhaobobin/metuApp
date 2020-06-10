@@ -80,13 +80,17 @@ class UserDetail extends React.Component<IProps, IState> {
 
   // Header
   _renderHeader = () => {
-    const { headerTopHeight, userDetail } = this.props;
+    const { loading, userDetail, headerTopHeight } = this.props;
     return (
       <View style={[styles.header, { paddingTop: headerTopHeight }]}>
-        <Image
-          source={{ uri: userDetail.cover_url + '?x-oss-process=style/thumb' }}
-          style={styles.coverView}
-        />
+        {loading ? null : (
+          <Image
+            source={{
+              uri: userDetail.cover_url + '?x-oss-process=style/thumb'
+            }}
+            style={styles.coverView}
+          />
+        )}
         <BlurView
           blurType="light"
           blurAmount={2}

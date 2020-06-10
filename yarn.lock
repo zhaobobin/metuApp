@@ -5555,15 +5555,22 @@ react-native-reanimated@^1.9.0:
   dependencies:
     fbjs "^1.0.0"
 
-react-native-safe-area-context@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.npm.taobao.org/react-native-safe-area-context/download/react-native-safe-area-context-2.0.3.tgz#d89b60336ea2a1e9e2ff64fcac7b226aea0af370"
-  integrity sha1-2JtgM26ioeni/2T8rHsiauoK83A=
+react-native-safe-area-context@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.npm.taobao.org/react-native-safe-area-context/download/react-native-safe-area-context-3.0.3.tgz#d5c2698e1c5dcf6aa35e784ad5395139ec723b16"
+  integrity sha1-1cJpjhxdz2qjXnhK1TlROexyOxY=
 
 react-native-safe-area-view@^0.14.9:
   version "0.14.9"
   resolved "https://registry.npm.taobao.org/react-native-safe-area-view/download/react-native-safe-area-view-0.14.9.tgz#90ee8383037010d9a5055a97cf97e4c1da1f0c3d"
   integrity sha1-kO6DgwNwENmlBVqXz5fkwdofDD0=
+  dependencies:
+    hoist-non-react-statics "^2.3.1"
+
+react-native-safe-area-view@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.npm.taobao.org/react-native-safe-area-view/download/react-native-safe-area-view-1.1.1.tgz#9833e34c384d0513f4831afcd1e54946f13897b2"
+  integrity sha1-mDPjTDhNBRP0gxr80eVJRvE4l7I=
   dependencies:
     hoist-non-react-statics "^2.3.1"
 

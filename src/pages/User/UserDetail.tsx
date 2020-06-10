@@ -1,12 +1,22 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Animated,
+  LayoutChangeEvent
+} from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteProp } from '@react-navigation/native';
 import { useHeaderHeight } from '@react-navigation/stack';
 import { BlurView } from '@react-native-community/blur';
 import { RootStackNavigation, RootStackParamList } from '@/navigator/index';
 import { RootState } from '@/models/index';
+import StickyHeader from '@/components/StickyHeader';
 import UserDetailTabs from './UserDetailTabs';
+
+const HEADER_HEIGHT = 260;
 
 const mapStateToProps = (state: RootState) => ({
   loading: state.loading.effects['user/queryUserDetail'],
@@ -20,10 +30,23 @@ type ModelState = ConnectedProps<typeof connector>;
 interface IProps extends ModelState {
   route: RouteProp<RootStackParamList, 'UserDetail'>;
   navigation: RootStackNavigation;
-  headerHeight: number;
+  headerTopHeight: number;
 }
 
-class UserDetail extends React.Component<IProps> {
+interface IState {
+  scrollY: Animated.Value;
+  headHeight: number;
+}
+
+class UserDetail extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      scrollY: new Animated.Value(0),
+      headHeight: HEADER_HEIGHT
+    };
+  }
+
   componentDidMount() {
     this.getUserDetail();
   }
@@ -38,10 +61,23 @@ class UserDetail extends React.Component<IProps> {
     });
   };
 
+  onScroll = () => {
+    const { scrollY } = this.state;
+    Animated.event(
+      [
+        {
+          nativeEvent: { contentOffset: { y: scrollY } } // 记录滑动距离
+        }
+      ],
+      { useNativeDriver: true } // 使用原生动画驱动
+    )
+  }
+
+  // Header
   renderHeader = () => {
-    const { headerHeight, userDetail } = this.props;
+    const { headerTopHeight, userDetail } = this.props;
     return (
-      <View style={[styles.header, { paddingTop: headerHeight }]}>
+      <View style={[styles.header, { paddingTop: headerTopHeight }]}>
         <Image
           source={{ uri: userDetail.cover_url }}
           style={styles.coverView}
@@ -84,26 +120,39 @@ class UserDetail extends React.Component<IProps> {
   };
 
   render() {
+    const { headHeight, scrollY } = this.state;
+    console.log(headHeight)
     return (
-      <View style={styles.container}>
+      <Animated.ScrollView
+        style={styles.container}
+        onScroll={this.onScroll}
+        scrollEventThrottle={1}>
+        {/* 头部 banner */}
         {this.renderHeader()}
-        <UserDetailTabs />
-      </View>
+        {/* 顶部 tabBar 含FlatList */}
+        <StickyHeader
+          stickyHeaderY={headHeight} // 把头部高度传入
+          stickyScrollY={scrollY} // 把滑动距离传入
+        >
+          <UserDetailTabs />
+        </StickyHeader>
+      </Animated.ScrollView>
     );
   }
 }
 
 function Wrapper(props: IProps) {
-  const headerHeight = useHeaderHeight();
-  return <UserDetail headerHeight={headerHeight} {...props} />;
+  const headerTopHeight = useHeaderHeight();
+  return <UserDetail headerTopHeight={headerTopHeight} {...props} />;
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1
   },
+  headerView: {},
   header: {
-    height: 260,
+    height: HEADER_HEIGHT,
     flexDirection: 'row',
     paddingHorizontal: 20
   },

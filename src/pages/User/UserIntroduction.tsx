@@ -1,8 +1,11 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
+import { HPageViewHoc } from 'react-native-head-tab-view';
 import { RootState } from '@/models/index';
 import { userApi } from '@/api/index';
+
+const HScrollView = HPageViewHoc(ScrollView);
 
 const mapStateToProps = (state: RootState) => ({
   userDetail: state.user.userDetail
@@ -16,7 +19,7 @@ interface IProps extends ModelState {
   
 }
 
-class UserIntroduction extends React.Component<IProps> {
+class UserIntroduction extends React.Component<any> {
   state = {
     introduction: null
   }
@@ -35,9 +38,9 @@ class UserIntroduction extends React.Component<IProps> {
 
   render() {
     return (
-      <View>
+      <HScrollView {...this.props}>
         <Text>UserIntroduction</Text>
-      </View>
+      </HScrollView>
     );
   }
 }

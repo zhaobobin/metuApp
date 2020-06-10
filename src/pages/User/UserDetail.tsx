@@ -1,22 +1,35 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Animated,
-  LayoutChangeEvent
-} from 'react-native';
+import { View, Text, StyleSheet, Image, Platform } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteProp } from '@react-navigation/native';
 import { useHeaderHeight } from '@react-navigation/stack';
 import { BlurView } from '@react-native-community/blur';
+import { Tabbar, TabView, TabbarInfo } from 'react-native-head-tab-view';
 import { RootStackNavigation, RootStackParamList } from '@/navigator/index';
 import { RootState } from '@/models/index';
-import StickyHeader from '@/components/StickyHeader';
-import UserDetailTabs from './UserDetailTabs';
+
+import UserPhotos from './UserPhotos';
+import UserArticles from './UserArticles';
+import UserFollowing from './UserFollowing';
+import UserFavoring from './UserFavoring';
+import UserCollecting from './UserCollecting';
+import UserIntroduction from './UserIntroduction';
 
 const HEADER_HEIGHT = 260;
+
+const Routes = [
+  { key: 'photos', title: '图片' },
+  { key: 'articles', title: '文章' },
+  { key: 'following', title: '关注' },
+  { key: 'favoring', title: '点赞' },
+  { key: 'collecting', title: '收藏' },
+  { key: 'introduction', title: '简介' }
+];
+
+let Tabs: string[] = [];
+for (const i in Routes) {
+  Tabs.push(Routes[i].key);
+}
 
 const mapStateToProps = (state: RootState) => ({
   loading: state.loading.effects['user/queryUserDetail'],
@@ -33,19 +46,23 @@ interface IProps extends ModelState {
   headerTopHeight: number;
 }
 
+interface IRoute {
+  key: string;
+  title: string;
+}
+
 interface IState {
-  scrollY: Animated.Value;
-  headHeight: number;
+  routes: IRoute[];
+  tabs: string[];
+  index: number;
 }
 
 class UserDetail extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
-    this.state = {
-      scrollY: new Animated.Value(0),
-      headHeight: HEADER_HEIGHT
-    };
-  }
+  state = {
+    routes: Routes,
+    tabs: Tabs,
+    index: 0
+  };
 
   componentDidMount() {
     this.getUserDetail();
@@ -61,20 +78,8 @@ class UserDetail extends React.Component<IProps, IState> {
     });
   };
 
-  onScroll = () => {
-    const { scrollY } = this.state;
-    Animated.event(
-      [
-        {
-          nativeEvent: { contentOffset: { y: scrollY } } // 记录滑动距离
-        }
-      ],
-      { useNativeDriver: true } // 使用原生动画驱动
-    )
-  }
-
   // Header
-  renderHeader = () => {
+  _renderHeader = () => {
     const { headerTopHeight, userDetail } = this.props;
     return (
       <View style={[styles.header, { paddingTop: headerTopHeight }]}>
@@ -119,24 +124,66 @@ class UserDetail extends React.Component<IProps, IState> {
     );
   };
 
-  render() {
-    const { headHeight, scrollY } = this.state;
-    console.log(headHeight)
+  _tabNameConvert = (key: string) => {
+    const { routes } = this.state;
+    let title = '';
+    for (const i in routes) {
+      if (key === routes[i].key) {
+        title = routes[i].title;
+      }
+    }
+    return title;
+  };
+
+  _renderTabBar = (props: TabbarInfo<IRoute>) => {
     return (
-      <Animated.ScrollView
-        style={styles.container}
-        onScroll={this.onScroll}
-        scrollEventThrottle={1}>
-        {/* 头部 banner */}
-        {this.renderHeader()}
-        {/* 顶部 tabBar 含FlatList */}
-        <StickyHeader
-          stickyHeaderY={headHeight} // 把头部高度传入
-          stickyScrollY={scrollY} // 把滑动距离传入
-        >
-          <UserDetailTabs />
-        </StickyHeader>
-      </Animated.ScrollView>
+      <Tabbar
+        {...props}
+        tabs={Tabs}
+        tabNameConvert={this._tabNameConvert}
+        tabItemStyle={styles.tabItemStyle}
+        lineStyle={styles.lineStyle}
+        style={styles.tabBar}
+      />
+    );
+  };
+
+  // Scene
+  _renderScene = (sceneProps: { item: string; index: number }) => {
+    switch (sceneProps.item) {
+      case 'photos':
+        return <UserPhotos {...sceneProps} />;
+      case 'articles':
+        return <UserArticles {...sceneProps} />;
+      case 'following':
+        return <UserFollowing {...sceneProps} />;
+      case 'favoring':
+        return <UserFavoring {...sceneProps} />;
+      case 'collecting':
+        return <UserCollecting {...sceneProps} />;
+      case 'introduction':
+        return <UserIntroduction {...sceneProps} />;
+      default:
+        break;
+    }
+  };
+
+  render() {
+    const { headerTopHeight } = this.props;
+    return (
+      <View style={styles.container}>
+        <TabView
+          tabs={Tabs}
+          averageTab={false}
+          renderScrollHeader={this._renderHeader}
+          renderScene={this._renderScene}
+          renderTabBar={this._renderTabBar}
+          frozeTop={headerTopHeight}
+          makeHeaderHeight={() => {
+            return HEADER_HEIGHT;
+          }}
+        />
+      </View>
     );
   }
 }
@@ -150,7 +197,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  headerView: {},
+  // Header
   header: {
     height: HEADER_HEIGHT,
     flexDirection: 'row',
@@ -194,6 +241,25 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#fff'
+  },
+  // TabBar
+  tabItemStyle: {
+    width: 90
+  },
+  lineStyle: {
+    width: 20,
+    height: 4,
+    borderRadius: 4,
+    backgroundColor: '#1890ff'
+  },
+  tabBar: {
+    backgroundColor: '#fff',
+    ...Platform.select({
+      android: {
+        elevation: 0,
+        borderBottonWidth: StyleSheet.hairlineWidth
+      }
+    })
   }
 });
 

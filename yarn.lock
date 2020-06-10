@@ -1036,6 +1036,11 @@
   resolved "https://registry.npm.taobao.org/@react-native-community/masked-view/download/@react-native-community/masked-view-0.1.10.tgz#5dda643e19e587793bc2034dd9bf7398ad43d401"
   integrity sha1-XdpkPhnlh3k7wgNN2b9zmK1D1AE=
 
+"@react-native-community/viewpager@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.npm.taobao.org/@react-native-community/viewpager/download/@react-native-community/viewpager-4.0.1.tgz#2136557c8ffb706b6d08c9329f19347b0a72b82d"
+  integrity sha1-ITZVfI/7cGttCMkynxk0ewpyuC0=
+
 "@react-navigation/bottom-tabs@^5.5.1":
   version "5.5.1"
   resolved "https://registry.npm.taobao.org/@react-navigation/bottom-tabs/download/@react-navigation/bottom-tabs-5.5.1.tgz#f1f15ea70e4b397de6f8acafe70a694de08c87b6"
@@ -5502,6 +5507,11 @@ react-native-gesture-handler@^1.6.1:
     hoist-non-react-statics "^2.3.1"
     invariant "^2.2.4"
     prop-types "^15.7.2"
+
+react-native-head-tab-view@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.npm.taobao.org/react-native-head-tab-view/download/react-native-head-tab-view-1.1.1.tgz#eea3257b6a7fb0484c6874f1612e2d90a161b125"
+  integrity sha1-7qMle2p/sEhMaHTxYS4tkKFhsSU=
 
 react-native-iconfont-cli@^2.0.0:
   version "2.0.0"

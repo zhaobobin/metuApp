@@ -1,8 +1,11 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
+import { HPageViewHoc } from 'react-native-head-tab-view';
 import { RootStackNavigation } from '@/navigator/index';
 import { RootState } from '@/models/index';
+
+const HScrollView = HPageViewHoc(ScrollView);
 
 const mapStateToProps = (state: RootState) => ({
   loading: state.loading
@@ -16,12 +19,12 @@ interface IProps extends ModelState {
   navigation?: RootStackNavigation;
 }
 
-class UserArticles extends React.Component<IProps> {
+class UserArticles extends React.Component<any> {
   render() {
     return (
-      <View>
+      <HScrollView {...this.props}>
         <Text>UserArticles</Text>
-      </View>
+      </HScrollView>
     );
   }
 }

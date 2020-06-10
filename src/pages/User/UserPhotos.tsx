@@ -7,10 +7,13 @@ import {
   StyleSheet
 } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
+import { HPageViewHoc } from 'react-native-head-tab-view';
 import { RootState } from '@/models/index';
 import { IPhoto } from '@/types/CommonTypes';
 import PhotoItem from '@/components/PhotoItem';
 import { photoApi } from '@/api/index';
+
+const HFlatList = HPageViewHoc(FlatList);
 
 const mapStateToProps = (state: RootState) => ({
   userDetail: state.user.userDetail
@@ -20,9 +23,7 @@ const connector = connect(mapStateToProps);
 
 type ModelState = ConnectedProps<typeof connector>;
 
-interface IProps extends ModelState {
-  
-}
+interface IProps {}
 
 interface IState {
   list: IPhoto[];
@@ -34,7 +35,7 @@ interface IState {
   refreshing: boolean;
 }
 
-class UserPhotos extends React.Component<IProps, IState> {
+class UserPhotos extends React.Component<any, IState> {
   state = {
     list: [],
     count: 0,
@@ -136,17 +137,18 @@ class UserPhotos extends React.Component<IProps, IState> {
   render() {
     const { list, refreshing } = this.state;
     return (
-      <FlatList
-          data={list}
-          renderItem={this.renderItem}
-          keyExtractor={this._keyExtractor}
-          ListFooterComponent={this.renderFooter}
-          ListEmptyComponent={this.renderEmpty}
-          onEndReached={this.loadMore}
-          onEndReachedThreshold={0.2}
-          onRefresh={this.onRefresh}
-          refreshing={refreshing}
-        />
+      <HFlatList
+        {...this.props}
+        data={list}
+        renderItem={this.renderItem}
+        keyExtractor={this._keyExtractor}
+        ListFooterComponent={this.renderFooter}
+        ListEmptyComponent={this.renderEmpty}
+        onEndReached={this.loadMore}
+        onEndReachedThreshold={0.2}
+        onRefresh={this.onRefresh}
+        refreshing={refreshing}
+      />
     );
   }
 }

@@ -72,8 +72,7 @@ class Navigator extends React.Component {
             headerStyle: {
               ...Platform.select({
                 android: {
-                  elevation: 0,
-                  borderBottonWidth: StyleSheet.hairlineWidth
+                  elevation: 0
                 }
               })
             }

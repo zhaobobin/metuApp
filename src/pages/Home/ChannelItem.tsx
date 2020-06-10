@@ -19,7 +19,10 @@ class ChannelItem extends React.PureComponent<IProps> {
     const { item } = this.props;
     return (
       <Touchable style={styles.item} onPress={this.onPressImage}>
-        <Image source={{ uri: item.thumb.url }} style={styles.image} />
+        <Image
+          source={{ uri: item.thumb.url + '?x-oss-process=style/thumb' }}
+          style={styles.image}
+        />
         <View style={styles.rightContainer}>
           <Text style={styles.title} numberOfLines={1}>
             {item.title}

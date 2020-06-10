@@ -6,24 +6,19 @@ import {
   ListRenderItemInfo,
   StyleSheet
 } from 'react-native';
-import { connect, ConnectedProps } from 'react-redux';
+import { connect } from 'react-redux';
 import { HPageViewHoc } from 'react-native-head-tab-view';
-import { RootState } from '@/models/index';
 import { IPhoto } from '@/types/CommonTypes';
 import PhotoItem from '@/components/PhotoItem';
 import { photoApi } from '@/api/index';
 
 const HFlatList = HPageViewHoc(FlatList);
 
-const mapStateToProps = (state: RootState) => ({
-  userDetail: state.user.userDetail
-});
+const connector = connect();
 
-const connector = connect(mapStateToProps);
-
-type ModelState = ConnectedProps<typeof connector>;
-
-interface IProps {}
+interface IProps {
+  userId: string;
+}
 
 interface IState {
   list: IPhoto[];
@@ -35,7 +30,7 @@ interface IState {
   refreshing: boolean;
 }
 
-class UserPhotos extends React.Component<any, IState> {
+class UserPhotos extends React.Component<IProps, IState> {
   state = {
     list: [],
     count: 0,
@@ -51,17 +46,18 @@ class UserPhotos extends React.Component<any, IState> {
   }
 
   queryUserPhotos = async (loadMore?: boolean) => {
-    const { userDetail } = this.props;
+    const { userId } = this.props;
     const { list, per_page } = this.state;
     let page = 1;
     if (loadMore) {
       page += 1;
     }
     const res = await photoApi.getUserPhotos({
-      user_id: userDetail._id,
+      user_id: userId,
       page,
       per_page
     });
+    console.log(res);
     if (res.code === 0) {
       let newList = res.data.list;
       if (loadMore) {

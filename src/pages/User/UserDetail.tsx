@@ -84,7 +84,7 @@ class UserDetail extends React.Component<IProps, IState> {
     return (
       <View style={[styles.header, { paddingTop: headerTopHeight }]}>
         <Image
-          source={{ uri: userDetail.cover_url }}
+          source={{ uri: userDetail.cover_url + '?x-oss-process=style/thumb' }}
           style={styles.coverView}
         />
         <BlurView
@@ -143,26 +143,27 @@ class UserDetail extends React.Component<IProps, IState> {
         tabNameConvert={this._tabNameConvert}
         tabItemStyle={styles.tabItemStyle}
         lineStyle={styles.lineStyle}
-        style={styles.tabBar}
       />
     );
   };
 
   // Scene
   _renderScene = (sceneProps: { item: string; index: number }) => {
+    const { route } = this.props;
+    const userId = route.params.id;
     switch (sceneProps.item) {
       case 'photos':
-        return <UserPhotos {...sceneProps} />;
+        return <UserPhotos {...sceneProps} userId={userId} />;
       case 'articles':
-        return <UserArticles {...sceneProps} />;
+        return <UserArticles {...sceneProps} userId={userId} />;
       case 'following':
-        return <UserFollowing {...sceneProps} />;
+        return <UserFollowing {...sceneProps} userId={userId} />;
       case 'favoring':
-        return <UserFavoring {...sceneProps} />;
+        return <UserFavoring {...sceneProps} userId={userId} />;
       case 'collecting':
-        return <UserCollecting {...sceneProps} />;
+        return <UserCollecting {...sceneProps} userId={userId} />;
       case 'introduction':
-        return <UserIntroduction {...sceneProps} />;
+        return <UserIntroduction {...sceneProps} userId={userId} />;
       default:
         break;
     }
@@ -251,15 +252,6 @@ const styles = StyleSheet.create({
     height: 4,
     borderRadius: 4,
     backgroundColor: '#1890ff'
-  },
-  tabBar: {
-    backgroundColor: '#fff',
-    ...Platform.select({
-      android: {
-        elevation: 0,
-        borderBottonWidth: StyleSheet.hairlineWidth
-      }
-    })
   }
 });
 

@@ -53,7 +53,7 @@ class Carsouel extends React.Component<IProps> {
   ) => {
     return (
       <ParallaxImage
-        source={{ uri: item }}
+        source={{ uri: item + '?x-oss-process=style/thumb' }}
         style={styles.image}
         containerStyle={styles.imageContainer}
         // parallaxFactor={0.5}

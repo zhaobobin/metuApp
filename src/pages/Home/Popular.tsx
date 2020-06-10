@@ -47,7 +47,10 @@ class Popular extends React.Component<IProps> {
     const { onPress } = this.props;
     return (
       <Touchable style={styles.item} onPress={() => onPress(item)}>
-        <Image source={{ uri: item.thumb.url }} style={styles.image} />
+        <Image
+          source={{ uri: item.thumb.url + '?x-oss-process=style/thumb' }}
+          style={styles.image}
+        />
         <Text numberOfLines={2}>{item.title}</Text>
       </Touchable>
     );

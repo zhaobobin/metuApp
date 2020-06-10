@@ -16,10 +16,10 @@ const connector = connect(mapStateToProps);
 type ModelState = ConnectedProps<typeof connector>;
 
 interface IProps extends ModelState {
-  navigation?: RootStackNavigation;
+  userId: string;
 }
 
-class UserCollecting extends React.Component<any> {
+class UserCollecting extends React.Component<IProps> {
   render() {
     return (
       <HScrollView {...this.props}>

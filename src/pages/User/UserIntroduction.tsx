@@ -16,13 +16,13 @@ const connector = connect(mapStateToProps);
 type ModelState = ConnectedProps<typeof connector>;
 
 interface IProps extends ModelState {
-  
+  userId: string;
 }
 
-class UserIntroduction extends React.Component<any> {
+class UserIntroduction extends React.Component<IProps> {
   state = {
     introduction: null
-  }
+  };
 
   componentDidMount() {
     const { userDetail } = this.props;
@@ -33,8 +33,8 @@ class UserIntroduction extends React.Component<any> {
     const res = await userApi.getUserDetail({ id });
     this.setState({
       introduction: res.data
-    })
-  }
+    });
+  };
 
   render() {
     return (

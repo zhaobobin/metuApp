@@ -1,3 +1,6 @@
+/**
+ * 自定义点击组件
+ */
 import React from 'react';
 import { TouchableOpacity, TouchableOpacityProps } from 'react-native';
 

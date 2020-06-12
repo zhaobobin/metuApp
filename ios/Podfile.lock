@@ -239,6 +239,8 @@ PODS:
     - React
   - react-native-safe-area-context (3.0.3):
     - React
+  - react-native-splash-screen (3.2.0):
+    - React
   - react-native-viewpager (4.0.1):
     - React
   - React-RCTActionSheet (0.62.2):
@@ -355,6 +357,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - "react-native-viewpager (from `../node_modules/@react-native-community/viewpager`)"
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -425,6 +428,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/blur"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-splash-screen:
+    :path: "../node_modules/react-native-splash-screen"
   react-native-viewpager:
     :path: "../node_modules/@react-native-community/viewpager"
   React-RCTActionSheet:
@@ -491,6 +496,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 512e560d0e985d0e8c479a54a4e5c147a9c83493
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-safe-area-context: 45e98227f3d65b31d384a5d0950aec4bf73a884c
+  react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-viewpager: 1af972f5a745647b51250285f4da26d3fb3d5f0f
   React-RCTActionSheet: f41ea8a811aac770e0cc6e0ad6b270c644ea8b7c
   React-RCTAnimation: 49ab98b1c1ff4445148b72a3d61554138565bad0

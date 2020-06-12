@@ -1,173 +1,58 @@
+/**
+ * HomePage - 首页
+ */
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import {
-  View,
-  Text,
-  FlatList,
-  ListRenderItemInfo,
-  StyleSheet,
-  NativeSyntheticEvent,
-  NativeScrollEvent
-} from 'react-native';
-import { connect, ConnectedProps } from 'react-redux';
-import { RootStackNavigation } from '@/navigator/index';
-import { RootState } from '@/models/index';
-import { IPhoto } from '@/types/CommonTypes';
-import Carousel from './Carsouel';
-import Popular from './Popular';
-import ChannelItem from './ChannelItem';
-import { sliderHeight } from './Carsouel';
+  createMaterialTopTabNavigator,
+  MaterialTopTabNavigationProp
+} from '@react-navigation/material-top-tabs';
+import TopTabBarWrapper from '@/pages/Home/TopTabBarWrapper';
+import Following from '@/pages/Home/Following';
 
-const mapStateToProps = (state: RootState) => ({
-  loading: state.loading.effects['home/queryChannel'],
-  list: state.home.channel.list,
-  gradientVisible: state.home.gradientVisible,
-  hasMore: state.home.channel.pageInfo.has_more
-});
-
-const connector = connect(mapStateToProps);
-
-type ModelState = ConnectedProps<typeof connector>;
-
-interface IProps extends ModelState {
-  navigation: RootStackNavigation;
-}
-
-interface IState {
-  refreshing: boolean;
-}
-
-class Home extends React.Component<IProps, IState> {
-  state = {
-    refreshing: false
+export type HomeTabParamList = {
+  [key: string]: {
+    modelNamespace: string;
+    category: string;
   };
+};
 
-  componentDidMount() {
-    this.getChannel();
-  }
+export type HomeTabNavigation = MaterialTopTabNavigationProp<HomeTabParamList>;
 
-  getChannel = (loadMore?: boolean) => {
-    this.props.dispatch({
-      type: 'home/queryChannel',
-      payload: {
-        loadMore
-      },
-      callback: () => {
-        setTimeout(() => {
-          this.setState({
-            refreshing: false
-          });
-        }, 1000);
-      }
-    });
-  };
+const Tab = createMaterialTopTabNavigator<HomeTabParamList>();
 
-  onRefresh = () => {
-    this.setState({
-      refreshing: true
-    });
-    this.getChannel();
-  };
-
-  loadMore = () => {
-    const { hasMore, loading } = this.props;
-    if (loading || !hasMore) return;
-    this.getChannel(true);
-  };
-
-  renderItem = ({ item }: ListRenderItemInfo<IPhoto>) => {
-    return <ChannelItem item={item} onPress={this.goPhotoDetail} />;
-  };
-
-  goPhotoDetail = (item: IPhoto) => {
-    this.props.navigation.navigate('PhotoDetail', { item });
-  };
-
-  _keyExtractor = (item: IPhoto) => item._id;
-
-  renderHeader = () => {
-    return (
-      <View>
-        <Carousel />
-        <Popular onPress={this.goPhotoDetail} />
-      </View>
-    );
-  };
-
-  renderFooter = () => {
-    const { list, hasMore, loading } = this.props;
-    if (!hasMore) {
-      return (
-        <View style={styles.end}>
-          <Text>已经没有了</Text>
-        </View>
-      );
-    }
-    if (loading && hasMore && list.length > 0) {
-      return (
-        <View style={styles.loading}>
-          <Text>正在加载中...</Text>
-        </View>
-      );
-    }
-    return null;
-  };
-
-  renderEmpty = () => {
-    const { loading } = this.props;
-    if (loading) {
-      return null;
-    }
-    return (
-      <View style={styles.end}>
-        <Text>暂无数据</Text>
-      </View>
-    );
-  };
-
-  onScroll = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const offsetY = nativeEvent.contentOffset.y;
-    let newGradientVisible = offsetY < sliderHeight;
-    const { gradientVisible } = this.props;
-    if (gradientVisible !== newGradientVisible) {
-      this.props.dispatch({
-        type: 'home/setState',
-        payload: {
-          gradientVisible: newGradientVisible
-        }
-      });
-    }
-  };
-
+class HomeTabs extends React.Component {
   render() {
-    const { list } = this.props;
-    const { refreshing } = this.state;
     return (
-      <FlatList
-        data={list}
-        renderItem={this.renderItem}
-        keyExtractor={this._keyExtractor}
-        ListHeaderComponent={this.renderHeader}
-        ListFooterComponent={this.renderFooter}
-        ListEmptyComponent={this.renderEmpty}
-        onEndReached={this.loadMore}
-        onEndReachedThreshold={0.2}
-        onRefresh={this.onRefresh}
-        refreshing={refreshing}
-        onScroll={this.onScroll}
-      />
+      <Tab.Navigator
+        lazy
+        sceneContainerStyle={styles.sceneContainerStyle}
+        tabBar={props => <TopTabBarWrapper {...props} />}
+        tabBarOptions={{
+          scrollEnabled: true,
+          tabStyle: {
+            width: 80
+          },
+          indicatorStyle: {
+            width: 20,
+            height: 4,
+            borderRadius: 4,
+            marginLeft: 30,
+            backgroundColor: '#1890ff'
+          },
+          activeTintColor: '#1890ff',
+          inactiveTintColor: '#999'
+        }}>
+        <Tab.Screen name="关注" component={Following} />
+      </Tab.Navigator>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  end: {
-    alignItems: 'center',
-    paddingVertical: 10
-  },
-  loading: {
-    alignItems: 'center',
-    paddingVertical: 10
+  sceneContainerStyle: {
+    backgroundColor: 'transparent'
   }
 });
 
-export default connector(Home);
+export default HomeTabs;

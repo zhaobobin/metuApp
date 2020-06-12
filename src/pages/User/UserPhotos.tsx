@@ -11,6 +11,7 @@ import { HPageViewHoc } from 'react-native-head-tab-view';
 import { IPhoto } from '@/types/CommonTypes';
 import PhotoItem from '@/components/PhotoItem';
 import { photoApi } from '@/api/index';
+import { navigate } from '@/utils/Navigator'
 
 const HFlatList = HPageViewHoc(FlatList);
 
@@ -93,7 +94,7 @@ class UserPhotos extends React.Component<IProps, IState> {
   };
 
   goPhotoDetail = (item: IPhoto) => {
-    // this.props.navigation.navigate('PhotoDetail', { item });
+    navigate('PhotoDetailModal', { item });
   };
 
   _keyExtractor = (item: IPhoto) => item._id;

@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, Platform } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteProp } from '@react-navigation/native';
 import { useHeaderHeight } from '@react-navigation/stack';
 import { BlurView } from '@react-native-community/blur';
 import { Tabbar, TabView, TabbarInfo } from 'react-native-head-tab-view';
-import { RootStackNavigation, RootStackParamList } from '@/navigator/index';
+import { MainStackParamList } from '@/navigator/MainNavigation';
 import { RootState } from '@/models/index';
 
 import UserPhotos from './UserPhotos';
@@ -41,8 +41,7 @@ const connector = connect(mapStateToProps);
 type ModelState = ConnectedProps<typeof connector>;
 
 interface IProps extends ModelState {
-  route: RouteProp<RootStackParamList, 'UserDetail'>;
-  navigation: RootStackNavigation;
+  route: RouteProp<MainStackParamList, 'UserDetail'>;
   headerTopHeight: number;
 }
 

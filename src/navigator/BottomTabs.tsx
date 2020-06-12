@@ -1,30 +1,33 @@
+/**
+ * BottomTabs - 底部导航器
+ */
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RouteProp, TabNavigationState } from '@react-navigation/native';
-import { RootStackNavigation, RootStackParamList } from './index';
+import { MainStackNavigation, MainStackParamList } from './MainNavigation';
 // tab page
-import HomeTabs from './HomeTabs';
+import HomePage from '@/pages/Home/index';
 import Found from '@/pages/Found/index';
-import Publish from '@/pages/Publish/index';
+import PublishButton from '@/pages/Publish/PublishButton';
 import Message from '@/pages/Message/index';
 import Account from '@/pages/Account/Account';
 // icon svg
 import Icon from '@/assets/iconfont';
 
 export type BottomTabParamList = {
-  HomeTabs: undefined;
+  HomePage: undefined;
   Found: undefined;
-  Publish: undefined;
+  PublishButton: undefined;
   Message: undefined;
   Account: undefined;
 };
 
-type Route = RouteProp<RootStackParamList, 'BottomTabs'> & {
+type Route = RouteProp<MainStackParamList, 'BottomTabs'> & {
   state?: TabNavigationState;
 };
 
 interface IProps {
-  navigation: RootStackNavigation;
+  navigation: MainStackNavigation;
   route: Route;
 }
 
@@ -43,8 +46,8 @@ export default class BottomTabs extends React.Component<IProps> {
     const { navigation, route } = this.props;
     const routeName = route.state
       ? route.state.routes[route.state.index].name
-      : route.params?.screen || 'HomeTabs';
-    if (routeName === 'HomeTabs') {
+      : route.params?.screen || 'HomePage';
+    if (routeName === 'HomePage') {
       navigation.setOptions({
         headerTransparent: true,
         headerTitle: ''
@@ -81,8 +84,8 @@ export default class BottomTabs extends React.Component<IProps> {
           activeTintColor: '#1890ff'
         }}>
         <Tab.Screen
-          name="HomeTabs"
-          component={HomeTabs}
+          name="HomePage"
+          component={HomePage}
           options={{
             tabBarLabel: '首页',
             tabBarIcon: ({ color, size }) => (
@@ -101,14 +104,13 @@ export default class BottomTabs extends React.Component<IProps> {
           }}
         />
         <Tab.Screen
-          name="Publish"
-          component={Publish}
-          options={{
-            tabBarLabel: '发布',
-            tabBarIcon: ({ color, size }) => (
-              <Icon name="icon-hot" size={size} color={color} />
-            )
-          }}
+          name="PublishButton"
+          component={PublishButton}
+          options={({ navigation }) => ({
+            tabBarButton: () => {
+              return <PublishButton navigation={navigation} />;
+            }
+          })}
         />
         <Tab.Screen
           name="Message"

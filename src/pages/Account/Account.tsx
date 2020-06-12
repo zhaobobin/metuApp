@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
-import { RootStackNavigation } from '@/navigator/index';
+import { View, Text } from 'react-native';
+import { MainStackNavigation } from '@/navigator/MainNavigation';
 
 interface IProps {
-  navigation: RootStackNavigation;
+  navigation: MainStackNavigation;
 }
 
 export default class Account extends React.Component<IProps> {
@@ -11,12 +11,6 @@ export default class Account extends React.Component<IProps> {
     return (
       <View>
         <Text>Account</Text>
-        <Button
-          title="跳转到详情页"
-          onPress={() => {
-            this.props.navigation.navigate('Detail', { id: '123' });
-          }}
-        />
       </View>
     );
   }

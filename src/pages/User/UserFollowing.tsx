@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { Text, ScrollView } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { HPageViewHoc } from 'react-native-head-tab-view';
-import { MainStackNavigation } from '@/navigator/MainNavigation';
 import { RootState } from '@/models/index';
 
 const HScrollView = HPageViewHoc(ScrollView);

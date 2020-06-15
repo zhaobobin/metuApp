@@ -1,5 +1,6 @@
 import { Dimensions } from 'react-native';
 import { Encrypt, Decrypt } from '@/utils/Crypto';
+import Navigator from '@/utils/Navigator';
 import Request from '@/utils/Request';
 import Storage from '@/utils/Storage';
 import Validator from '@/utils/Validator';
@@ -25,6 +26,7 @@ export {
   hp,
   Encrypt,
   Decrypt,
+  Navigator,
   Request,
   Storage,
   Validator

@@ -16,9 +16,14 @@ export default class Storage {
   static async get(key: string, exp?: number) {
     try {
       const storage = await AsyncStorage.getItem(key);
-      if (!storage) return false;
+      if (!storage) {
+        return
+      };
       const res = JSON.parse(storage);
-      if (exp && new Date().getTime() - res.time > exp * 1000) return false; // 过期
+      // 过期
+      if (exp && new Date().getTime() - res.time > exp * 1000) {
+        return
+      };
       return res.data;
     } catch (err) {
       err && console.log(err.toString());

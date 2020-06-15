@@ -17,7 +17,6 @@ import BottomTabs from '@/navigator/BottomTabs';
 import PhotoDetail from '@/pages/Photo/PhotoDetail';
 import UserDetail from '@/pages/User/UserDetail';
 
-/* -------------------- RootStack -------------------- */
 export type MainStackParamList = {
   BottomTabs: {
     screen?: string;

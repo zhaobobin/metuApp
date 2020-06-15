@@ -1,12 +1,32 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { MainStackNavigation } from '@/navigator/MainNavigation';
+import { connect, ConnectedProps } from 'react-redux';
+import { RootState } from '@/models/index';
+import { Navigator } from '@/utils/index';
 
-interface IProps {
-  navigation: MainStackNavigation;
-}
+const mapStateToProps = (state: RootState) => ({
+  isAuth: state.account.isAuth,
+  currentUser: state.account.currentUser
+});
 
-export default class Account extends React.Component<IProps> {
+const connector = connect(mapStateToProps);
+
+type ModelState = ConnectedProps<typeof connector>;
+
+interface IProps extends ModelState {}
+
+class Account extends React.Component<IProps> {
+  componentDidMount() {
+    this.authLogin();
+  }
+
+  authLogin = () => {
+    const { isAuth } = this.props;
+    if (!isAuth) {
+      Navigator.goPage('LoginScreen');
+    }
+  };
+
   render() {
     return (
       <View>
@@ -15,3 +35,5 @@ export default class Account extends React.Component<IProps> {
     );
   }
 }
+
+export default connector(Account);

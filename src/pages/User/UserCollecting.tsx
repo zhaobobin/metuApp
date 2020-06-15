@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { Text, ScrollView } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { HPageViewHoc } from 'react-native-head-tab-view';
 import { RootState } from '@/models/index';

@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
-import { AppStackNavigation } from '@/navigator/AppStack';
 import { RootState } from '@/models/index';
 
 const mapStateToProps = (state: RootState) => ({

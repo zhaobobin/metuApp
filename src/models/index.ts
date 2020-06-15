@@ -3,8 +3,9 @@ import home, { IHomeState } from './home';
 import category, { ICategoryState } from './category';
 import photo, { IPhotoState } from './photo';
 import user, { IUserState } from './user';
+import account, { IAccountState } from './account';
 
-const models = [home, category, photo, user];
+const models = [home, category, photo, user, account];
 
 export type RootState = {
   loading: DvaLoadingState;
@@ -12,6 +13,7 @@ export type RootState = {
   category: ICategoryState;
   photo: IPhotoState;
   user: IUserState;
+  account: IAccountState;
 };
 
 export default models;

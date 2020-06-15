@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
-import { navigate } from '@/utils/Navigator';
+import { Navigator } from '@/utils/index';
 
 class WelcomePage extends React.Component {
   private timer: any;
@@ -38,7 +38,7 @@ class WelcomePage extends React.Component {
   };
 
   goHome = () => {
-    navigate('Main');
+    Navigator.goPage('MainScreen');
   };
 
   render() {

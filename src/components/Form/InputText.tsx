@@ -12,19 +12,23 @@ interface IProps {
   placeholder: string;
   mimLength?: number;
   maxLength?: number;
-  onChange?: () => void;
+  callback?: (value: string) => void;
 }
 
 export default class InputText extends React.PureComponent<IProps> {
+  state = {
+    value: ''
+  };
+
+  changeValue = (value: string) => {
+    this.setState({ value });
+    if (this.props.callback) {
+      this.props.callback(value);
+    }
+  };
+
   render() {
-    const {
-      label,
-      onChange,
-      value,
-      error,
-      placeholder,
-      maxLength
-    } = this.props;
+    const { label, value, error, placeholder, maxLength } = this.props;
 
     return (
       <View style={styles.inputView}>
@@ -34,7 +38,7 @@ export default class InputText extends React.PureComponent<IProps> {
           style={styles.input}
           // label={`${label}：`}
           value={value || ''}
-          onChangeText={onChange}
+          onChangeText={this.changeValue}
           placeholder={placeholder || '请输入'}
         />
 

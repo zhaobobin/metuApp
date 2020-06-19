@@ -1,16 +1,48 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
-import { AppStackNavigation } from '@/navigator/AppNavigation';
+import { connect, ConnectedProps } from 'react-redux';
+import { RootState } from '@/models/index';
 import Touchable from '@/components/Touchable';
-import { navigate } from '@/utils/Navigator';
+import ENV from '@/config/env';
+import { Navigator, Storage } from '@/utils/index';
+import { IResponse } from '@/types/CommonTypes';
 
-interface IProps {
-  navigation: AppStackNavigation;
-}
+const mapStateToProps = (state: RootState) => ({
+  isAuth: state.account.isAuth,
+  currentUser: state.account.currentUser
+});
+
+const connector = connect(mapStateToProps);
+
+type ModelState = ConnectedProps<typeof connector>;
+
+interface IProps extends ModelState {}
 
 class PublishButton extends React.Component<IProps> {
-  goPublish = () => {
-    navigate('Publish');
+  goPublish = async () => {
+    const { isAuth } = this.props;
+    if (isAuth) {
+      Navigator.goPage('Publish');
+    } else {
+      const token = await Storage.get(ENV.storage.token);
+      if (token) {
+        this.props.dispatch({
+          type: 'account/token',
+          payload: {
+            token
+          },
+          callback: (res: IResponse) => {
+            if (res.code === 0) {
+              Navigator.goPage('Publish');
+            } else {
+              Navigator.goPage('LoginScreen');
+            }
+          }
+        });
+      } else {
+        Navigator.goPage('LoginScreen');
+      }
+    }
   };
 
   render() {
@@ -37,4 +69,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default PublishButton;
+export default connector(PublishButton);

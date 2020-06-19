@@ -59,7 +59,7 @@ export default function LoginScreen() {
       <LoginStack.Screen
         name="ResetPassword"
         component={ResetPassword}
-        options={{ headerTitle: '忘记秘密 '}}
+        options={getResetOptions}
       />
     </LoginStack.Navigator>
   );
@@ -71,7 +71,7 @@ function getLoginOptions() {
     headerTintColor: '#333',
     headerTransparent: true,
     cardStyle: {
-      backgroundColor: '#f8f8f8'
+      backgroundColor: '#fff'
     },
     headerBackImage: ({ tintColor }: { tintColor: string }) => (
       <Icon
@@ -87,10 +87,29 @@ function getLoginOptions() {
 function getRegisterOptions() {
   return {
     headerTitle: '',
-    headerTintColor: '#fff',
+    headerTintColor: '#333',
     headerTransparent: true,
     cardStyle: {
-      backgroundColor: '#ccc'
+      backgroundColor: '#fff'
+    },
+    headerBackImage: ({ tintColor }: { tintColor: string }) => (
+      <Icon
+        name="icon-arrow-lift"
+        size={36}
+        color={tintColor}
+        style={styles.headerBackImage}
+      />
+    )
+  };
+}
+
+function getResetOptions() {
+  return {
+    headerTitle: '',
+    headerTintColor: '#333',
+    headerTransparent: true,
+    cardStyle: {
+      backgroundColor: '#fff'
     },
     headerBackImage: ({ tintColor }: { tintColor: string }) => (
       <Icon

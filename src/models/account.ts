@@ -78,7 +78,7 @@ const userModel: UserModel = {
       yield callback(res);
     },
 
-    *token({ payload }, { call, put }) {
+    *token({ payload, callback }, { call, put }) {
       const token = yield Storage.get(ENV.storage.token);
 
       if (token) {
@@ -90,6 +90,7 @@ const userModel: UserModel = {
             currentUser: res.data
           }
         });
+        callback(res);
       } else {
         yield put({
           type: 'setState',

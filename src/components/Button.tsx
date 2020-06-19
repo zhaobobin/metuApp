@@ -19,9 +19,9 @@ interface IProps {
   fontSize?: string;
   //按钮
   btnSize?: ButtonSize;
-  type: ButtonType;
+  type?: ButtonType;
   //按钮事件
-  onPress: () => void;
+  onPress: any;
   disabled?: boolean;
   //用于给残障人士显示的文本
   accessibilityLabel?: string;
@@ -63,34 +63,44 @@ export default class Button extends Component<IProps> {
     }
   };
 
+  onPress = () => {
+    const { onPress } = this.props;
+    onPress();
+  };
+
   render() {
-    const { title, type, fontSize, style, accessibilityLabel } = this.props;
-    const theme = this.renderBtnTheme(type);
+    const { title, type, disabled, style, accessibilityLabel } = this.props;
+    let theme = this.renderBtnTheme(type);
+    if (disabled) {
+      theme = {
+        borderColor: color.border,
+        backgroundColor: color.background,
+        color: color.gray
+      };
+    }
     return (
-      <View style={styles.container}>
-        <TouchableOpacity onPress={this.props.onPress}>
+      <TouchableOpacity onPress={this.onPress} disabled={disabled}>
+        <View
+          style={{
+            paddingHorizontal: 12,
+            paddingVertical: 15,
+            borderRadius: 5,
+            borderWidth: StyleSheet.hairlineWidth,
+            borderColor: theme.borderColor,
+            backgroundColor: theme.backgroundColor,
+            alignItems: 'center',
+            ...style
+          }}>
           <Text
             style={{
-              paddingHorizontal: 5,
-              paddingVertical: 10,
-              borderWidth: StyleSheet.hairlineWidth,
-              borderColor: theme.borderColor,
-              backgroundColor: theme.backgroundColor,
               color: theme.color,
-              fontSize: 16,
-              ...style
+              fontSize: 16
             }}
             accessibilityLabel={accessibilityLabel}>
             {title}
           </Text>
-        </TouchableOpacity>
-      </View>
+        </View>
+      </TouchableOpacity>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    borderRadius: 8,
-  }
-});

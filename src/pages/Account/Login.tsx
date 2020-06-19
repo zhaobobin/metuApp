@@ -1,19 +1,21 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
+
 import { RootState } from '@/models/index';
 import { Navigator, Validator, Encrypt } from '@/utils/index';
-import { color, layout } from '@/theme/index';
+import { layout } from '@/theme/index';
 import Touchable from '@/components/Touchable';
 import Button from '@/components/Button';
 
-import { createForm } from 'rc-form';
+import { createForm, ValidateErrors, WrappedFormMethods } from 'rc-form';
 import {
   FormItem,
   InputMobile,
   InputPassword,
   CheckBox
 } from '@/components/Form/index';
+import { IResponse } from '@/types/CommonTypes';
 
 const mapStateToProps = (state: RootState) => ({
   isAuth: state.account.isAuth
@@ -24,7 +26,7 @@ const connector = connect(mapStateToProps);
 type ModelState = ConnectedProps<typeof connector>;
 
 interface IProps extends ModelState {
-  form: any;
+  form: WrappedFormMethods;
   changeTabKey: () => void;
 }
 
@@ -44,38 +46,68 @@ class Login extends React.Component<IProps, IState> {
     };
   }
 
-  goDetail = () => {
+  componentWillUnmount() {
+    console.log('Login out')
+  }
+
+  goRegister = () => {
     Navigator.goPage('Register');
   };
 
+  // 手机号
+  mobileCallback = (value: string, err?: string) => {
+    if (err) {
+      this.props.form.setFields({
+        mobile: {
+          value: value,
+          errors: [new Error(err)]
+        }
+      });
+    } else {
+      this.props.form.setFieldsValue({ mobile: value });
+    }
+  };
+
+  // 密码
+  passwordCallback = (value: string, err?: string) => {
+    if (err) {
+      this.props.form.setFields({
+        password: {
+          value: value,
+          errors: [new Error(err)]
+        }
+      });
+    } else {
+      this.props.form.setFieldsValue({ password: value });
+    }
+  };
+
   submit = () => {
-    this.props.form.validateFields((error: any, values: any) => {
-      if (!error) {
-        // console.log(values)
-        if (values.password)
-          values.password = Encrypt(values.mobile, values.password);
-        if (values.smscode)
-          values.smscode = Encrypt(values.mobile, values.smscode);
-        values.loginType = this.state.loginType;
-        this.onLogin(values);
+    this.props.form.validateFields((error: ValidateErrors, values: any) => {
+      if (error) return;
+      if (values.password) {
+        values.password = Encrypt(values.mobile, values.password);
       }
+      if (values.smscode) {
+        values.smscode = Encrypt(values.mobile, values.smscode);
+      }
+      values.loginType = this.state.loginType;
+      this.onLogin(values);
     });
   };
 
   onLogin = (values: any) => {
     this.props.dispatch({
-      type: 'global/login',
+      type: 'account/login',
       payload: values,
-      callback: (res: any) => {
-        // console.log(res)
+      callback: (res: IResponse) => {
         if (res.code === 0) {
-          Navigator.goPage('Main');
+          Navigator.goBack();
         } else {
-          const message = res.message.split(' ');
           this.props.form.setFields({
-            [message[0]]: {
+            [res.error_key]: {
               value: '',
-              errors: [new Error(message[1])]
+              errors: [new Error(res.message)]
             }
           });
         }
@@ -95,21 +127,23 @@ class Login extends React.Component<IProps, IState> {
   };
 
   render() {
-    const { title, loginType, checked } = this.state;
+    const { title, checked } = this.state;
     const {
       getFieldDecorator,
       getFieldValue,
-      getFieldsError,
-      getFieldError
+      getFieldError,
+      getFieldsError
     } = this.props.form;
     return (
       <View style={styles.container}>
+        <ScrollView>
         <View style={styles.head}>
+          <Image source={require('@/assets/com/logo.png')} />
           <Text style={styles.title}>{title}</Text>
         </View>
 
         <View style={styles.body}>
-          <FormItem>
+          <FormItem style={styles.formItem}>
             {getFieldDecorator('mobile', {
               validateFirst: true,
               validateTrigger: 'onBlur',
@@ -121,11 +155,12 @@ class Login extends React.Component<IProps, IState> {
               <InputMobile
                 placeholder="手机号"
                 error={getFieldError('mobile')}
+                callback={this.mobileCallback}
               />
             )}
           </FormItem>
 
-          <FormItem>
+          <FormItem style={styles.formItem}>
             {getFieldDecorator('password', {
               validateFirst: true,
               validateTrigger: 'onBlur',
@@ -138,6 +173,7 @@ class Login extends React.Component<IProps, IState> {
               <InputPassword
                 placeholder="密码"
                 error={getFieldError('password')}
+                callback={this.passwordCallback}
               />
             )}
           </FormItem>
@@ -172,17 +208,18 @@ class Login extends React.Component<IProps, IState> {
               // disabled={
               //   Validator.hasErrors(getFieldsError()) ||
               //   !getFieldValue('mobile') ||
-              //   !getFieldValue(loginType === 'psd' ? 'password' : 'smscode')
+              //   !getFieldValue('password')
               // }
             />
           </View>
         </View>
 
         <View style={styles.foot}>
-          <Touchable onPress={this.props.changeTabKey}>
+          <Touchable onPress={this.goRegister}>
             <Text style={styles.link}>注册新帐号</Text>
           </Touchable>
         </View>
+        </ScrollView>
       </View>
     );
   }
@@ -190,19 +227,24 @@ class Login extends React.Component<IProps, IState> {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 15,
+    paddingHorizontal: 15,
+    paddingVertical: 100,
     flex: 1,
-    justifyContent: 'center'
+    position: 'relative'
   },
   head: {
     alignItems: 'center'
   },
   title: {
+    marginTop: 10,
     fontSize: 20,
     color: '#333'
   },
   body: {
     ...layout.margin(40, 0, 20, 0)
+  },
+  formItem: {
+    marginBottom: 40
   },
   remeber: {
     flex: 1,
@@ -232,6 +274,4 @@ const styles = StyleSheet.create({
   }
 });
 
-const LoginForm = createForm()(connector(Login));
-
-export default LoginForm;
+export default connector(createForm<IProps>()(Login));

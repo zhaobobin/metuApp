@@ -8,12 +8,12 @@ import { Tabbar, TabView, TabbarInfo } from 'react-native-head-tab-view';
 import { MainStackParamList } from '@/navigator/MainNavigation';
 import { RootState } from '@/models/index';
 
-import UserPhotos from './UserPhotos';
-import UserArticles from './UserArticles';
-import UserFollowing from './UserFollowing';
-import UserFavoring from './UserFavoring';
-import UserCollecting from './UserCollecting';
-import UserIntroduction from './UserIntroduction';
+import UserPhotos from '@/pages/User/UserPhotos';
+import UserArticles from '@/pages/User/UserArticles';
+import UserFollowing from '@/pages/User/UserFollowing';
+import UserFavoring from '@/pages/User/UserFavoring';
+import UserCollecting from '@/pages/User/UserCollecting';
+import UserIntroduction from '@/pages/User/UserIntroduction';
 
 const HEADER_HEIGHT = 260;
 
@@ -119,7 +119,7 @@ class UserDetail extends React.Component<IProps, IState> {
           </View>
           <View style={styles.headline}>
             <Text style={styles.text} numberOfLines={2}>
-              {userDetail.headline}
+              {userDetail.headline || ''}
             </Text>
           </View>
         </View>
@@ -152,8 +152,8 @@ class UserDetail extends React.Component<IProps, IState> {
 
   // Scene
   _renderScene = (sceneProps: { item: string; index: number }) => {
-    const { route } = this.props;
-    const userId = route.params.id;
+    const { userDetail } = this.props;
+    const userId = userDetail._id;
     switch (sceneProps.item) {
       case 'photos':
         return <UserPhotos {...sceneProps} userId={userId} />;
@@ -194,14 +194,13 @@ class UserDetail extends React.Component<IProps, IState> {
 
 function Wrapper(props: IProps) {
   const headerTopHeight = useHeaderHeight();
-  return <UserDetail headerTopHeight={headerTopHeight} {...props} />;
+  return <UserDetail {...props} headerTopHeight={headerTopHeight} />;
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  // Header
   header: {
     height: HEADER_HEIGHT,
     flexDirection: 'row',
@@ -236,8 +235,7 @@ const styles = StyleSheet.create({
   },
   headline: {
     padding: 10,
-    borderRadius: 8,
-    backgroundColor: 'rgba(0,0,0,.3)'
+    borderRadius: 8
   },
   nicknameText: {
     color: '#fff',

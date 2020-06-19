@@ -15,8 +15,8 @@ export const color = {
 
   brand: '#1890ff',
 
-  border: '#ddd',
+  border: '#d9d9d9',
   link: '#1890ff',
 
-  background: '#f8f8f8'
+  background: '#f5f5f5'
 };

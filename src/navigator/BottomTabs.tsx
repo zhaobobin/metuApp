@@ -6,8 +6,10 @@ import { connect, ConnectedProps } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RouteProp, TabNavigationState } from '@react-navigation/native';
 import { MainStackNavigation, MainStackParamList } from './MainNavigation';
-import { RootState } from '@/models/index';
+import ENV from '@/config/env';
 import { Navigator, Storage } from '@/utils/index';
+import { RootState } from '@/models/index';
+import { IResponse } from '@/types/CommonTypes';
 import Icon from '@/assets/iconfont';
 // tab page
 import HomePage from '@/pages/Home/index';
@@ -44,72 +46,45 @@ interface IProps extends ModelState {
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 class BottomTabs extends React.Component<IProps> {
-  componentDidMount() {
-    this.renderHeader();
-  }
-
-  componentDidUpdate() {
-    this.renderHeader();
-  }
-
-  authLogin = async () => {
-    const isAuth = await Storage.get('isAuth');
-    console.log(isAuth);
-  };
-
-  renderHeader = () => {
-    const { navigation, route } = this.props;
-    const routeName = route.state
-      ? route.state.routes[route.state.index].name
-      : route.params?.screen || 'HomePage';
-    if (routeName === 'HomePage') {
-      navigation.setOptions({
-        headerTransparent: true,
-        headerTitle: ''
-      });
+  authToken = async (routeName: string) => {
+    const { isAuth } = this.props;
+    if (isAuth) {
+      Navigator.goPage(routeName);
     } else {
-      navigation.setOptions({
-        headerTransparent: false,
-        headerTitle: this.getHeaderTitle(routeName)
-      });
+      const token = await Storage.get(ENV.storage.token);
+      if (token) {
+        this.props.dispatch({
+          type: 'account/token',
+          payload: {
+            token
+          },
+          callback: (res: IResponse) => {
+            if (res.code === 0) {
+              Navigator.goPage(routeName);
+            } else {
+              Navigator.goPage('LoginScreen');
+            }
+          }
+        });
+      } else {
+        Navigator.goPage('LoginScreen');
+      }
     }
   };
 
-  getHeaderTitle = (routeName: string) => {
-    switch (routeName) {
-      case 'HomeTabs':
-        return '首页';
-      case 'Found':
-        return '发现';
-      case 'Publish':
-        return '发布';
-      case 'Message':
-        return '消息';
-      case 'Account':
-        return '我的';
-      default:
-        return '首页';
+  listenTabPress = ({ route }: { route: any }) => ({
+    tabPress: (e: any) => {
+      e.preventDefault();
+      if (route.name === 'Account' || route.name === 'Message') {
+        this.authToken(route.name);
+      }
     }
-  };
-
-  // Account Auth Check
-  AccountScreen = ({ navigation }: { navigation: any }) => {
-    React.useEffect(() => {
-      const unsubscribe = navigation.addListener('tabPress', (e: any) => {
-        e.preventDefault();
-        const { isAuth } = this.props;
-        if (!isAuth) {
-          Navigator.goPage('LoginScreen');
-        }
-      });
-      return unsubscribe;
-    }, [navigation]);
-    return <Account />;
-  };
+  });
 
   render() {
     return (
       <Tab.Navigator
+        lazy
         tabBarOptions={{
           activeTintColor: '#1890ff'
         }}>
@@ -136,15 +111,16 @@ class BottomTabs extends React.Component<IProps> {
         <Tab.Screen
           name="PublishButton"
           component={PublishButton}
-          options={({ navigation }) => ({
+          options={() => ({
             tabBarButton: () => {
-              return <PublishButton navigation={navigation} />;
+              return <PublishButton />;
             }
           })}
         />
         <Tab.Screen
           name="Message"
           component={Message}
+          listeners={this.listenTabPress}
           options={{
             tabBarLabel: '消息',
             tabBarIcon: ({ color, size }) => (
@@ -154,7 +130,8 @@ class BottomTabs extends React.Component<IProps> {
         />
         <Tab.Screen
           name="Account"
-          component={this.AccountScreen}
+          component={Account}
+          listeners={this.listenTabPress}
           options={{
             tabBarLabel: '我的',
             tabBarIcon: ({ color, size }) => (

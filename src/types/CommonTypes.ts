@@ -1,3 +1,10 @@
+export interface IResponse {
+  code: number;
+  data: any;
+  message: string;
+  error_key?: any;
+}
+
 // 分页信息
 export interface IPageInfo {
   page: number;

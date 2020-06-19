@@ -57,7 +57,7 @@ export default function MainScreen() {
       <MainStack.Screen
         name="BottomTabs"
         component={BottomTabs}
-        options={{ headerTitle: '底部导航' }}
+        options={{ headerTitle: '底部导航', headerShown: false }}
       />
       <MainStack.Screen
         name="PhotoDetail"

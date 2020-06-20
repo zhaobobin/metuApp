@@ -46,13 +46,13 @@ interface IProps extends ModelState {
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 class BottomTabs extends React.Component<IProps> {
-  // componentDidMount() {
-  //   this.setOptions();
-  // }
+  componentDidMount() {
+    this.setOptions();
+  }
 
-  // componentDidUpdate() {
-  //   this.setOptions();
-  // }
+  componentDidUpdate() {
+    this.setOptions();
+  }
 
   setOptions = () => {
     const { navigation, route } = this.props;
@@ -69,6 +69,9 @@ class BottomTabs extends React.Component<IProps> {
         headerTransparent: false,
         headerTitle: this.getHeaderTitle(routeName)
       });
+      if (routeName === 'Account' || routeName === 'Message') {
+        this.authToken(route.name);
+      }
     }
   };
 
@@ -90,9 +93,7 @@ class BottomTabs extends React.Component<IProps> {
   // 验证token
   authToken = async (routeName: string) => {
     const { isAuth } = this.props;
-    if (isAuth) {
-      Navigator.goPage(routeName);
-    } else {
+    if (!isAuth) {
       const token = await Storage.get(ENV.storage.token);
       if (token) {
         this.props.dispatch({
@@ -162,7 +163,6 @@ class BottomTabs extends React.Component<IProps> {
         <Tab.Screen
           name="Message"
           component={Message}
-          listeners={this.listenTabPress}
           options={{
             tabBarLabel: '消息',
             tabBarIcon: ({ color, size }) => (
@@ -173,7 +173,6 @@ class BottomTabs extends React.Component<IProps> {
         <Tab.Screen
           name="Account"
           component={Account}
-          listeners={this.listenTabPress}
           options={{
             tabBarLabel: '我的',
             tabBarIcon: ({ color, size }) => (

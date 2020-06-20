@@ -16,6 +16,7 @@ import { IPhoto } from '@/types/CommonTypes';
 import BottomTabs from '@/navigator/BottomTabs';
 import PhotoDetail from '@/pages/Photo/PhotoDetail';
 import UserDetail from '@/pages/User/UserDetail';
+import LoginScreen2 from './LoginNavigation';
 
 export type MainStackParamList = {
   BottomTabs: {
@@ -27,6 +28,7 @@ export type MainStackParamList = {
   UserDetail: {
     id: string;
   };
+  LoginScreen2: undefined;
 };
 
 export type MainStackNavigation = StackNavigationProp<MainStackParamList>;
@@ -57,7 +59,7 @@ export default function MainScreen() {
       <MainStack.Screen
         name="BottomTabs"
         component={BottomTabs}
-        options={{ headerTitle: '底部导航', headerShown: false }}
+        options={getBottomTabsOptions}
       />
       <MainStack.Screen
         name="PhotoDetail"
@@ -71,6 +73,13 @@ export default function MainScreen() {
       />
     </MainStack.Navigator>
   );
+}
+
+function getBottomTabsOptions() {
+  return {
+    headerTitle: '底部导航'
+    // headerShown: false
+  }
 }
 
 // 图片详情 标题配置

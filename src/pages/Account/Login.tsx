@@ -47,7 +47,7 @@ class Login extends React.Component<IProps, IState> {
   }
 
   componentWillUnmount() {
-    console.log('Login out')
+    console.log('Login out');
   }
 
   goRegister = () => {
@@ -135,8 +135,7 @@ class Login extends React.Component<IProps, IState> {
       getFieldsError
     } = this.props.form;
     return (
-      <View style={styles.container}>
-        <ScrollView>
+      <ScrollView style={styles.container}>
         <View style={styles.head}>
           <Image source={require('@/assets/com/logo.png')} />
           <Text style={styles.title}>{title}</Text>
@@ -219,8 +218,7 @@ class Login extends React.Component<IProps, IState> {
             <Text style={styles.link}>注册新帐号</Text>
           </Touchable>
         </View>
-        </ScrollView>
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -229,7 +227,6 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 15,
     paddingVertical: 100,
-    flex: 1,
     position: 'relative'
   },
   head: {

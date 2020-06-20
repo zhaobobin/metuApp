@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 
 import { RootState } from '@/models/index';
@@ -166,7 +166,7 @@ class Register extends React.Component<IProps, IState> {
       getFieldsError
     } = this.props.form;
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <View style={styles.head}>
           <Image source={require('@/assets/com/logo.png')} />
           <Text style={styles.title}>{title}</Text>
@@ -292,16 +292,15 @@ class Register extends React.Component<IProps, IState> {
             </Text>
           </Text>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 15,
-    flex: 1,
-    justifyContent: 'center',
+    paddingHorizontal: 15,
+    paddingVertical: 100,
     position: 'relative'
   },
   head: {

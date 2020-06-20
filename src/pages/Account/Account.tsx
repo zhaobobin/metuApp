@@ -1,12 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
-import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+import { useHeaderHeight } from '@react-navigation/stack';
 import { BlurView } from '@react-native-community/blur';
 import { Tabbar, TabView, TabbarInfo } from 'react-native-head-tab-view';
 import { RootState } from '@/models/index';
 import { Navigator } from '@/utils/index';
-import Icon from '@/assets/iconfont';
 
 import UserPhotos from '@/pages/User/UserPhotos';
 import UserArticles from '@/pages/User/UserArticles';
@@ -14,7 +13,6 @@ import UserFollowing from '@/pages/User/UserFollowing';
 import UserFavoring from '@/pages/User/UserFavoring';
 import UserCollecting from '@/pages/User/UserCollecting';
 import UserIntroduction from '@/pages/User/UserIntroduction';
-import Touchable from '@/components/Touchable';
 
 const HEADER_HEIGHT = 300;
 
@@ -81,9 +79,9 @@ class AccountDetail extends React.Component<IProps, IState> {
 
   // Header
   _renderHeader = () => {
-    const { loading, userDetail } = this.props;
+    const { loading, userDetail, headerTopHeight } = this.props;
     return (
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: headerTopHeight }]}>
         {loading ? null : (
           <Image
             source={{
@@ -97,41 +95,32 @@ class AccountDetail extends React.Component<IProps, IState> {
           blurAmount={2}
           style={StyleSheet.absoluteFillObject}
         />
-        <View style={styles.headerTopBar}>
-          <View>
-            <Touchable onPress={this.goSettingPage}>
-              <Icon name="icon-set" size={30} color={'#fff'} />
-            </Touchable>
-          </View>
+        <View style={styles.leftView}>
+          <Image
+            source={{ uri: userDetail.avatar_url }}
+            style={styles.avatar}
+          />
         </View>
-        <View style={styles.headerContent}>
-          <View style={styles.leftView}>
-            <Image
-              source={{ uri: userDetail.avatar_url }}
-              style={styles.avatar}
-            />
+        <View style={styles.rightView}>
+          <View style={styles.nickname}>
+            <Text style={styles.nicknameText}>{userDetail.nickname}</Text>
           </View>
-          <View style={styles.rightView}>
-            <View style={styles.nickname}>
-              <Text style={styles.nicknameText}>{userDetail.nickname}</Text>
-            </View>
-            <View style={styles.info}>
-              <View style={styles.infoItem}>
-                <Text style={styles.text}>
-                  关注 {userDetail.following_number}
-                </Text>
-              </View>
-              <View style={styles.infoItem}>
-                <Text style={styles.text}>
-                  粉丝 {userDetail.followers_number}
-                </Text>
-              </View>
-            </View>
-            <View style={styles.headline}>
-              <Text style={styles.text} numberOfLines={2}>
-                {userDetail.headline || ''}
+          <View style={styles.info}>
+            <View style={styles.infoItem}>
+              <Text style={styles.text}>
+                关注 {userDetail.following_number}
               </Text>
             </View>
+            <View style={styles.infoItem}>
+              <Text style={styles.text}>
+                粉丝 {userDetail.followers_number}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.headline}>
+            <Text style={styles.text} numberOfLines={2}>
+              {userDetail.headline || ''}
+            </Text>
           </View>
         </View>
       </View>
@@ -188,6 +177,7 @@ class AccountDetail extends React.Component<IProps, IState> {
   };
 
   render() {
+    const { headerTopHeight } = this.props;
     return (
       <View style={styles.container}>
         <TabView
@@ -196,7 +186,7 @@ class AccountDetail extends React.Component<IProps, IState> {
           renderScrollHeader={this._renderHeader}
           renderScene={this._renderScene}
           renderTabBar={this._renderTabBar}
-          frozeTop={getStatusBarHeight() + 4}
+          frozeTop={headerTopHeight}
           makeHeaderHeight={() => {
             return HEADER_HEIGHT;
           }}
@@ -206,28 +196,23 @@ class AccountDetail extends React.Component<IProps, IState> {
   }
 }
 
+function Wrapper(props: IProps) {
+  const headerTopHeight = useHeaderHeight();
+  return <AccountDetail {...props} headerTopHeight={headerTopHeight} />;
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1
   },
   header: {
     height: HEADER_HEIGHT,
-    paddingTop: getStatusBarHeight(),
+    flexDirection: 'row',
     paddingHorizontal: 20
   },
   coverView: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: '#ddd'
-  },
-  headerTopBar: {
-    height: 58,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center'
-  },
-  headerContent: {
-    flex: 1,
-    flexDirection: 'row'
   },
   leftView: {
     justifyContent: 'center'
@@ -275,4 +260,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connector(AccountDetail);
+export default connector(Wrapper);

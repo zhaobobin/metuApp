@@ -54,7 +54,7 @@ const userModel: UserModel = {
           type: 'setState',
           payload: {
             isAuth: true,
-            currentUser: res.data.currentUser
+            currentUser: res.data.detail
           }
         });
         Storage.set(ENV.storage.token, res.data.token); //保存token
@@ -83,13 +83,15 @@ const userModel: UserModel = {
 
       if (token) {
         const res = yield call(userApi.token, payload);
-        yield put({
-          type: 'setState',
-          payload: {
-            isAuth: true,
-            currentUser: res.data
-          }
-        });
+        if (res.code === 0) {
+          yield put({
+            type: 'setState',
+            payload: {
+              isAuth: true,
+              currentUser: res.data
+            }
+          });
+        }
         callback(res);
       } else {
         yield put({

@@ -11,7 +11,7 @@ interface Props extends GProps, ViewProps {
   color?: string | string[];
 }
 
-const Iconremind: FunctionComponent<Props> = ({ size, color, ...rest }) => {
+const IconRemind: FunctionComponent<Props> = ({ size, color, ...rest }) => {
   return (
     <Svg viewBox="0 0 1024 1024" width={size} height={size} {...rest}>
       <Path
@@ -22,8 +22,8 @@ const Iconremind: FunctionComponent<Props> = ({ size, color, ...rest }) => {
   );
 };
 
-Iconremind.defaultProps = {
+IconRemind.defaultProps = {
   size: 18,
 };
 
-export default Iconremind;
+export default IconRemind;

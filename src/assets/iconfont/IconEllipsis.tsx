@@ -11,19 +11,19 @@ interface Props extends GProps, ViewProps {
   color?: string | string[];
 }
 
-const IconSamiSelect: FunctionComponent<Props> = ({ size, color, ...rest }) => {
+const IconEllipsis: FunctionComponent<Props> = ({ size, color, ...rest }) => {
   return (
     <Svg viewBox="0 0 1024 1024" width={size} height={size} {...rest}>
       <Path
-        d="M810.666667 480v64H213.333333v-64z"
+        d="M269.333333 448a56 56 0 1 1 0 112 56 56 0 0 1 0-112z m242.773334 0a56 56 0 1 1 0 112 56 56 0 0 1 0-112z m242.773333 0a56 56 0 1 1 0 112 56 56 0 0 1 0-112z"
         fill={getIconColor(color, 0, '#333333')}
       />
     </Svg>
   );
 };
 
-IconSamiSelect.defaultProps = {
+IconEllipsis.defaultProps = {
   size: 18,
 };
 
-export default IconSamiSelect;
+export default IconEllipsis;

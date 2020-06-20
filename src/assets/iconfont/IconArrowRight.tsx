@@ -11,7 +11,7 @@ interface Props extends GProps, ViewProps {
   color?: string | string[];
 }
 
-const IconarrowRight: FunctionComponent<Props> = ({ size, color, ...rest }) => {
+const IconArrowRight: FunctionComponent<Props> = ({ size, color, ...rest }) => {
   return (
     <Svg viewBox="0 0 1024 1024" width={size} height={size} {...rest}>
       <Path
@@ -22,8 +22,8 @@ const IconarrowRight: FunctionComponent<Props> = ({ size, color, ...rest }) => {
   );
 };
 
-IconarrowRight.defaultProps = {
+IconArrowRight.defaultProps = {
   size: 18,
 };
 
-export default IconarrowRight;
+export default IconArrowRight;

@@ -11,7 +11,7 @@ interface Props extends GProps, ViewProps {
   color?: string | string[];
 }
 
-const Iconsearch: FunctionComponent<Props> = ({ size, color, ...rest }) => {
+const IconSearch: FunctionComponent<Props> = ({ size, color, ...rest }) => {
   return (
     <Svg viewBox="0 0 1024 1024" width={size} height={size} {...rest}>
       <Path
@@ -22,8 +22,8 @@ const Iconsearch: FunctionComponent<Props> = ({ size, color, ...rest }) => {
   );
 };
 
-Iconsearch.defaultProps = {
+IconSearch.defaultProps = {
   size: 18,
 };
 
-export default Iconsearch;
+export default IconSearch;

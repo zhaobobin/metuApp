@@ -11,7 +11,7 @@ interface Props extends GProps, ViewProps {
   color?: string | string[];
 }
 
-const Iconashbin: FunctionComponent<Props> = ({ size, color, ...rest }) => {
+const IconAshbin: FunctionComponent<Props> = ({ size, color, ...rest }) => {
   return (
     <Svg viewBox="0 0 1024 1024" width={size} height={size} {...rest}>
       <Path
@@ -22,8 +22,8 @@ const Iconashbin: FunctionComponent<Props> = ({ size, color, ...rest }) => {
   );
 };
 
-Iconashbin.defaultProps = {
+IconAshbin.defaultProps = {
   size: 18,
 };
 
-export default Iconashbin;
+export default IconAshbin;

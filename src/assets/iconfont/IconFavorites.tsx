@@ -11,7 +11,7 @@ interface Props extends GProps, ViewProps {
   color?: string | string[];
 }
 
-const Iconfavorites: FunctionComponent<Props> = ({ size, color, ...rest }) => {
+const IconFavorites: FunctionComponent<Props> = ({ size, color, ...rest }) => {
   return (
     <Svg viewBox="0 0 1024 1024" width={size} height={size} {...rest}>
       <Path
@@ -22,8 +22,8 @@ const Iconfavorites: FunctionComponent<Props> = ({ size, color, ...rest }) => {
   );
 };
 
-Iconfavorites.defaultProps = {
+IconFavorites.defaultProps = {
   size: 18,
 };
 
-export default Iconfavorites;
+export default IconFavorites;

@@ -46,6 +46,48 @@ interface IProps extends ModelState {
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 class BottomTabs extends React.Component<IProps> {
+  // componentDidMount() {
+  //   this.setOptions();
+  // }
+
+  // componentDidUpdate() {
+  //   this.setOptions();
+  // }
+
+  setOptions = () => {
+    const { navigation, route } = this.props;
+    const routeName = route.state
+      ? route.state.routes[route.state.index].name
+      : route.params?.screen || 'HomePage';
+    if (routeName === 'HomePage') {
+      navigation.setOptions({
+        headerTransparent: true,
+        headerTitle: ''
+      });
+    } else {
+      navigation.setOptions({
+        headerTransparent: false,
+        headerTitle: this.getHeaderTitle(routeName)
+      });
+    }
+  };
+
+  getHeaderTitle = (routeName: string) => {
+    switch (routeName) {
+      case 'HomePage':
+        return '首页';
+      case 'Found':
+        return '发现';
+      case 'Message':
+        return '消息';
+      case 'Account':
+        return '账户';
+      default:
+        return '首页';
+    }
+  };
+
+  // 验证token
   authToken = async (routeName: string) => {
     const { isAuth } = this.props;
     if (isAuth) {

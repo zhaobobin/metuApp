@@ -11,7 +11,7 @@ interface Props extends GProps, ViewProps {
   color?: string | string[];
 }
 
-const IconPassword: FunctionComponent<Props> = ({ size, color, ...rest }) => {
+const Iconpassword: FunctionComponent<Props> = ({ size, color, ...rest }) => {
   return (
     <Svg viewBox="0 0 1024 1024" width={size} height={size} {...rest}>
       <Path
@@ -22,8 +22,8 @@ const IconPassword: FunctionComponent<Props> = ({ size, color, ...rest }) => {
   );
 };
 
-IconPassword.defaultProps = {
+Iconpassword.defaultProps = {
   size: 18,
 };
 
-export default IconPassword;
+export default Iconpassword;

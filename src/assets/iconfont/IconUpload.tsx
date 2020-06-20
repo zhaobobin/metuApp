@@ -11,7 +11,7 @@ interface Props extends GProps, ViewProps {
   color?: string | string[];
 }
 
-const IconUpload: FunctionComponent<Props> = ({ size, color, ...rest }) => {
+const Iconupload: FunctionComponent<Props> = ({ size, color, ...rest }) => {
   return (
     <Svg viewBox="0 0 1024 1024" width={size} height={size} {...rest}>
       <Path
@@ -22,8 +22,8 @@ const IconUpload: FunctionComponent<Props> = ({ size, color, ...rest }) => {
   );
 };
 
-IconUpload.defaultProps = {
+Iconupload.defaultProps = {
   size: 18,
 };
 
-export default IconUpload;
+export default Iconupload;

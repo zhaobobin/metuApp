@@ -66,7 +66,7 @@ class TopTabBarWrapper extends React.Component<IProps> {
         {this.renderGradientColor}
         <View style={styles.searchWrapper}>
           <Touchable style={styles.input}>
-            <Text style={textStyle}>搜索按钮</Text>
+            <Text style={textStyle}>搜索</Text>
           </Touchable>
           <Touchable style={styles.searchBtn}>
             <Text style={textStyle}>搜索</Text>

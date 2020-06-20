@@ -16,7 +16,7 @@ import UserCollecting from '@/pages/User/UserCollecting';
 import UserIntroduction from '@/pages/User/UserIntroduction';
 import Touchable from '@/components/Touchable';
 
-const HEADER_HEIGHT = 260;
+const HEADER_HEIGHT = 300;
 
 const Routes = [
   { key: 'photos', title: '图片' },

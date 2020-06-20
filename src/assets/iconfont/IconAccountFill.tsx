@@ -11,7 +11,7 @@ interface Props extends GProps, ViewProps {
   color?: string | string[];
 }
 
-const IconAccountFill: FunctionComponent<Props> = ({ size, color, ...rest }) => {
+const IconaccountFill: FunctionComponent<Props> = ({ size, color, ...rest }) => {
   return (
     <Svg viewBox="0 0 1024 1024" width={size} height={size} {...rest}>
       <Path
@@ -22,8 +22,8 @@ const IconAccountFill: FunctionComponent<Props> = ({ size, color, ...rest }) => 
   );
 };
 
-IconAccountFill.defaultProps = {
+IconaccountFill.defaultProps = {
   size: 18,
 };
 
-export default IconAccountFill;
+export default IconaccountFill;

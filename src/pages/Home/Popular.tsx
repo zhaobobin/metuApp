@@ -11,6 +11,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '@/models/index';
 import { IPhoto } from '@/types/CommonTypes';
 import Touchable from '@/components/Touchable';
+import Icon from '@/assets/iconfont';
 import IconArrowRight from '@/assets/iconfont/IconArrowRight';
 
 const mapStateToProps = (state: RootState) => ({
@@ -68,7 +69,7 @@ class Popular extends React.Component<IProps> {
           </View>
           <View style={styles.more}>
             <Text style={styles.moreText}>更多</Text>
-            <IconArrowRight color="#6f6f6f" />
+            <Icon name="iconarrow-right" color="#6f6f6f" />
           </View>
         </View>
         <View style={styles.body}>

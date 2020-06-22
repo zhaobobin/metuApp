@@ -64,14 +64,16 @@ class BottomTabs extends React.Component<IProps> {
         headerTransparent: true,
         headerTitle: ''
       });
+    } else if (routeName === 'Account') {
+      navigation.setOptions({
+        headerTransparent: true,
+        headerTitle: ''
+      });
     } else {
       navigation.setOptions({
         headerTransparent: false,
         headerTitle: this.getHeaderTitle(routeName)
       });
-      if (routeName === 'Account' || routeName === 'Message') {
-        this.authToken(route.name);
-      }
     }
   };
 
@@ -93,7 +95,9 @@ class BottomTabs extends React.Component<IProps> {
   // 验证token
   authToken = async (routeName: string) => {
     const { isAuth } = this.props;
-    if (!isAuth) {
+    if (isAuth) {
+      Navigator.goPage(routeName);
+    } else {
       const token = await Storage.get(ENV.storage.token);
       if (token) {
         this.props.dispatch({
@@ -163,6 +167,7 @@ class BottomTabs extends React.Component<IProps> {
         <Tab.Screen
           name="Message"
           component={Message}
+          listeners={this.listenTabPress}
           options={{
             tabBarLabel: '消息',
             tabBarIcon: ({ color, size }) => (
@@ -173,6 +178,7 @@ class BottomTabs extends React.Component<IProps> {
         <Tab.Screen
           name="Account"
           component={Account}
+          listeners={this.listenTabPress}
           options={{
             tabBarLabel: '我的',
             tabBarIcon: ({ color, size }) => (

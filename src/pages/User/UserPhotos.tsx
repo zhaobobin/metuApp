@@ -9,6 +9,7 @@ import {
 import { connect } from 'react-redux';
 import { HPageViewHoc } from 'react-native-head-tab-view';
 import { IPhoto } from '@/types/CommonTypes';
+import Empty from '@/components/Empty';
 import PhotoItem from '@/components/PhotoItem';
 import { photoApi } from '@/api/index';
 import { Navigator } from '@/utils/index'
@@ -101,7 +102,7 @@ class UserPhotos extends React.Component<IProps, IState> {
 
   renderFooter = () => {
     const { list, hasMore, loading } = this.state;
-    if (!hasMore) {
+    if (!hasMore && list.length > 0) {
       return (
         <View style={styles.end}>
           <Text>已经没有了</Text>
@@ -120,14 +121,7 @@ class UserPhotos extends React.Component<IProps, IState> {
 
   renderEmpty = () => {
     const { loading } = this.state;
-    if (loading) {
-      return null;
-    }
-    return (
-      <View style={styles.end}>
-        <Text>暂无数据</Text>
-      </View>
-    );
+    return <Empty loading={loading} />;
   };
 
   render() {

@@ -14,7 +14,7 @@ import UserFavoring from '@/pages/User/UserFavoring';
 import UserCollecting from '@/pages/User/UserCollecting';
 import UserIntroduction from '@/pages/User/UserIntroduction';
 
-const HEADER_HEIGHT = 300;
+const HEADER_HEIGHT = 260;
 
 const Routes = [
   { key: 'photos', title: '图片' },
@@ -32,8 +32,6 @@ for (const i in Routes) {
 
 const mapStateToProps = (state: RootState) => ({
   loading: state.loading.effects['user/queryUserDetail'],
-  isAuth: state.account.isAuth,
-  userDetail: state.user.userDetail,
   currentUser: state.account.currentUser
 });
 
@@ -64,28 +62,28 @@ class AccountDetail extends React.Component<IProps, IState> {
   };
 
   componentDidMount() {
-    this.getUserDetail();
+    const { currentUser } = this.props;
+    this.getAccountDetail(currentUser._id);
   }
 
-  getUserDetail = () => {
-    const { currentUser } = this.props;
+  getAccountDetail = (userId: string) => {
     this.props.dispatch({
-      type: 'user/queryUserDetail',
+      type: 'user/queryAccountDetail',
       payload: {
-        id: currentUser._id
+        id: userId
       }
     });
   };
 
   // Header
   _renderHeader = () => {
-    const { loading, userDetail, headerTopHeight } = this.props;
+    const { loading, currentUser, headerTopHeight } = this.props;
     return (
       <View style={[styles.header, { paddingTop: headerTopHeight }]}>
         {loading ? null : (
           <Image
             source={{
-              uri: userDetail.cover_url + '?x-oss-process=style/thumb'
+              uri: currentUser.cover_url + '?x-oss-process=style/thumb'
             }}
             style={styles.coverView}
           />
@@ -97,29 +95,29 @@ class AccountDetail extends React.Component<IProps, IState> {
         />
         <View style={styles.leftView}>
           <Image
-            source={{ uri: userDetail.avatar_url }}
+            source={{ uri: currentUser.avatar_url }}
             style={styles.avatar}
           />
         </View>
         <View style={styles.rightView}>
           <View style={styles.nickname}>
-            <Text style={styles.nicknameText}>{userDetail.nickname}</Text>
+            <Text style={styles.nicknameText}>{currentUser.nickname}</Text>
           </View>
           <View style={styles.info}>
             <View style={styles.infoItem}>
               <Text style={styles.text}>
-                关注 {userDetail.following_number}
+                关注 {currentUser.following_number}
               </Text>
             </View>
             <View style={styles.infoItem}>
               <Text style={styles.text}>
-                粉丝 {userDetail.followers_number}
+                粉丝 {currentUser.followers_number}
               </Text>
             </View>
           </View>
           <View style={styles.headline}>
             <Text style={styles.text} numberOfLines={2}>
-              {userDetail.headline || ''}
+              {currentUser.headline || ''}
             </Text>
           </View>
         </View>
@@ -127,6 +125,7 @@ class AccountDetail extends React.Component<IProps, IState> {
     );
   };
 
+  // 渲染tabs标题
   _tabNameConvert = (key: string) => {
     const { routes } = this.state;
     let title = '';
@@ -152,8 +151,7 @@ class AccountDetail extends React.Component<IProps, IState> {
 
   // Scene
   _renderScene = (sceneProps: { item: string; index: number }) => {
-    const { userDetail } = this.props;
-    const userId = userDetail._id;
+    const userId = this.props.currentUser._id;
     switch (sceneProps.item) {
       case 'photos':
         return <UserPhotos {...sceneProps} userId={userId} />;
@@ -208,7 +206,8 @@ const styles = StyleSheet.create({
   header: {
     height: HEADER_HEIGHT,
     flexDirection: 'row',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    paddingBottom: 40
   },
   coverView: {
     ...StyleSheet.absoluteFillObject,
@@ -237,10 +236,7 @@ const styles = StyleSheet.create({
   infoItem: {
     marginRight: 20
   },
-  headline: {
-    padding: 10,
-    borderRadius: 8
-  },
+  headline: {},
   nicknameText: {
     color: '#fff',
     fontSize: 18

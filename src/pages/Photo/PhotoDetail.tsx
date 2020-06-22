@@ -45,7 +45,6 @@ class PhotoDetail extends React.Component<IProps> {
 
   render() {
     const { photoDetail } = this.props;
-    // console.log(photoDetail);
     return (
       <View>
         <PhotoSwiper images={photoDetail.images} />

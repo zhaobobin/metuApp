@@ -46,10 +46,6 @@ class Login extends React.Component<IProps, IState> {
     };
   }
 
-  componentWillUnmount() {
-    console.log('Login out');
-  }
-
   goRegister = () => {
     Navigator.goPage('Register');
   };

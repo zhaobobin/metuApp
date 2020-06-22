@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
-import { RouteProp } from '@react-navigation/native';
 import { useHeaderHeight } from '@react-navigation/stack';
 import { BlurView } from '@react-native-community/blur';
 import { Tabbar, TabView, TabbarInfo } from 'react-native-head-tab-view';
-import { MainStackParamList } from '@/navigator/MainNavigation';
 import { RootState } from '@/models/index';
+import { RouteProp } from '@react-navigation/native';
+import { MainStackParamList } from '@/navigator/MainNavigation';
 
 import UserPhotos from '@/pages/User/UserPhotos';
 import UserArticles from '@/pages/User/UserArticles';
@@ -15,7 +15,7 @@ import UserFavoring from '@/pages/User/UserFavoring';
 import UserCollecting from '@/pages/User/UserCollecting';
 import UserIntroduction from '@/pages/User/UserIntroduction';
 
-const HEADER_HEIGHT = 300;
+const HEADER_HEIGHT = 260;
 
 const Routes = [
   { key: 'photos', title: '图片' },
@@ -64,15 +64,21 @@ class UserDetail extends React.Component<IProps, IState> {
   };
 
   componentDidMount() {
-    this.getUserDetail();
+    const { route } = this.props;
+    this.getUserDetail(route.params.id);
   }
 
-  getUserDetail = () => {
-    const { route } = this.props;
+  componentWillReceiveProps(nextProps: IProps) {
+    if (nextProps.route.params.id !== this.props.route.params.id) {
+      this.getUserDetail(nextProps.route.params.id);
+    }
+  }
+
+  getUserDetail = (userId: string) => {
     this.props.dispatch({
       type: 'user/queryUserDetail',
       payload: {
-        id: route.params.id
+        id: userId
       }
     });
   };
@@ -127,6 +133,7 @@ class UserDetail extends React.Component<IProps, IState> {
     );
   };
 
+  // 渲染tabs标题
   _tabNameConvert = (key: string) => {
     const { routes } = this.state;
     let title = '';
@@ -152,8 +159,7 @@ class UserDetail extends React.Component<IProps, IState> {
 
   // Scene
   _renderScene = (sceneProps: { item: string; index: number }) => {
-    const { userDetail } = this.props;
-    const userId = userDetail._id;
+    const userId = this.props.route.params.id;
     switch (sceneProps.item) {
       case 'photos':
         return <UserPhotos {...sceneProps} userId={userId} />;
@@ -204,7 +210,8 @@ const styles = StyleSheet.create({
   header: {
     height: HEADER_HEIGHT,
     flexDirection: 'row',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    paddingBottom: 40
   },
   coverView: {
     ...StyleSheet.absoluteFillObject,
@@ -233,10 +240,7 @@ const styles = StyleSheet.create({
   infoItem: {
     marginRight: 20
   },
-  headline: {
-    padding: 10,
-    borderRadius: 8
-  },
+  headline: {},
   nicknameText: {
     color: '#fff',
     fontSize: 18

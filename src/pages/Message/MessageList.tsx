@@ -1,5 +1,5 @@
 /**
- * 首页 - 关注
+ * 消息列表
  */
 import React from 'react';
 import {
@@ -7,25 +7,21 @@ import {
   Text,
   FlatList,
   ListRenderItemInfo,
-  StyleSheet,
-  NativeSyntheticEvent,
-  NativeScrollEvent
+  StyleSheet
 } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
+import { RouteProp } from '@react-navigation/native';
 import { MainStackNavigation } from '@/navigator/MainNavigation';
 import { RootState } from '@/models/index';
-import { IPhoto } from '@/types/CommonTypes';
+import { IMessageItem } from '@/types/message/MessageState';
 import Empty from '@/components/Empty';
-import Carousel from './Carsouel';
-import Popular from './Popular';
-import ChannelItem from './ChannelItem';
-import { sliderHeight } from './Carsouel';
+import {MessageTabParamList} from './index';
+import MessageItem from './MessageItem';
 
 const mapStateToProps = (state: RootState) => ({
-  loading: state.loading.effects['home/queryChannel'],
-  list: state.home.channel.list,
-  gradientVisible: state.home.gradientVisible,
-  hasMore: state.home.channel.pageInfo.has_more
+  loading: state.loading.effects['message/queryMessageList'],
+  list: state.message.messageList.list,
+  hasMore: state.message.messageList.pageInfo.has_more
 });
 
 const connector = connect(mapStateToProps);
@@ -33,6 +29,7 @@ const connector = connect(mapStateToProps);
 type ModelState = ConnectedProps<typeof connector>;
 
 interface IProps extends ModelState {
+  route: RouteProp<MessageTabParamList, 'MessageList'>;
   navigation: MainStackNavigation;
 }
 
@@ -46,13 +43,21 @@ class Following extends React.Component<IProps, IState> {
   };
 
   componentDidMount() {
-    this.getChannel();
+    const { route } = this.props;
+    this.getMessageList(route.params.type, false);
   }
 
-  getChannel = (loadMore?: boolean) => {
+  componentWillReceiveProps(nextProps: IProps) {
+    if (nextProps.route.params.type !== this.props.route.params.type) {
+      this.getMessageList(nextProps.route.params.type, false);
+    }
+  }
+
+  getMessageList = (type: string, loadMore?: boolean) => {
     this.props.dispatch({
-      type: 'home/queryChannel',
+      type: 'message/queryMessageList',
       payload: {
+        type,
         loadMore
       },
       callback: () => {
@@ -69,33 +74,25 @@ class Following extends React.Component<IProps, IState> {
     this.setState({
       refreshing: true
     });
-    this.getChannel();
+    const { route } = this.props;
+    this.getMessageList(route.params.type, false);
   };
 
   loadMore = () => {
-    const { hasMore, loading } = this.props;
+    const { hasMore, loading, route } = this.props;
     if (loading || !hasMore) return;
-    this.getChannel(true);
+    this.getMessageList(route.params.type, true);
   };
 
-  renderItem = ({ item }: ListRenderItemInfo<IPhoto>) => {
-    return <ChannelItem item={item} onPress={this.goPhotoDetail} />;
+  renderItem = ({ item }: ListRenderItemInfo<IMessageItem>) => {
+    return <MessageItem item={item} onPress={this.goPhotoDetail} />;
   };
 
-  goPhotoDetail = (item: IPhoto) => {
-    this.props.navigation.navigate('PhotoDetail', { item });
+  goPhotoDetail = (item: IMessageItem) => {
+    // this.props.navigation.navigate('MessageDetail', { item });
   };
 
-  _keyExtractor = (item: IPhoto) => item._id;
-
-  renderHeader = () => {
-    return (
-      <View>
-        <Carousel />
-        <Popular onPress={this.goPhotoDetail} />
-      </View>
-    );
-  };
+  _keyExtractor = (item: IMessageItem) => item._id;
 
   renderFooter = () => {
     const { list, hasMore, loading } = this.props;
@@ -121,20 +118,6 @@ class Following extends React.Component<IProps, IState> {
     return <Empty loading={loading} />;
   };
 
-  onScroll = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const offsetY = nativeEvent.contentOffset.y;
-    let newGradientVisible = offsetY < sliderHeight;
-    const { gradientVisible } = this.props;
-    if (gradientVisible !== newGradientVisible) {
-      this.props.dispatch({
-        type: 'home/setState',
-        payload: {
-          gradientVisible: newGradientVisible
-        }
-      });
-    }
-  };
-
   render() {
     const { list } = this.props;
     const { refreshing } = this.state;
@@ -143,14 +126,12 @@ class Following extends React.Component<IProps, IState> {
         data={list}
         renderItem={this.renderItem}
         keyExtractor={this._keyExtractor}
-        ListHeaderComponent={this.renderHeader}
         ListFooterComponent={this.renderFooter}
         ListEmptyComponent={this.renderEmpty}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
         onRefresh={this.onRefresh}
         refreshing={refreshing}
-        onScroll={this.onScroll}
       />
     );
   }

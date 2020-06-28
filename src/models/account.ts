@@ -16,6 +16,7 @@ interface UserModel extends Model {
     register: Effect;
     login: Effect;
     token: Effect;
+    logout: Effect;
     queryAccountDetail: Effect;
   };
   reducers: {
@@ -101,6 +102,17 @@ const userModel: UserModel = {
           }
         });
       }
+    },
+
+    *logout(_, { put }) {
+      yield Storage.remove(ENV.storage.token);
+      yield put({
+        type: 'setState',
+        payload: {
+          isAuth: false,
+          currentUser: ''
+        }
+      });
     },
 
     *queryAccountDetail({ payload }, { call, put }) {

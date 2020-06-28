@@ -4,6 +4,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { useHeaderHeight } from '@react-navigation/stack';
 import { BlurView } from '@react-native-community/blur';
 import { Tabbar, TabView, TabbarInfo } from 'react-native-head-tab-view';
+import { MainStackNavigation } from '@/navigator/MainNavigation';
 import { RootState } from '@/models/index';
 import { Navigator } from '@/utils/index';
 
@@ -40,6 +41,7 @@ const connector = connect(mapStateToProps);
 type ModelState = ConnectedProps<typeof connector>;
 
 interface IProps extends ModelState {
+  navigation: MainStackNavigation;
   headerTopHeight: number;
 }
 

@@ -5,7 +5,7 @@ import { MainStackNavigation } from '@/navigator/MainNavigation';
 import { RootState } from '@/models/index';
 
 const mapStateToProps = (state: RootState) => ({
-  loading: state.loading
+  
 });
 
 const connector = connect(mapStateToProps);

@@ -1,7 +1,12 @@
 import { Request } from '@/utils/index';
 
 export const userApi = {
-  register: (params: any) => {
+  register: (params: {
+    mobile: string;
+    nickname: string;
+    password: string;
+    smscode: string;
+  }) => {
     return Request({
       url: '/user/register',
       method: 'post',
@@ -9,7 +14,7 @@ export const userApi = {
     });
   },
 
-  login: (params: any) => {
+  login: (params: { mobile: string; smscode?: string; password?: string }) => {
     return Request({
       url: '/user/login',
       method: 'post',
@@ -17,7 +22,7 @@ export const userApi = {
     });
   },
 
-  token: (params: any) => {
+  token: (params: { token: string }) => {
     return Request({
       url: '/user/token',
       method: 'post',

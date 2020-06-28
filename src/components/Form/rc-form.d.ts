@@ -1,10 +1,20 @@
-import { Component, ClassicComponentClass, ClassType, ComponentClass, ComponentSpec, Mixin, ReactNode, ClassicComponent, ComponentState } from "react";
-import PropTypes, { Requireable, InferProps } from "prop-types";
- 
+import {
+  Component,
+  ClassicComponentClass,
+  ClassType,
+  ComponentClass,
+  ComponentSpec,
+  Mixin,
+  ReactNode,
+  ClassicComponent,
+  ComponentState
+} from 'react';
+import PropTypes, { Requireable, InferProps } from 'prop-types';
+
 export interface ValidateMessages {
-  'default'?: string;
+  default?: string;
   required?: string;
-  'enum'?: string;
+  enum?: string;
   whitespace?: string;
   date?: {
     format?: string;
@@ -49,12 +59,33 @@ export interface ValidateMessages {
   };
   clone?: () => ValidateMessages;
 }
-export class Field { [s: string]: any }
- 
-export type FormTrigger = 'onChange' | 'onBlur' | 'onMouseOver' | 'onMouseMove' | 'onMouseOut' |
-  'onEnter' | 'onLeave';
-export type FormValidateType = 'string' | 'number' | 'boolean' | 'method' | 'regexp' | 'integer' |
-  'float' | 'array' | 'object' | 'enum' | 'date' | 'url' | 'hex' | 'email';
+export class Field {
+  [s: string]: any;
+}
+
+export type FormTrigger =
+  | 'onChange'
+  | 'onBlur'
+  | 'onMouseOver'
+  | 'onMouseMove'
+  | 'onMouseOut'
+  | 'onEnter'
+  | 'onLeave';
+export type FormValidateType =
+  | 'string'
+  | 'number'
+  | 'boolean'
+  | 'method'
+  | 'regexp'
+  | 'integer'
+  | 'float'
+  | 'array'
+  | 'object'
+  | 'enum'
+  | 'date'
+  | 'url'
+  | 'hex'
+  | 'email';
 export interface FormValidateRule {
   type?: FormValidateType;
   required?: boolean;
@@ -62,7 +93,7 @@ export interface FormValidateRule {
   pattern?: RegExp;
   range?: { min?: number; max?: number };
   len?: number;
-  role?: { type: "enum", enum: any[] };
+  role?: { type: 'enum'; enum: any[] };
   fields?: {
     [fieldName: string]: FormValidateRule;
     [fieldIndex: number]: FormValidateRule;
@@ -70,7 +101,11 @@ export interface FormValidateRule {
   defaultField?: FormValidateRule;
   transform?: (value: any) => any;
   asyncValidator?(rule: FormValidateRule, value: any): Promise<any>;
-  asyncValidator?(rule: FormValidateRule, value: any, callback: (error?: any) => void): void;
+  asyncValidator?(
+    rule: FormValidateRule,
+    value: any,
+    callback: (error?: any) => void
+  ): void;
   validator?(
     rule: FormValidateRule,
     value: any,
@@ -80,7 +115,7 @@ export interface FormValidateRule {
   ): boolean | Error | Error[];
   [ruleName: string]: any;
 }
- 
+
 export interface GetFieldPropsOptions {
   valuePropName?: string;
   getValueProps?(value: any): any;
@@ -91,18 +126,21 @@ export interface GetFieldPropsOptions {
   validateTrigger?: FormTrigger;
   rules?: FormValidateRule | FormValidateRule[];
   validateFirst?: boolean;
-  validate?: { trigger?: FormTrigger; rules?: FormValidateRule | FormValidateRule[] };
+  validate?: {
+    trigger?: FormTrigger;
+    rules?: FormValidateRule | FormValidateRule[];
+  };
   hidden?: boolean;
   preserve?: boolean;
 }
- 
+
 export type ValidateErrors = {
   [fieldName: string]: {
-    errors: Array<{ message: string; field: string; [s: string]: any }>
-  }
+    errors: Array<{ message: string; field: string; [s: string]: any }>;
+  };
 } | null;
 export type ValidateValues = {
-  [fieldName: string]: any
+  [fieldName: string]: any;
 };
 export type ValidateFieldsOptions = {
   suppressWarning?: boolean;
@@ -112,7 +150,7 @@ export type ValidateFieldsOptions = {
   messages?: ValidateMessages;
   [s: string]: any;
 };
- 
+
 export interface WrappedFormMethods {
   getFieldProps(name: string, options: GetFieldPropsOptions): any;
   getFieldDecorator(name: string, option: any): (node: ReactNode) => ReactNode;
@@ -122,13 +160,28 @@ export interface WrappedFormMethods {
   setFieldsValue(changedValues: any, callback?: (...args: any[]) => any): void;
   setFields(maybeNestedFields: any, callback?: (...args: any[]) => any): void;
   setFieldsInitialValue(initialValues: any): void;
- 
-  validateFields(fieldNames: string[], options: ValidateFieldsOptions, callback: (errors: ValidateErrors, values: any[]) => void): Promise<any>;
-  validateFields(fieldNames: string[], options: ValidateFieldsOptions): Promise<any>;
-  validateFields(options: ValidateFieldsOptions, callback: (errors: ValidateErrors, values: any[]) => void): Promise<any>;
-  validateFields(fieldNames: string[], callback: (errors: ValidateErrors, values: any[]) => void): Promise<any>;
-  validateFields(callback: (errors: ValidateErrors, values: any[]) => void): Promise<any>;
- 
+
+  validateFields(
+    fieldNames: string[],
+    options: ValidateFieldsOptions,
+    callback: (errors: ValidateErrors, values: any[]) => void
+  ): Promise<any>;
+  validateFields(
+    fieldNames: string[],
+    options: ValidateFieldsOptions
+  ): Promise<any>;
+  validateFields(
+    options: ValidateFieldsOptions,
+    callback: (errors: ValidateErrors, values: any[]) => void
+  ): Promise<any>;
+  validateFields(
+    fieldNames: string[],
+    callback: (errors: ValidateErrors, values: any[]) => void
+  ): Promise<any>;
+  validateFields(
+    callback: (errors: ValidateErrors, values: any[]) => void
+  ): Promise<any>;
+
   getFieldsError(names?: string[]): any;
   getFieldError(name: string): any;
   isFieldValidating(name: string): boolean;
@@ -136,26 +189,27 @@ export interface WrappedFormMethods {
   isFieldTouched(name: string): boolean;
   isFieldsTouched(names?: string[]): boolean;
   isSubmitting(): boolean; // Deprecated
-  submit(callback: (setSubmitting: () => void) => void): void // Deprecated
+  submit(callback: (setSubmitting: () => void) => void): void; // Deprecated
   resetFields(names?: string[]): void;
 }
- 
+
 type Shaped<P> = {
   [K in keyof P]: PropTypes.Requireable<(...args: any[]) => any>;
-}
- 
+};
+
 export interface FormMixin<P, S> extends Array<Mixin<P, S>> {
   getForm(): WrappedFormMethods;
 }
- 
+
 export type WrappedFormClass<P> = ComponentClass<P> & WrappedFormMethods;
- 
-export type Decorate<P> = (WrappedComponent: ComponentClass<P>) => WrappedFormClass<P>;
- 
- 
-export type FormPropsType<F> = { [K in keyof F]: WrappedFormMethods; };
+
+export type Decorate<P> = (
+  WrappedComponent: ComponentClass<P>
+) => WrappedFormClass<P>;
+
+export type FormPropsType<F> = { [K in keyof F]: WrappedFormMethods };
 export type PropsWithForm<P, F> = P & FormPropsType<F>;
- 
+
 export interface CreateFormOptions<P> {
   validateMessages?: ValidateMessages;
   onFieldsChange?: (props: P, changed: any, all: any) => void;
@@ -169,10 +223,9 @@ export interface CreateFormOptions<P> {
   name?: string;
   withRef?: boolean; // deprecated
 }
- 
-export function createForm<P>(options?: CreateFormOptions<P>): Decorate<P>;
-export function createFormField(field: any): Field;
-export const formShape: Requireable<InferProps<Shaped<WrappedFormMethods>>>;
-   
- 
-declare module 'rc-form';
+
+declare module 'rc-form' {
+  export function createForm<P>(options?: CreateFormOptions<P>): Decorate<P>;
+  export function createFormField(field: any): Field;
+  export const formShape: Requireable<InferProps<Shaped<WrappedFormMethods>>>;
+}

@@ -1,14 +1,14 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
+import { Formik } from 'formik';
 
 import { RootState } from '@/models/index';
-import { Navigator, Validator, Encrypt } from '@/utils/index';
+import { ENV, Storage, Navigator, Encrypt } from '@/utils/index';
 import { layout } from '@/theme/index';
 import Touchable from '@/components/Touchable';
 import Button from '@/components/Button';
 
-import { createForm, ValidateErrors, WrappedFormMethods } from 'rc-form';
 import {
   FormItem,
   InputMobile,
@@ -17,8 +17,18 @@ import {
 } from '@/components/Form/index';
 import { IResponse } from '@/types/CommonTypes';
 
+interface FormValues {
+  mobile: string;
+  password: string;
+}
+
+const initialValues = {
+  mobile: '',
+  password: ''
+};
+
 const mapStateToProps = (state: RootState) => ({
-  isAuth: state.account.isAuth
+  loading: state.loading.effects['account/login']
 });
 
 const connector = connect(mapStateToProps);
@@ -26,7 +36,6 @@ const connector = connect(mapStateToProps);
 type ModelState = ConnectedProps<typeof connector>;
 
 interface IProps extends ModelState {
-  form: WrappedFormMethods;
   changeTabKey: () => void;
 }
 
@@ -50,49 +59,40 @@ class Login extends React.Component<IProps, IState> {
     Navigator.goPage('Register');
   };
 
+  goBack = () => {
+    Navigator.goBack();
+  };
+
   // 手机号
   mobileCallback = (value: string, err?: string) => {
     if (err) {
-      this.props.form.setFields({
-        mobile: {
-          value: value,
-          errors: [new Error(err)]
-        }
-      });
     } else {
-      this.props.form.setFieldsValue({ mobile: value });
     }
   };
 
   // 密码
   passwordCallback = (value: string, err?: string) => {
     if (err) {
-      this.props.form.setFields({
-        password: {
-          value: value,
-          errors: [new Error(err)]
-        }
-      });
     } else {
-      this.props.form.setFieldsValue({ password: value });
     }
   };
 
-  submit = () => {
-    this.props.form.validateFields((error: ValidateErrors, values: any) => {
-      if (error) return;
-      if (values.password) {
-        values.password = Encrypt(values.mobile, values.password);
-      }
-      if (values.smscode) {
-        values.smscode = Encrypt(values.mobile, values.smscode);
-      }
-      values.loginType = this.state.loginType;
-      this.onLogin(values);
-    });
+  onSubmit = (values: FormValues) => {
+    this.onLogin(values);
   };
 
-  onLogin = (values: any) => {
+  onLogin = (values: FormValues) => {
+    const payload: any = values;
+    if (this.state.checked) {
+      Storage.set(ENV.storage.lastTel, payload.mobile);
+    }
+    if (payload.password) {
+      payload.password = Encrypt(payload.mobile, payload.password);
+    }
+    if (payload.smscode) {
+      payload.smscode = Encrypt(payload.mobile, payload.smscode);
+    }
+    payload.loginType = this.state.loginType;
     this.props.dispatch({
       type: 'account/login',
       payload: values,
@@ -100,12 +100,6 @@ class Login extends React.Component<IProps, IState> {
         if (res.code === 0) {
           Navigator.goBack();
         } else {
-          this.props.form.setFields({
-            [res.error_key]: {
-              value: '',
-              errors: [new Error(res.message)]
-            }
-          });
         }
       }
     });
@@ -124,94 +118,63 @@ class Login extends React.Component<IProps, IState> {
 
   render() {
     const { title, checked } = this.state;
-    const {
-      getFieldDecorator,
-      getFieldValue,
-      getFieldError,
-      getFieldsError
-    } = this.props.form;
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView keyboardShouldPersistTaps="handled" style={styles.container}>
         <View style={styles.head}>
           <Image source={require('@/assets/com/logo.png')} />
           <Text style={styles.title}>{title}</Text>
         </View>
 
         <View style={styles.body}>
-          <FormItem style={styles.formItem}>
-            {getFieldDecorator('mobile', {
-              validateFirst: true,
-              validateTrigger: 'onBlur',
-              rules: [
-                { required: true, message: '请输入手机号' },
-                { pattern: /^1\d{10}$/, message: '请输入正确的手机号' }
-              ]
-            })(
-              <InputMobile
-                placeholder="手机号"
-                error={getFieldError('mobile')}
-                callback={this.mobileCallback}
-              />
-            )}
-          </FormItem>
-
-          <FormItem style={styles.formItem}>
-            {getFieldDecorator('password', {
-              validateFirst: true,
-              validateTrigger: 'onBlur',
-              rules: [
-                { required: true, message: '请输入密码' },
-                { min: true, message: '密码不能小于6位' },
-                { max: true, message: '密码不能大于20位' }
-              ]
-            })(
-              <InputPassword
-                placeholder="密码"
-                error={getFieldError('password')}
-                callback={this.passwordCallback}
-              />
-            )}
-          </FormItem>
-
-          <FormItem>
-            {getFieldDecorator('remeber', {
-              valuePropName: 'checked',
-              initialValue: checked
-            })(
-              <View style={styles.remeber}>
-                <View style={styles.check}>
-                  <CheckBox
-                    label="记住帐号"
-                    checked={checked}
-                    onClick={this.toggleRemeber}
-                  />
+          <Formik initialValues={initialValues} onSubmit={this.onSubmit}>
+            {({ values, handleChange, handleBlur, handleSubmit }) => {
+              return (
+                <View>
+                  <FormItem style={styles.formItem}>
+                    <InputMobile
+                      placeholder="手机号"
+                      value={values.mobile}
+                      onChangeText={handleChange('mobile')}
+                      onBlur={handleBlur('mobile')}
+                    />
+                  </FormItem>
+                  <FormItem style={styles.formItem}>
+                    <InputPassword
+                      placeholder="密码"
+                      value={values.password}
+                      onChangeText={handleChange('password')}
+                      onBlur={handleBlur('password')}
+                    />
+                  </FormItem>
+                  <FormItem>
+                    <View style={styles.remeber}>
+                      <View style={styles.check}>
+                        <CheckBox
+                          label="记住帐号"
+                          checked={checked}
+                          onClick={this.toggleRemeber}
+                        />
+                      </View>
+                      <View style={styles.desc}>
+                        <Text style={styles.link} onPress={this.toReset}>
+                          忘记密码
+                        </Text>
+                      </View>
+                    </View>
+                  </FormItem>
+                  <Button title="登录" type="primary" onPress={handleSubmit} />
                 </View>
-                <View style={styles.desc}>
-                  <Text style={styles.link} onPress={this.toReset}>
-                    忘记密码
-                  </Text>
-                </View>
-              </View>
-            )}
-          </FormItem>
-
-          <View style={styles.btn}>
-            <Button
-              title="登录"
-              type="primary"
-              onPress={this.submit}
-              // disabled={
-              //   Validator.hasErrors(getFieldsError()) ||
-              //   !getFieldValue('mobile') ||
-              //   !getFieldValue('password')
-              // }
-            />
-          </View>
+              );
+            }}
+          </Formik>
         </View>
 
         <View style={styles.foot}>
           <Touchable onPress={this.goRegister}>
             <Text style={styles.link}>注册新帐号</Text>
+          </Touchable>
+          <Touchable onPress={this.goBack}>
+            <Text style={styles.link}>返回</Text>
           </Touchable>
         </View>
       </ScrollView>
@@ -259,7 +222,9 @@ const styles = StyleSheet.create({
     ...layout.margin(20, 0, 0, 0)
   },
   foot: {
-    alignItems: 'flex-start',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     ...layout.margin(20, 0, 0, 0)
   },
   link: {
@@ -267,4 +232,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connector(createForm<IProps>()(Login));
+export default connector(Login);

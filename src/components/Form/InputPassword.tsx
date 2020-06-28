@@ -13,7 +13,8 @@ interface IProps {
   placeholder: string;
   mimLength?: number;
   maxLength?: number;
-  callback: (value: string, err?: string) => void;
+  onChangeText: (value: string, err?: string) => void;
+  onBlur?: (e: React.FocusEvent<any>) => void;
 }
 
 export default class InputPassword extends React.PureComponent<IProps> {
@@ -22,7 +23,7 @@ export default class InputPassword extends React.PureComponent<IProps> {
   changeValue = (value: string) => {
     value = value.replace(/ /g,'');
     this.checkPsd(value);
-    this.props.callback(value);
+    this.props.onChangeText(value);
   };
 
   checkPsd = (value: string) => {
@@ -72,6 +73,7 @@ export default class InputPassword extends React.PureComponent<IProps> {
     return (
       <View style={styles.inputView}>
         <TextInput
+          secureTextEntry
           maxLength={maxLength || 20}
           clearButtonMode="while-editing"
           // autoComplete="password"

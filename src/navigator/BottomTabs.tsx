@@ -5,6 +5,7 @@ import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RouteProp, TabNavigationState } from '@react-navigation/native';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { MainStackNavigation, MainStackParamList } from './MainNavigation';
 import { ENV, Navigator, Storage } from '@/utils/index';
 import { RootState } from '@/models/index';
@@ -61,17 +62,33 @@ class BottomTabs extends React.Component<IProps> {
     if (routeName === 'HomePage') {
       navigation.setOptions({
         headerTransparent: true,
-        headerTitle: ''
+        headerTitle: '',
+        headerRight: undefined
       });
     } else if (routeName === 'Account') {
       navigation.setOptions({
         headerTransparent: true,
-        headerTitle: ''
+        headerTitle: '',
+        headerRight: () => (
+          <HeaderButtons>
+            <Item
+              title="setting"
+              IconComponent={Icon}
+              iconName="icon-set"
+              iconSize={30}
+              color="#fff"
+              onPress={() => {
+                navigation.navigate('Setting');
+              }}
+            />
+          </HeaderButtons>
+        )
       });
     } else {
       navigation.setOptions({
         headerTransparent: false,
-        headerTitle: this.getHeaderTitle(routeName)
+        headerTitle: this.getHeaderTitle(routeName),
+        headerRight: undefined
       });
     }
   };

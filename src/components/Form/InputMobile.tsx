@@ -12,7 +12,8 @@ interface IProps {
   error?: any;
   autoFocus?: boolean;
   placeholder: string;
-  callback: (value: string, err?: string) => void;
+  onChangeText: (value: string, err?: string) => void;
+  onBlur?: (e: React.FocusEvent<any>) => void;
 }
 
 export default class InputMobile extends React.PureComponent<IProps> {
@@ -26,9 +27,9 @@ export default class InputMobile extends React.PureComponent<IProps> {
     value = value.replace(/\D/g, '');
     this.setState({ value });
     if (Validator.checkMobile(value)) {
-      this.props.callback(value);
+      this.props.onChangeText(value);
     } else {
-      this.props.callback(value, '请输入正确的手机号');
+      this.props.onChangeText(value, '请输入正确的手机号');
     }
   };
 
@@ -37,12 +38,12 @@ export default class InputMobile extends React.PureComponent<IProps> {
     let { value } = this.state;
     if (value) {
       if (Validator.isMobile(value)) {
-        this.props.callback(value);
+        this.props.onChangeText(value);
       } else {
-        this.props.callback(value, '请输入正确的手机号');
+        this.props.onChangeText(value, '请输入正确的手机号');
       }
     } else {
-      this.props.callback(value, '请输入手机号');
+      this.props.onChangeText(value, '请输入手机号');
     }
   };
 

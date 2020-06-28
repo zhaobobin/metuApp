@@ -18,6 +18,7 @@ import PhotoDetail from '@/pages/Photo/PhotoDetail';
 import UserDetail from '@/pages/User/UserDetail';
 import Search from '@/pages/Search/index';
 import Category from '@/pages/Category/index';
+import Setting from '@/pages/Setting/index';
 
 export type MainStackParamList = {
   BottomTabs: {
@@ -31,6 +32,7 @@ export type MainStackParamList = {
   };
   Search: undefined;
   Category: undefined;
+  Setting: undefined;
 };
 
 export type MainStackNavigation = StackNavigationProp<MainStackParamList>;
@@ -83,6 +85,11 @@ export default function MainScreen() {
         component={Category}
         options={getCategoryOptions}
       />
+      <MainStack.Screen
+        name="Setting"
+        component={Setting}
+        options={{ headerTitle: '设置' }}
+      />
     </MainStack.Navigator>
   );
 }
@@ -91,7 +98,7 @@ function getBottomTabsOptions() {
   return {
     headerTitle: '底部导航'
     // headerShown: false
-  }
+  };
 }
 
 // 图片详情 标题配置

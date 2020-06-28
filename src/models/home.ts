@@ -1,9 +1,9 @@
 import { Model, Effect } from 'dva-core-ts';
 import { Reducer } from 'redux';
-import { RootState } from './index';
 import { homeApi } from '@/api/index';
 import { IPhoto } from '@/types/CommonTypes';
 import { IChannel } from '@/types/home/HomeState';
+import { RootState } from './index';
 
 export interface IHomeState {
   carsouel: IPhoto[];

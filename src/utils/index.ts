@@ -1,4 +1,5 @@
 import { Dimensions } from 'react-native';
+import ENV from '@/config/env';
 import { Encrypt, Decrypt } from '@/utils/Crypto';
 import Navigator from '@/utils/Navigator';
 import Request from '@/utils/Request';
@@ -24,6 +25,7 @@ export {
   screenHeight,
   wp,
   hp,
+  ENV,
   Encrypt,
   Decrypt,
   Navigator,

@@ -16,7 +16,8 @@ import { IPhoto } from '@/types/CommonTypes';
 import BottomTabs from '@/navigator/BottomTabs';
 import PhotoDetail from '@/pages/Photo/PhotoDetail';
 import UserDetail from '@/pages/User/UserDetail';
-import LoginScreen2 from './LoginNavigation';
+import Search from '@/pages/Search/index';
+import Category from '@/pages/Category/index';
 
 export type MainStackParamList = {
   BottomTabs: {
@@ -28,7 +29,8 @@ export type MainStackParamList = {
   UserDetail: {
     id: string;
   };
-  LoginScreen2: undefined;
+  Search: undefined;
+  Category: undefined;
 };
 
 export type MainStackNavigation = StackNavigationProp<MainStackParamList>;
@@ -71,6 +73,16 @@ export default function MainScreen() {
         component={UserDetail}
         options={getUserDetailOptions}
       />
+      <MainStack.Screen
+        name="Search"
+        component={Search}
+        options={getSearchOptions}
+      />
+      <MainStack.Screen
+        name="Category"
+        component={Category}
+        options={getCategoryOptions}
+      />
     </MainStack.Navigator>
   );
 }
@@ -105,6 +117,20 @@ function getUserDetailOptions() {
     headerBackground: () => {
       return <Animated.View style={styles.userDetailBg} />;
     }
+  };
+}
+
+// 搜索
+function getSearchOptions() {
+  return {
+    headerTitle: '搜索'
+  };
+}
+
+// 分类
+function getCategoryOptions() {
+  return {
+    headerTitle: '分类管理'
   };
 }
 

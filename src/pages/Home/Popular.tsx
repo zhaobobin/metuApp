@@ -8,6 +8,7 @@ import {
   ListRenderItemInfo
 } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
+import { MainStackNavigation } from '@/navigator/MainNavigation';
 import { RootState } from '@/models/index';
 import { IPhoto } from '@/types/CommonTypes';
 import Touchable from '@/components/Touchable';
@@ -23,7 +24,7 @@ const connector = connect(mapStateToProps);
 type ModelState = ConnectedProps<typeof connector>;
 
 interface IProps extends ModelState {
-  onPress: (item: IPhoto) => void;
+  navigation: MainStackNavigation;
 }
 
 class Popular extends React.Component<IProps> {
@@ -40,13 +41,12 @@ class Popular extends React.Component<IProps> {
   refresh = () => {};
 
   onPressImage = (item: IPhoto) => {
-    this.props.onPress(item);
+    this.props.navigation.navigate('PhotoDetail', { item });
   };
 
   renderItem = ({ item }: ListRenderItemInfo<IPhoto>) => {
-    const { onPress } = this.props;
     return (
-      <Touchable style={styles.item} onPress={() => onPress(item)}>
+      <Touchable style={styles.item} onPress={() => this.onPressImage(item)}>
         <Image
           source={{ uri: item.thumb.url + '?x-oss-process=style/thumb' }}
           style={styles.image}

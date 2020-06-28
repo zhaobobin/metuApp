@@ -4,8 +4,7 @@
  * other: Request('/user/{id}/update', { method: 'post', body: {} })
  */
 import { Base64 } from 'js-base64';
-import Storage from '@/utils/Storage';
-import ENV from '@/config/env';
+import { ENV, Storage } from '@/utils/index';
 
 type RequestMethod = 'get' | 'post' | 'put' | 'patch' | 'delete';
 interface IOptions {

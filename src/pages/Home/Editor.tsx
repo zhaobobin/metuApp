@@ -1,5 +1,5 @@
 /**
- * 首页 - 关注
+ * 首页 - 推荐
  */
 import React from 'react';
 import {
@@ -39,7 +39,7 @@ interface IState {
   refreshing: boolean;
 }
 
-class Following extends React.Component<IProps, IState> {
+class Editor extends React.Component<IProps, IState> {
   state = {
     refreshing: false
   };
@@ -141,6 +141,7 @@ class Following extends React.Component<IProps, IState> {
         data={list}
         renderItem={this.renderItem}
         keyExtractor={this._keyExtractor}
+        ListHeaderComponent={this.renderHeader}
         ListFooterComponent={this.renderFooter}
         ListEmptyComponent={this.renderEmpty}
         onEndReached={this.loadMore}
@@ -168,4 +169,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connector(Following);
+export default connector(Editor);

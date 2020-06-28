@@ -1,5 +1,5 @@
 /**
- * Search - 搜索
+ * SearchResult - 搜索结果
  */
 import React from 'react';
 import { View, Text } from 'react-native';
@@ -19,14 +19,14 @@ interface IProps extends ModelState {
   navigation: MainStackNavigation;
 }
 
-class Search extends React.Component<IProps> {
+class SearchResult extends React.Component<IProps> {
   render() {
     return (
       <View>
-        <Text>Search</Text>
+        <Text>SearchResult</Text>
       </View>
     );
   }
 }
 
-export default connector(Search);
+export default connector(SearchResult);

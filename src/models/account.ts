@@ -2,8 +2,7 @@ import { Model, Effect } from 'dva-core-ts';
 import { Reducer } from 'redux';
 import { userApi } from '@/api/index';
 import { IUserInfo } from '@/types/CommonTypes';
-import { Storage } from '@/utils/index';
-import ENV from '@/config/env';
+import { ENV, Storage } from '@/utils/index';
 
 export interface IAccountState {
   isAuth: boolean; // 登录状态

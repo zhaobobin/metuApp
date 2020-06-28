@@ -62,6 +62,8 @@ export default {
     theme: 'metuApp-theme',
     currentMenu: 'metuApp-currentMenu',
     userCenterTabKey: 'metuApp-userCenterTabKey',
+    myCategory: 'metuApp-myCategory',
+    categorys: 'metuApp-categorys',
     perPage: 'metuApp-perPage',
 
     wechatLoginState: 'metuApp-WechatLoginState', // 微信授权登录state

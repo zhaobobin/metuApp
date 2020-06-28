@@ -3,8 +3,7 @@ import { Text, StyleSheet } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '@/models/index';
 import Touchable from '@/components/Touchable';
-import ENV from '@/config/env';
-import { Navigator, Storage } from '@/utils/index';
+import { ENV, Navigator, Storage } from '@/utils/index';
 import { IResponse } from '@/types/CommonTypes';
 
 const mapStateToProps = (state: RootState) => ({

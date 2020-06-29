@@ -1,21 +1,23 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
-import { Formik } from 'formik';
+import { Formik, Field } from 'formik';
+import * as Yup from 'yup';
 
 import { RootState } from '@/models/index';
 import { ENV, Storage, Navigator, Encrypt } from '@/utils/index';
+import { IResponse } from '@/types/CommonTypes';
 import { layout } from '@/theme/index';
+
 import Touchable from '@/components/Touchable';
 import Button from '@/components/Button';
-
+import Toast from '@/components/Toast';
 import {
   FormItem,
   InputMobile,
   InputPassword,
   CheckBox
 } from '@/components/Form/index';
-import { IResponse } from '@/types/CommonTypes';
 
 interface FormValues {
   mobile: string;
@@ -27,6 +29,18 @@ const initialValues = {
   password: ''
 };
 
+const validationSchema = Yup.object().shape({
+  mobile: Yup.string()
+    .trim()
+    .length(11, '手机号格式有误')
+    .required('请输入手机号'),
+  password: Yup.string()
+    .trim()
+    .min(6, '密码长度不能小于6位')
+    .max(20, '密码长度不能大于20位')
+    .required('请输入密码')
+});
+
 const mapStateToProps = (state: RootState) => ({
   loading: state.loading.effects['account/login']
 });
@@ -35,9 +49,7 @@ const connector = connect(mapStateToProps);
 
 type ModelState = ConnectedProps<typeof connector>;
 
-interface IProps extends ModelState {
-  changeTabKey: () => void;
-}
+interface IProps extends ModelState {}
 
 interface IState {
   title: string;
@@ -55,34 +67,14 @@ class Login extends React.Component<IProps, IState> {
     };
   }
 
-  goRegister = () => {
-    Navigator.goPage('Register');
-  };
-
-  goBack = () => {
-    Navigator.goBack();
-  };
-
-  // 手机号
-  mobileCallback = (value: string, err?: string) => {
-    if (err) {
-    } else {
-    }
-  };
-
-  // 密码
-  passwordCallback = (value: string, err?: string) => {
-    if (err) {
-    } else {
-    }
-  };
-
   onSubmit = (values: FormValues) => {
     this.onLogin(values);
   };
 
   onLogin = (values: FormValues) => {
-    const payload: any = values;
+    const payload: any = {
+      ...values
+    };
     if (this.state.checked) {
       Storage.set(ENV.storage.lastTel, payload.mobile);
     }
@@ -95,11 +87,13 @@ class Login extends React.Component<IProps, IState> {
     payload.loginType = this.state.loginType;
     this.props.dispatch({
       type: 'account/login',
-      payload: values,
+      payload,
       callback: (res: IResponse) => {
+        console.log(res);
         if (res.code === 0) {
           Navigator.goBack();
         } else {
+          Toast.show(res.message);
         }
       }
     });
@@ -116,7 +110,16 @@ class Login extends React.Component<IProps, IState> {
     Navigator.goPage('ResetPassword');
   };
 
+  goRegister = () => {
+    Navigator.goPage('Register');
+  };
+
+  goBack = () => {
+    Navigator.goBack();
+  };
+
   render() {
+    const { loading } = this.props;
     const { title, checked } = this.state;
     return (
       <ScrollView keyboardShouldPersistTaps="handled" style={styles.container}>
@@ -126,24 +129,25 @@ class Login extends React.Component<IProps, IState> {
         </View>
 
         <View style={styles.body}>
-          <Formik initialValues={initialValues} onSubmit={this.onSubmit}>
-            {({ values, handleChange, handleBlur, handleSubmit }) => {
+          <Formik
+            validationSchema={validationSchema}
+            initialValues={initialValues}
+            onSubmit={this.onSubmit}>
+            {({ handleSubmit }) => {
               return (
                 <View>
                   <FormItem style={styles.formItem}>
-                    <InputMobile
+                    <Field
+                      name="mobile"
                       placeholder="手机号"
-                      value={values.mobile}
-                      onChangeText={handleChange('mobile')}
-                      onBlur={handleBlur('mobile')}
+                      component={InputMobile}
                     />
                   </FormItem>
                   <FormItem style={styles.formItem}>
-                    <InputPassword
+                    <Field
+                      name="password"
                       placeholder="密码"
-                      value={values.password}
-                      onChangeText={handleChange('password')}
-                      onBlur={handleBlur('password')}
+                      component={InputPassword}
                     />
                   </FormItem>
                   <FormItem>
@@ -162,7 +166,14 @@ class Login extends React.Component<IProps, IState> {
                       </View>
                     </View>
                   </FormItem>
-                  <Button title="登录" type="primary" onPress={handleSubmit} />
+                  <View style={styles.btn}>
+                    <Button
+                      title="登录"
+                      type="primary"
+                      disabled={loading}
+                      onPress={handleSubmit}
+                    />
+                  </View>
                 </View>
               );
             }}

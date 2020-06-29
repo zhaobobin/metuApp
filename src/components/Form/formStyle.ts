@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     height: 20
   },
   errorText: {
-    color: 'red'
+    color: color.red
   },
   clear: {},
 

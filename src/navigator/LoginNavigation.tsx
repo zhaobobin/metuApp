@@ -11,14 +11,16 @@ import {
 } from '@react-navigation/stack';
 import Icon from '@/assets/iconfont';
 
-import Login from '@/pages/Account/Login'
-import Register from '@/pages/Account/Register'
-import ResetPassword from '@/pages/Account/ResetPassword'
+import Login from '@/pages/Account/Login';
+import Register from '@/pages/Account/Register';
+import ResetPassword from '@/pages/Account/ResetPassword';
+import RegisterXieyi from '@/pages/Account/RegisterXieyi';
 
 export type LoginStackParamList = {
   Login: undefined;
   Register: undefined;
   ResetPassword: undefined;
+  RegisterXieyi: undefined;
 };
 
 export type LoginStackNavigation = StackNavigationProp<LoginStackParamList>;
@@ -60,6 +62,11 @@ export default function LoginScreen() {
         name="ResetPassword"
         component={ResetPassword}
         options={getResetOptions}
+      />
+      <LoginStack.Screen
+        name="RegisterXieyi"
+        component={RegisterXieyi}
+        options={{ headerTitle: '注册协议' }}
       />
     </LoginStack.Navigator>
   );
@@ -104,6 +111,25 @@ function getRegisterOptions() {
 }
 
 function getResetOptions() {
+  return {
+    headerTitle: '',
+    headerTintColor: '#333',
+    headerTransparent: true,
+    cardStyle: {
+      backgroundColor: '#fff'
+    },
+    headerBackImage: ({ tintColor }: { tintColor: string }) => (
+      <Icon
+        name="icon-arrow-lift"
+        size={36}
+        color={tintColor}
+        style={styles.headerBackImage}
+      />
+    )
+  };
+}
+
+function getXieyiOptions() {
   return {
     headerTitle: '',
     headerTintColor: '#333',

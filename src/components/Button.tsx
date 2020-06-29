@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useCallback } from 'react';
 import {
   Text,
   TouchableOpacity,
@@ -6,12 +6,13 @@ import {
   StyleSheet,
   View
 } from 'react-native';
+import _ from 'lodash';
 import { color } from '@/theme/index';
 
 export type ButtonSize = 'large' | 'middle' | 'small';
-export type ButtonType = 'primary' | 'default' | 'danger' | 'link';
+export type ButtonType = 'primary' | 'default' | 'danger' | 'link' | undefined;
 
-interface IProps {
+interface ButtonProps {
   style?: FlexStyle;
   //文本
   title: string;
@@ -27,8 +28,8 @@ interface IProps {
   accessibilityLabel?: string;
 }
 
-export default class Button extends Component<IProps> {
-  renderBtnTheme = (type: ButtonType) => {
+const Button: React.FC<ButtonProps> = React.memo(props => {
+  const renderBtnTheme = (type: ButtonType) => {
     switch (type) {
       case 'primary':
         return {
@@ -63,44 +64,47 @@ export default class Button extends Component<IProps> {
     }
   };
 
-  onPress = () => {
-    const { onPress } = this.props;
-    onPress();
-  };
-
-  render() {
-    const { title, type, disabled, style, accessibilityLabel } = this.props;
-    let theme = this.renderBtnTheme(type);
-    if (disabled) {
-      theme = {
-        borderColor: color.border,
-        backgroundColor: color.background,
-        color: color.gray
-      };
-    }
-    return (
-      <TouchableOpacity onPress={this.onPress} disabled={disabled}>
-        <View
-          style={{
-            paddingHorizontal: 12,
-            paddingVertical: 15,
-            borderRadius: 5,
-            borderWidth: StyleSheet.hairlineWidth,
-            borderColor: theme.borderColor,
-            backgroundColor: theme.backgroundColor,
-            alignItems: 'center',
-            ...style
-          }}>
-          <Text
-            style={{
-              color: theme.color,
-              fontSize: 16
-            }}
-            accessibilityLabel={accessibilityLabel}>
-            {title}
-          </Text>
-        </View>
-      </TouchableOpacity>
-    );
+  const { title, type, disabled, style, accessibilityLabel, onPress } = props;
+  let theme = renderBtnTheme(type);
+  if (disabled) {
+    theme = {
+      borderColor: color.border,
+      backgroundColor: color.background,
+      color: color.gray
+    };
   }
-}
+  // 防双击
+  let throttleOnPress = undefined;
+    if (typeof onPress === 'function') {
+      throttleOnPress = useCallback(
+        _.throttle(onPress, 1000, { leading: true, trailing: false }),
+        [onPress]
+      );
+    }
+  return (
+    <TouchableOpacity onPress={throttleOnPress} disabled={disabled}>
+      <View
+        style={{
+          paddingHorizontal: 12,
+          paddingVertical: 15,
+          borderRadius: 5,
+          borderWidth: StyleSheet.hairlineWidth,
+          borderColor: theme.borderColor,
+          backgroundColor: theme.backgroundColor,
+          alignItems: 'center',
+          ...style
+        }}>
+        <Text
+          style={{
+            color: theme.color,
+            fontSize: 16
+          }}
+          accessibilityLabel={accessibilityLabel}>
+          {title}
+        </Text>
+      </View>
+    </TouchableOpacity>
+  );
+});
+
+export default Button;

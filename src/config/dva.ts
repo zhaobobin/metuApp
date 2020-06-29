@@ -1,11 +1,12 @@
 import { create } from 'dva-core-ts';
 import createLoading from 'dva-loading-ts';
 import models from '@/models/index';
+import Toast from '@/components/Toast';
 
 // 1、创建dva实例
 const app = create({
-  onError(error) {
-    console.log(error);
+  onError() {
+    Toast.show('网络异常');
   }
 });
 // 2、装载models对象

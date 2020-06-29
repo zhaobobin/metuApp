@@ -2,46 +2,193 @@
  * InputSmscode
  */
 import React from 'react';
-import { TextInput, Text, View } from 'react-native';
-import styles from './formStyle';
+import {
+  TextInput,
+  Text,
+  View,
+  TextInputProps,
+  StyleSheet
+} from 'react-native';
+import { connect, ConnectedProps } from 'react-redux';
+import { FieldInputProps, FormikProps, ErrorMessage } from 'formik';
+import { RootState } from '@/models/index';
+import { filterTel } from '@/utils/utils';
+import { color, layout } from '@/theme/index';
+import { IResponse } from '@/types/CommonTypes';
+import Toast from '@/components/Toast';
 
-interface IProps {
-  label?: string;
-  value?: string;
-  error?: any;
-  placeholder: string;
-  mimLength?: number;
-  maxLength?: number;
-  onChange?: () => void;
+const mapStateToProps = (state: RootState) => ({});
+
+const connector = connect(mapStateToProps);
+
+type ModelState = ConnectedProps<typeof connector>;
+
+type IProps = TextInputProps &
+  ModelState & {
+    field: FieldInputProps<any>;
+    form: FormikProps<any>;
+    placeholder: string;
+    type: string;
+    mobile: string;
+    auto?: string;
+  };
+
+interface IState {
+  mobile: string;
+  btnText: string;
+  btnStyle: React.CSSProperties;
+  num: number;
 }
 
-export default class InputSmscode extends React.PureComponent<IProps> {
-  render() {
-    const {
-      label,
-      onChange,
-      value,
-      error,
-      placeholder,
-      maxLength
-    } = this.props;
+export default class InputSmscode extends React.PureComponent<IProps, IState> {
+  timer: number = 0;
+  ajaxFlag: boolean = true;
 
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      mobile: '',
+      btnText: '获取验证码',
+      btnStyle: styles.null,
+      num: 60
+    };
+  }
+
+  componentDidMount() {
+    this.initBtnStyle(this.props.mobile);
+    if (this.props.auto) this.sendSmsCode(); //自动发送验证码
+  }
+
+  componentWillReceiveProps(nextProps: IProps) {
+    //按钮在激活状态，才重置倒计时
+    if (nextProps.mobile !== this.props.mobile) {
+      this.initBtnStyle(nextProps.mobile);
+    }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
+  //初始化按钮样式
+  initBtnStyle(mobile: string) {
+    let { num } = this.state;
+    let btnStyle = mobile
+      ? num === 60
+        ? styles.actived
+        : this.state.btnStyle
+      : num === 60
+      ? styles.null
+      : styles.disabled;
+    this.setState({
+      mobile,
+      btnStyle
+    });
+  }
+
+  //发送短信验证码
+  sendSmsCode = () => {
+    let { type, mobile } = this.props;
+    this.props.dispatch({
+      type: 'global/request',
+      url: '/user/smscode',
+      method: 'POST',
+      payload: {
+        type,
+        mobile
+      },
+      callback: (res: IResponse) => {
+        if (res.code === 0) {
+          this.interval(); //执行倒计时
+          Toast.show(
+            `已将短信验证码发送到您${filterTel(mobile)}的手机当中，请注意查收！`
+          );
+        } else {
+          Toast.show(res.message);
+        }
+      }
+    });
+  };
+
+  //短信倒计时
+  interval() {
+    let num = 60;
+    this.setState({
+      btnText: '重新发送(' + num + 's)',
+      btnStyle: styles.disabled
+    });
+    this.timer = setInterval(() => {
+      if (num === 1) {
+        this.ajaxFlag = true;
+        this.setState({
+          btnText: '重新获取',
+          btnStyle: this.state.mobile ? styles.actived : styles.null,
+          num: 60
+        });
+        clearInterval(this.timer);
+      } else {
+        num--;
+        this.setState({ btnText: '重新发送(' + num + 's)', num: num });
+      }
+    }, 1000);
+  }
+
+  render() {
+    const { field, form, placeholder, ...rest } = this.props;
     return (
       <View style={styles.inputView}>
         <TextInput
-          maxLength={maxLength || 6}
-          keyboardType="number-pad"
+          {...rest}
+          maxLength={6}
+          keyboardType="phone-pad"
+          clearButtonMode="while-editing"
           style={styles.input}
-          // label={`${label}：`}
-          value={value || ''}
-          onChangeText={onChange}
           placeholder={placeholder || '请输入'}
+          value={form.values[field.name]}
+          onChangeText={form.handleChange(field.name)}
+          onBlur={form.handleBlur(field.name)}
         />
-
         <View style={styles.error}>
-          <Text style={styles.errorText}>{error ? error.join(',') : null}</Text>
+          <Text style={styles.errorText}>
+            <ErrorMessage name={field.name} />
+          </Text>
         </View>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  inputView: {
+    height: 64,
+    position: 'relative'
+  },
+  input: {
+    ...layout.padding(0),
+    height: 44,
+    fontSize: 16,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: color.border
+  },
+  close: {
+    position: 'absolute',
+    left: 10,
+    right: 10
+  },
+  error: {
+    ...layout.margin(10, 0, 0, 0),
+    height: 20
+  },
+  errorText: {
+    color: color.red
+  },
+  actived: {
+    color: color.blue
+  },
+  disabled: {
+    color: color.gray
+  },
+  null: {
+    color: color.gray
+  }
+});

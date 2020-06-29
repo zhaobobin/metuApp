@@ -2,48 +2,35 @@
  * InputText
  */
 import React from 'react';
-import { TextInput, Text, View } from 'react-native';
+import { TextInput, Text, View, TextInputProps } from 'react-native';
+import { FieldInputProps, FormikProps, ErrorMessage } from 'formik';
 import styles from './formStyle';
 
-interface IProps {
-  label?: string;
-  value?: string;
-  error?: any;
+interface IProps extends TextInputProps {
+  field: FieldInputProps<any>;
+  form: FormikProps<any>;
   placeholder: string;
-  mimLength?: number;
-  maxLength?: number;
-  callback?: (value: string) => void;
 }
 
 export default class InputText extends React.PureComponent<IProps> {
-  state = {
-    value: ''
-  };
-
-  changeValue = (value: string) => {
-    this.setState({ value });
-    if (this.props.callback) {
-      this.props.callback(value);
-    }
-  };
-
   render() {
-    const { label, value, error, placeholder, maxLength } = this.props;
+    const { field, form, placeholder, ...rest } = this.props;
 
     return (
       <View style={styles.inputView}>
         <TextInput
-          maxLength={maxLength || 30}
+          {...rest}
           clearButtonMode="while-editing"
           style={styles.input}
-          // label={`${label}：`}
-          value={value || ''}
-          onChangeText={this.changeValue}
           placeholder={placeholder || '请输入'}
+          value={form.values[field.name]}
+          onChangeText={form.handleChange(field.name)}
+          onBlur={form.handleBlur(field.name)}
         />
-
         <View style={styles.error}>
-          <Text style={styles.errorText}>{error ? error.join(',') : null}</Text>
+          <Text style={styles.errorText}>
+            <ErrorMessage name={field.name} />
+          </Text>
         </View>
       </View>
     );

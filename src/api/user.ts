@@ -30,6 +30,14 @@ export const userApi = {
     });
   },
 
+  smscode: (params: { type: string, mobile: string }) => {
+    return Request({
+      url: '/user/smscode',
+      method: 'post',
+      params
+    });
+  },
+
   getUserDetail: (params: { id: string; include?: string }) => {
     return Request({
       url: `/users/${params.id}`,

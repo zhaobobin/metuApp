@@ -7,15 +7,18 @@ import {
   Text,
   View,
   TextInputProps,
-  StyleSheet
+  StyleSheet,
+  StyleProp
 } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { FieldInputProps, FormikProps, ErrorMessage } from 'formik';
 import { RootState } from '@/models/index';
+import { Validator } from '@/utils/index';
 import { filterTel } from '@/utils/utils';
 import { color, layout } from '@/theme/index';
 import { IResponse } from '@/types/CommonTypes';
 import Toast from '@/components/Toast';
+import Touchable from '../Touchable';
 
 const mapStateToProps = (state: RootState) => ({});
 
@@ -36,11 +39,11 @@ type IProps = TextInputProps &
 interface IState {
   mobile: string;
   btnText: string;
-  btnStyle: React.CSSProperties;
+  btnStyle: StyleProp<any>;
   num: number;
 }
 
-export default class InputSmscode extends React.PureComponent<IProps, IState> {
+class InputSmscode extends React.PureComponent<IProps, IState> {
   timer: number = 0;
   ajaxFlag: boolean = true;
 
@@ -73,7 +76,7 @@ export default class InputSmscode extends React.PureComponent<IProps, IState> {
   //初始化按钮样式
   initBtnStyle(mobile: string) {
     let { num } = this.state;
-    let btnStyle = mobile
+    let btnStyle = Validator.isMobile(mobile)
       ? num === 60
         ? styles.actived
         : this.state.btnStyle
@@ -90,9 +93,7 @@ export default class InputSmscode extends React.PureComponent<IProps, IState> {
   sendSmsCode = () => {
     let { type, mobile } = this.props;
     this.props.dispatch({
-      type: 'global/request',
-      url: '/user/smscode',
-      method: 'POST',
+      type: 'account/smscode',
       payload: {
         type,
         mobile
@@ -135,6 +136,7 @@ export default class InputSmscode extends React.PureComponent<IProps, IState> {
 
   render() {
     const { field, form, placeholder, ...rest } = this.props;
+    const { btnText, btnStyle } = this.state;
     return (
       <View style={styles.inputView}>
         <TextInput
@@ -152,6 +154,11 @@ export default class InputSmscode extends React.PureComponent<IProps, IState> {
           <Text style={styles.errorText}>
             <ErrorMessage name={field.name} />
           </Text>
+        </View>
+        <View style={styles.btn}>
+          <Touchable onPress={this.sendSmsCode}>
+            <Text style={btnStyle}>{btnText}</Text>
+          </Touchable>
         </View>
       </View>
     );
@@ -182,6 +189,14 @@ const styles = StyleSheet.create({
   errorText: {
     color: color.red
   },
+  btn: {
+    paddingHorizontal: 5,
+    height: 44,
+    justifyContent: 'center',
+    position: 'absolute',
+    right: 0
+  },
+  // btnStyle
   actived: {
     color: color.blue
   },
@@ -192,3 +207,5 @@ const styles = StyleSheet.create({
     color: color.gray
   }
 });
+
+export default connector(InputSmscode);

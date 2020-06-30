@@ -174,7 +174,12 @@ class Register extends React.Component<IProps, IState> {
                     <Field
                       name="smscode"
                       render={(props: any) => (
-                        <InputSmscode {...props} placeholder="验证码" type="register" mobile="" />
+                        <InputSmscode
+                          {...props}
+                          placeholder="验证码"
+                          type="register"
+                          mobile={props.form.values['mobile']}
+                        />
                       )}
                     />
                   </FormItem>

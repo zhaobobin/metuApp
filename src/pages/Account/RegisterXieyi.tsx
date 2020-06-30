@@ -1,29 +1,23 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-import { connect, ConnectedProps } from 'react-redux';
-import { MainStackNavigation } from '@/navigator/MainNavigation';
-import { RootState } from '@/models/index';
+import { ScrollView, StyleSheet } from 'react-native';
+import HTMLView from 'react-native-htmlview';
+import htmlContent from '@/pages/Other/ServiceHtml';
 
-const mapStateToProps = (state: RootState) => ({
-  
-});
-
-const connector = connect(mapStateToProps);
-
-type ModelState = ConnectedProps<typeof connector>;
-
-interface IProps extends ModelState {
-  navigation: MainStackNavigation;
-}
-
-class RegisterXieyi extends React.Component<IProps> {
+class RegisterXieyi extends React.Component {
   render() {
     return (
-      <View>
-        <Text>RegisterXieyi</Text>
-      </View>
+      <ScrollView style={{ flex: 1, paddingVertical: 50 }}>
+        <HTMLView value={htmlContent} stylesheet={styles} />
+      </ScrollView>
     );
   }
 }
 
-export default connector(RegisterXieyi);
+const styles = StyleSheet.create({
+  a: {
+    fontWeight: '300',
+    color: '#FF3366'
+  }
+});
+
+export default RegisterXieyi;

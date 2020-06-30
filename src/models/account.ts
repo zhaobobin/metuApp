@@ -16,6 +16,7 @@ interface UserModel extends Model {
     register: Effect;
     login: Effect;
     token: Effect;
+    smscode: Effect;
     logout: Effect;
     queryAccountDetail: Effect;
   };
@@ -102,6 +103,11 @@ const userModel: UserModel = {
           }
         });
       }
+    },
+
+    *smscode({payload, callback}, { call }) {
+      const res = yield call(userApi.smscode, payload);
+      yield callback(res);
     },
 
     *logout(_, { put }) {

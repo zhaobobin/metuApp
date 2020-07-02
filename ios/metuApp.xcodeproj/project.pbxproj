@@ -20,6 +20,7 @@
 		690E47A12A9029D71CC7018C /* libPods-metuApp-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F445068FEA90EEBB526EA8CA /* libPods-metuApp-tvOSTests.a */; };
 		707044F297F53B3BC1995BCF /* libPods-metuApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 930A4B3C88422E1D66C63D3F /* libPods-metuApp.a */; };
 		A72414320A18EB2EF00EDAD5 /* libPods-metuApp-metuAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 61B5E8212B43BD5D3E76F5D1 /* libPods-metuApp-metuAppTests.a */; };
+		FF78D70E24ADE2A600D5CEF6 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF78D70D24ADE2A600D5CEF6 /* Launch Screen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F445068FEA90EEBB526EA8CA /* libPods-metuApp-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-metuApp-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD6D9CDDB22D4A1E9957EF6D /* Pods-metuApp-metuAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-metuApp-metuAppTests.release.xcconfig"; path = "Target Support Files/Pods-metuApp-metuAppTests/Pods-metuApp-metuAppTests.release.xcconfig"; sourceTree = "<group>"; };
+		FF78D70D24ADE2A600D5CEF6 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,6 +161,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				FF78D70D24ADE2A600D5CEF6 /* Launch Screen.storyboard */,
 				13B07FAE1A68108700A75B9A /* metuApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* metuAppTests */,
@@ -194,7 +197,6 @@
 				98E30FDFC70EC0D39B5E9B46 /* Pods-metuApp-tvOSTests.debug.xcconfig */,
 				B62322DE7ECFBC62371ECC8C /* Pods-metuApp-tvOSTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -340,6 +342,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF78D70E24ADE2A600D5CEF6 /* Launch Screen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);

@@ -237,7 +237,7 @@ PODS:
   - React-jsinspector (0.62.2)
   - react-native-blur (0.8.0):
     - React
-  - react-native-safe-area-context (3.0.7):
+  - react-native-safe-area-context (3.0.3):
     - React
   - react-native-splash-screen (3.2.0):
     - React
@@ -312,7 +312,7 @@ PODS:
     - React
   - RNReanimated (1.9.0):
     - React
-  - RNScreens (2.9.0):
+  - RNScreens (2.8.0):
     - React
   - RNSVG (12.1.0):
     - React
@@ -505,7 +505,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 1540d1c01bb493ae3124ed83351b1b6a155db7da
   React-jsinspector: 512e560d0e985d0e8c479a54a4e5c147a9c83493
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
-  react-native-safe-area-context: ef6f16c66b0797ecae1bf86c103dfb3dc16fc33d
+  react-native-safe-area-context: 45e98227f3d65b31d384a5d0950aec4bf73a884c
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-viewpager: 1af972f5a745647b51250285f4da26d3fb3d5f0f
   react-native-webview: 679b6f400176e2ea8a785acf7ae16cf282e7d1eb
@@ -523,7 +523,7 @@ SPEC CHECKSUMS:
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNReanimated: b5ccb50650ba06f6e749c7c329a1bc3ae0c88b43
-  RNScreens: c526239bbe0e957b988dacc8d75ac94ec9cb19da
+  RNScreens: 62211832af51e0aebcf6e8c36bcf7dd65592f244
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Yoga: 3ebccbdd559724312790e7742142d062476b698e

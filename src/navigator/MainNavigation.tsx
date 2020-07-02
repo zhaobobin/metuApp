@@ -19,6 +19,7 @@ import UserDetail from '@/pages/User/UserDetail';
 import Search from '@/pages/Search/index';
 import Category from '@/pages/Category/index';
 import Setting from '@/pages/Setting/index';
+import SettingProfile from '@/pages/Setting/SettingProfile';
 
 export type MainStackParamList = {
   BottomTabs: {
@@ -33,13 +34,13 @@ export type MainStackParamList = {
   Search: undefined;
   Category: undefined;
   Setting: undefined;
+  SettingProfile: undefined;
 };
 
 export type MainStackNavigation = StackNavigationProp<MainStackParamList>;
 
 const MainStack = createStackNavigator<MainStackParamList>();
 
-// MainScreen
 export default function MainScreen() {
   return (
     <MainStack.Navigator
@@ -89,6 +90,11 @@ export default function MainScreen() {
         name="Setting"
         component={Setting}
         options={{ headerTitle: '设置' }}
+      />
+      <MainStack.Screen
+        name="SettingProfile"
+        component={SettingProfile}
+        options={{ headerTitle: '个人信息' }}
       />
     </MainStack.Navigator>
   );

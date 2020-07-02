@@ -58,6 +58,7 @@ export default {
     token: 'metuApp-token',
     lastTel: 'metuApp-lastTel',
     remenber: 'metuApp-remenber',
+    loginRedirect: 'metuApp-loginRedirect', // 记录登录页拦截的跳转路径
     routerHistory: 'metuApp-routerHistory',
     theme: 'metuApp-theme',
     currentMenu: 'metuApp-currentMenu',

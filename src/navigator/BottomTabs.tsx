@@ -115,6 +115,7 @@ class BottomTabs extends React.Component<IProps> {
       Navigator.goPage(routeName);
     } else {
       const token = await Storage.get(ENV.storage.token);
+      await Storage.set(ENV.storage.loginRedirect, routeName);
       if (token) {
         this.props.dispatch({
           type: 'account/token',

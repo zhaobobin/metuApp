@@ -88,10 +88,14 @@ class Login extends React.Component<IProps, IState> {
     this.props.dispatch({
       type: 'account/login',
       payload,
-      callback: (res: IResponse) => {
-        console.log(res);
+      callback: async (res: IResponse) => {
         if (res.code === 0) {
-          Navigator.goBack();
+          const loginRedirect = await Storage.get(ENV.storage.loginRedirect);
+          if (loginRedirect) {
+            Navigator.goPage(loginRedirect);
+          } else {
+            Navigator.goBack();
+          }
         } else {
           Toast.show(res.message);
         }

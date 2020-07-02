@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '@/models/index';
-import { AppStackNavigation } from '@/navigator/AppNavigation';
 import { Navigator } from '@/utils/index';
 
 const mapStateToProps = (state: RootState) => ({
@@ -13,9 +12,7 @@ const connector = connect(mapStateToProps);
 
 type ModelState = ConnectedProps<typeof connector>;
 
-interface IProps extends ModelState {
-  navigation: AppStackNavigation;
-}
+interface IProps extends ModelState {}
 
 class ResetPassword extends React.Component<IProps> {
 

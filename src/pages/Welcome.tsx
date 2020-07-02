@@ -38,7 +38,7 @@ class WelcomePage extends React.Component {
   };
 
   goHome = () => {
-    Navigator.goPage('MainScreen');
+    Navigator.goPage('AppScreen');
   };
 
   render() {

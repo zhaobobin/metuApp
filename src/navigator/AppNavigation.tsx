@@ -12,17 +12,13 @@ import {
 import { IPhoto } from '@/types/CommonTypes';
 import Icon from '@/assets/iconfont';
 
-import WelcomePage from '@/pages/Welcome';
 import MainScreen from './MainNavigation';
-import LoginScreen from './LoginNavigation';
 import Publish from '@/pages/Publish/index';
 import PhotoDetail from '@/pages/Photo/PhotoDetail';
 
 // App页面参数声明
 export type AppStackParamList = {
-  Welcome: undefined;
   MainScreen: undefined; // MainStackScreen
-  LoginScreen: undefined;
   Publish: undefined;
   PhotoDetailModal: {
     item: IPhoto;
@@ -46,19 +42,9 @@ export default function AppScreen() {
         ...TransitionPresets.ModalSlideFromBottomIOS
       }}>
       <AppStack.Screen
-        name="Welcome"
-        component={WelcomePage}
-        options={{ headerShown: false }}
-      />
-      <AppStack.Screen
         name="MainScreen"
         component={MainScreen}
         options={{ headerShown: false, animationEnabled: false }}
-      />
-      <AppStack.Screen
-        name="LoginScreen"
-        component={LoginScreen}
-        options={{ headerShown: false }}
       />
       <AppStack.Screen
         name="Publish"

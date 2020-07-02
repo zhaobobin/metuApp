@@ -24,6 +24,7 @@ class PublishButton extends React.Component<IProps> {
       Navigator.goPage('Publish');
     } else {
       const token = await Storage.get(ENV.storage.token);
+      await Storage.set(ENV.storage.loginRedirect, 'Publish');
       if (token) {
         this.props.dispatch({
           type: 'account/token',

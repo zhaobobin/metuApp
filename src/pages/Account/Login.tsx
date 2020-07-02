@@ -199,9 +199,9 @@ class Login extends React.Component<IProps, IState> {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     paddingHorizontal: 15,
-    paddingVertical: 100,
-    position: 'relative'
+    paddingVertical: 100
   },
   head: {
     alignItems: 'center'

@@ -5746,6 +5746,11 @@ react-native-check-box@^2.1.7:
   dependencies:
     prop-types "^15.5.7"
 
+react-native-config@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.npm.taobao.org/react-native-config/download/react-native-config-1.2.1.tgz#f80454fc58ea89b549819ccb4bdab26518a9f0db"
+  integrity sha1-+ARU/FjqibVJgZzLS9qyZRip8Ns=
+
 react-native-drag-sort@^2.2.1:
   version "2.2.1"
   resolved "https://registry.npm.taobao.org/react-native-drag-sort/download/react-native-drag-sort-2.2.1.tgz#1eec8f3c82e8c94c5fd75440df59bce429951009"

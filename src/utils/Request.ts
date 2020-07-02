@@ -4,6 +4,7 @@
  * other: Request('/user/{id}/update', { method: 'post', body: {} })
  */
 import { Base64 } from 'js-base64';
+import Config from 'react-native-config';
 import { ENV, Storage } from '@/utils/index';
 
 type RequestMethod = 'get' | 'post' | 'put' | 'patch' | 'delete';
@@ -24,7 +25,7 @@ function checkStatus(response: any) {
 
 export default async function Request(options: IOptions) {
   // base_url
-  let url = ENV.api.test + options.url;
+  let url = Config.API_URL + options.url;
 
   options.headers = {
     Accept: 'application/json'

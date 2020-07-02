@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
-import { Formik, Field, FieldProps } from 'formik';
+import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 
 import { RootState } from '@/models/index';
-import { Navigator, Validator, Encrypt } from '@/utils/index';
+import { Navigator, Encrypt } from '@/utils/index';
 import { IResponse } from '@/types/CommonTypes';
 import { layout } from '@/theme/index';
 
@@ -230,9 +230,9 @@ class Register extends React.Component<IProps, IState> {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     paddingHorizontal: 15,
-    paddingVertical: 100,
-    position: 'relative'
+    paddingVertical: 100
   },
   head: {
     alignItems: 'center'

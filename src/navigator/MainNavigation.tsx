@@ -109,8 +109,8 @@ function getBottomTabsOptions() {
 
 // 图片详情 标题配置
 function getPhotoDetailOptions({
-  route
-}: {
+                                 route
+                               }: {
   route: RouteProp<MainStackParamList, 'PhotoDetail'>;
 }) {
   return {

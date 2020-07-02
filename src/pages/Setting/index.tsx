@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, ScrollView, Modal } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
-import { ListItem } from 'react-native-elements'
+import { ListItem } from 'react-native-elements';
 
 import { MainStackNavigation } from '@/navigator/MainNavigation';
 import { Navigator } from '@/utils/index';
@@ -23,7 +23,6 @@ interface IProps extends ModelState {
 }
 
 class Setting extends React.Component<IProps> {
-
   renderAccount = () => {
     const { currentUser } = this.props;
     return (
@@ -34,12 +33,12 @@ class Setting extends React.Component<IProps> {
         onPress={() => this.goPage('SettingProfile')}
         bottomDivider
       />
-    )
-  }
+    );
+  };
 
   goPage = (routeName: string) => {
     Navigator.goPage(routeName);
-  }
+  };
 
   logout = () => {
     this.props.dispatch({

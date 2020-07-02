@@ -75,8 +75,8 @@ function getPublishOptions() {
 }
 
 function getPhotoDetailModalOptions({
-  route
-}: {
+                                      route
+                                    }: {
   route: RouteProp<AppStackParamList, 'PhotoDetailModal'>;
 }) {
   return {

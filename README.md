@@ -50,3 +50,26 @@ pod install
 cd ..
 react-native run-ios
 ```
+
+### 发布
+
+#### 签名
+```
+keytool -genkeypair -v -keystore my-release-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
+```
+
+#### 打包
+```
+yarn add react-native-upload -D
+
+npx upload-init
+
+npx upload-build --no-ios
+
+npx upload-pgy --no-ios -apk=v7a
+```
+or
+
+```
+yarn build
+```

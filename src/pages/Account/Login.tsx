@@ -237,9 +237,9 @@ const styles = StyleSheet.create({
     ...layout.margin(20, 0, 0, 0)
   },
   foot: {
+    height: 200,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
     ...layout.margin(20, 0, 0, 0)
   },
   link: {

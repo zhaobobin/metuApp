@@ -1,0 +1,10 @@
+//
+//  Config.xcconfig
+//  metuApp
+//
+//  Created by zhaobb4 on 2020/7/7.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+#include? "tmp.xcconfig"

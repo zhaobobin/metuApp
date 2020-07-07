@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, Text, ScrollView, Modal } from 'react-native';
+import { View, Text, ScrollView, Modal, StyleSheet } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { ListItem } from 'react-native-elements';
 
 import { MainStackNavigation } from '@/navigator/MainNavigation';
 import { Navigator } from '@/utils/index';
 import { RootState } from '@/models/index';
-import Touchable from '@/components/Touchable';
+import Button from '@/components/Button';
 import WhiteSpace from '@/components/WhiteSpace';
 import Icon from '@/assets/iconfont';
 
@@ -52,12 +52,19 @@ class Setting extends React.Component<IProps> {
       <ScrollView>
         {this.renderAccount()}
         <WhiteSpace size="xl" />
-        <Touchable onPress={this.logout}>
-          <Text>退出登录</Text>
-        </Touchable>
+        <View style={styles.logout}>
+          <Button title="退出登录" type="danger" width={120} ghost onPress={this.logout} />
+        </View>
       </ScrollView>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  logout: {
+    paddingVertical: 10,
+    alignItems: 'center'
+  }
+})
 
 export default connector(Setting);

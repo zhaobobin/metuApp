@@ -21,6 +21,7 @@
 		707044F297F53B3BC1995BCF /* libPods-metuApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 930A4B3C88422E1D66C63D3F /* libPods-metuApp.a */; };
 		A72414320A18EB2EF00EDAD5 /* libPods-metuApp-metuAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 61B5E8212B43BD5D3E76F5D1 /* libPods-metuApp-metuAppTests.a */; };
 		FF78D70E24ADE2A600D5CEF6 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF78D70D24ADE2A600D5CEF6 /* Launch Screen.storyboard */; };
+		FF8BAC5824B409F500297D63 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FF8BAC5724B409F500297D63 /* Config.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		F445068FEA90EEBB526EA8CA /* libPods-metuApp-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-metuApp-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD6D9CDDB22D4A1E9957EF6D /* Pods-metuApp-metuAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-metuApp-metuAppTests.release.xcconfig"; path = "Target Support Files/Pods-metuApp-metuAppTests/Pods-metuApp-metuAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		FF78D70D24ADE2A600D5CEF6 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		FF8BAC5724B409F500297D63 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +163,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				FF8BAC5724B409F500297D63 /* Config.xcconfig */,
 				FF78D70D24ADE2A600D5CEF6 /* Launch Screen.storyboard */,
 				13B07FAE1A68108700A75B9A /* metuApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -234,6 +237,7 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				4E03577BB4E46C772CB741A8 /* [CP] Copy Pods Resources */,
+				FF8BAC5924B40A9300297D63 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -342,6 +346,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF8BAC5824B409F500297D63 /* Config.xcconfig in Resources */,
 				FF78D70E24ADE2A600D5CEF6 /* Launch Screen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
@@ -616,6 +621,23 @@
 			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		FF8BAC5924B40A9300297D63 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${SRCROOT}/../node_modules/react-native-config/ios/ReactNativeConfig/BuildXCConfig.rb\" \"${SRCROOT}/..\" \"${SRCROOT}/tmp.xcconfig\"\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -884,6 +906,7 @@
 		};
 		83CBBA201A601CBA00E9B192 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FF8BAC5724B409F500297D63 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -944,6 +967,7 @@
 		};
 		83CBBA211A601CBA00E9B192 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FF8BAC5724B409F500297D63 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;

@@ -267,6 +267,7 @@ const styles = StyleSheet.create({
     ...layout.margin(20, 0, 0, 0)
   },
   foot: {
+    height: 200,
     flexDirection: 'row'
   },
   footText: {

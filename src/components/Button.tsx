@@ -21,6 +21,8 @@ interface ButtonProps {
   //按钮
   btnSize?: ButtonSize;
   type?: ButtonType;
+  width?: number | string;
+  ghost?: boolean;
   //按钮事件
   onPress: any;
   disabled?: boolean;
@@ -29,19 +31,21 @@ interface ButtonProps {
 }
 
 const Button: React.FC<ButtonProps> = React.memo(props => {
+  const { title, type, disabled, style, width, ghost, onPress, accessibilityLabel } = props;
+
   const renderBtnTheme = (type: ButtonType) => {
     switch (type) {
       case 'primary':
         return {
-          borderColor: color.blue,
-          backgroundColor: color.blue,
-          color: color.white
+          borderColor: ghost ? 'transparent' : color.blue,
+          backgroundColor: ghost ? 'transparent' : color.blue,
+          color: ghost ? color.blue : color.white
         };
       case 'danger':
         return {
-          borderColor: color.red,
-          backgroundColor: color.red,
-          color: color.white
+          borderColor: ghost ? 'transparent' : color.red,
+          backgroundColor: ghost ? 'transparent' : color.red,
+          color: ghost ? color.red : color.white
         };
       case 'link':
         return {
@@ -51,20 +55,19 @@ const Button: React.FC<ButtonProps> = React.memo(props => {
         };
       case 'default':
         return {
-          borderColor: color.gray,
-          backgroundColor: color.white,
+          borderColor: ghost ? 'transparent' : color.gray,
+          backgroundColor: ghost ? 'transparent' : color.white,
           color: color.c333
         };
       default:
         return {
-          borderColor: color.gray,
-          backgroundColor: color.white,
+          borderColor: ghost ? 'transparent' : color.gray,
+          backgroundColor: ghost ? 'transparent' : color.white,
           color: color.c333
         };
     }
   };
 
-  const { title, type, disabled, style, accessibilityLabel, onPress } = props;
   let theme = renderBtnTheme(type);
   if (disabled) {
     theme = {
@@ -85,12 +88,14 @@ const Button: React.FC<ButtonProps> = React.memo(props => {
     <TouchableOpacity onPress={throttleOnPress} disabled={disabled}>
       <View
         style={{
+          width,
           paddingHorizontal: 12,
           paddingVertical: 15,
           borderRadius: 5,
           borderWidth: StyleSheet.hairlineWidth,
           borderColor: theme.borderColor,
           backgroundColor: theme.backgroundColor,
+          justifyContent: 'center',
           alignItems: 'center',
           ...style
         }}>

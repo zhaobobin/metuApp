@@ -10,9 +10,8 @@ import {
   MaterialTopTabBarProps
 } from '@react-navigation/material-top-tabs';
 import LinearAnimatedGradientTransition from 'react-native-linear-animated-gradient-transition';
-import { getStatusBarHeight } from 'react-native-iphone-x-helper';
-import { Navigator } from '@/utils/index';
-import Touchable from '@/components/Touchable';
+import { Navigator, getStatusBarHeight } from '@/utils/index';
+import { Touchable } from '@/components/index';
 import Icon from '@/assets/iconfont';
 
 const mapStateToProps = (state: RootState) => ({

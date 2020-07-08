@@ -4,7 +4,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
-type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | undefined;
+type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 
 interface WhiteSpaceProps {
   backgroundColor?: string;
@@ -38,5 +38,9 @@ const WhiteSpace: React.FC<WhiteSpaceProps> = React.memo(props => {
   }
   return <View style={{ height, backgroundColor }} />;
 });
+
+WhiteSpace.defaultProps = {
+  size: 'md'
+}
 
 export default WhiteSpace;

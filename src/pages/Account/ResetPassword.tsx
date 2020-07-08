@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '@/models/index';
 import { Navigator } from '@/utils/index';
-import Button from '@/components/Button';
+import { Button } from '@/components/index';
 
 const mapStateToProps = (state: RootState) => ({
   isAuth: state.account.isAuth

@@ -15,7 +15,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { MainStackNavigation } from '@/navigator/MainNavigation';
 import { RootState } from '@/models/index';
 import { IPhoto } from '@/types/CommonTypes';
-import Empty from '@/components/Empty';
+import { Empty } from '@/components/index';
 import Carousel from './Carsouel';
 import ChannelItem from './ChannelItem';
 import { sliderHeight } from './Carsouel';

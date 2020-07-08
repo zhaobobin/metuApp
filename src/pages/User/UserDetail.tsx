@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
+import { Tabbar, TabView, TabbarInfo } from 'react-native-head-tab-view';
 import { useHeaderHeight } from '@react-navigation/stack';
 import { BlurView } from '@react-native-community/blur';
-import { Tabbar, TabView, TabbarInfo } from 'react-native-head-tab-view';
-import { RootState } from '@/models/index';
 import { RouteProp } from '@react-navigation/native';
+import { RootState } from '@/models/index';
 import { MainStackParamList } from '@/navigator/MainNavigation';
 
 import UserPhotos from '@/pages/User/UserPhotos';

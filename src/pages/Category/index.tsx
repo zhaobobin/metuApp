@@ -7,7 +7,7 @@ import { MainStackNavigation } from '@/navigator/MainNavigation';
 import { RootState } from '@/models/index';
 import { ICategory } from '@/models/category';
 import { color } from '@/theme/index';
-import Touchable from '@/components/Touchable';
+import { Touchable } from '@/components/index';
 import HeaderRightButton from './HeaderRightButton';
 import CategoryItem, { parentWidth, itemWidth, itemHeight } from './Item';
 

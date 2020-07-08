@@ -14,8 +14,8 @@ import { RouteProp } from '@react-navigation/native';
 import { MainStackNavigation } from '@/navigator/MainNavigation';
 import { RootState } from '@/models/index';
 import { IMessageItem } from '@/types/message/MessageState';
-import Empty from '@/components/Empty';
-import {MessageTabParamList} from './index';
+import { Empty } from '@/components/index';
+import { MessageTabParamList } from './index';
 import MessageItem from './MessageItem';
 
 const mapStateToProps = (state: RootState) => ({

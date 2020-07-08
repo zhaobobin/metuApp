@@ -11,7 +11,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { MainStackNavigation } from '@/navigator/MainNavigation';
 import { RootState } from '@/models/index';
 import { IPhoto } from '@/types/CommonTypes';
-import Touchable from '@/components/Touchable';
+import { Touchable } from '@/components/index';
 import IconArrowRight from '@/assets/iconfont/IconArrowRight';
 
 const mapStateToProps = (state: RootState) => ({

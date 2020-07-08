@@ -9,9 +9,7 @@ import { ENV, Storage, Navigator, Encrypt } from '@/utils/index';
 import { IResponse } from '@/types/CommonTypes';
 import { layout } from '@/theme/index';
 
-import Touchable from '@/components/Touchable';
-import Button from '@/components/Button';
-import Toast from '@/components/Toast';
+import { Button, Touchable, Toast } from '@/components/index';
 import {
   FormItem,
   InputMobile,

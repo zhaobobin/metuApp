@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { IPhoto } from '@/types/CommonTypes';
-import Touchable from '@/components/Touchable';
+import { Touchable } from '@/components/index';
 import Icon from '@/assets/iconfont';
 
 interface IProps {

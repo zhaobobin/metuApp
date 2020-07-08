@@ -7,8 +7,7 @@ import { Modal } from '@ant-design/react-native';
 import { MainStackNavigation } from '@/navigator/MainNavigation';
 import { Navigator } from '@/utils/index';
 import { RootState } from '@/models/index';
-import Button from '@/components/Button';
-import WhiteSpace from '@/components/WhiteSpace';
+import { Button, WhiteSpace } from '@/components/index';
 import Icon from '@/assets/iconfont';
 
 const mapStateToProps = (state: RootState) => ({

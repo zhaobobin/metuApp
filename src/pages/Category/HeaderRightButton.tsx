@@ -1,5 +1,4 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { RootState } from '@/models/index';

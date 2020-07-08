@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, StyleSheet } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '@/models/index';
-import Touchable from '@/components/Touchable';
+import { Touchable } from '@/components/index';
 import { ENV, Navigator, Storage } from '@/utils/index';
 import { IResponse } from '@/types/CommonTypes';
 

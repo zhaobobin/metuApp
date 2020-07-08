@@ -7,7 +7,7 @@ import {
   MainStackParamList
 } from '@/navigator/MainNavigation';
 import { RootState } from '@/models/index';
-import Touchable from '@/components/Touchable';
+import { Touchable } from '@/components/index';
 import PhotoSwiper from './PhotoSwiper';
 
 const mapStateToProps = (state: RootState) => ({

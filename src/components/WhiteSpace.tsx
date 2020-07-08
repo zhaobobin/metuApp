@@ -2,12 +2,12 @@
  * 上下留白
  */
 import React from 'react';
-import { View, StyleProp } from 'react-native';
+import { View } from 'react-native';
 
 type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | undefined;
 
 interface WhiteSpaceProps {
-  backgroundColor?: StyleProp<any>;
+  backgroundColor?: string;
   size?: Size;
 }
 

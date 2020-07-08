@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
+import Button from '@/components/Button';
 import { Navigator } from '@/utils/index';
 
 class WelcomePage extends React.Component {

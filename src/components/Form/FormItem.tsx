@@ -2,11 +2,11 @@
  * FormItem
  */
 import React from 'react';
-import { View } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 import styles from './formStyle';
 
 interface IProps {
-  style?: any;
+  style?: ViewStyle;
   children: React.ReactNode;
 }
 

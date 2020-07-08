@@ -5,7 +5,7 @@ import {
   FlexStyle,
   StyleSheet,
   View,
-  StyleProp
+  ViewStyle
 } from 'react-native';
 
 interface leftIconProps {
@@ -13,7 +13,7 @@ interface leftIconProps {
   name: string;
   size: number,
   color: string;
-  containerStyle: StyleProp<any>
+  containerStyle: ViewStyle
 }
 
 interface ListItemProps {

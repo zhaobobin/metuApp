@@ -2,9 +2,9 @@ import React, { useCallback } from 'react';
 import {
   Text,
   TouchableOpacity,
-  FlexStyle,
   StyleSheet,
-  View
+  View,
+  ViewStyle
 } from 'react-native';
 import _ from 'lodash';
 import { color } from '@/theme/index';
@@ -13,7 +13,7 @@ export type ButtonSize = 'large' | 'middle' | 'small';
 export type ButtonType = 'primary' | 'default' | 'danger' | 'link' | undefined;
 
 interface ButtonProps {
-  style?: FlexStyle;
+  style?: ViewStyle;
   //文本
   title: string;
   //字体大小

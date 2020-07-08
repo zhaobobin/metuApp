@@ -2,13 +2,13 @@ import React from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { ListItem } from 'react-native-elements';
+import { Modal } from '@ant-design/react-native';
 
 import { MainStackNavigation } from '@/navigator/MainNavigation';
 import { Navigator } from '@/utils/index';
 import { RootState } from '@/models/index';
 import Button from '@/components/Button';
 import WhiteSpace from '@/components/WhiteSpace';
-//import Modal from '@/components/modal';
 import Icon from '@/assets/iconfont';
 
 const mapStateToProps = (state: RootState) => ({
@@ -42,19 +42,18 @@ class Setting extends React.Component<IProps> {
   };
 
   logout = () => {
-    // Modal.alert('确定退出吗？', '', [
-    //   {
-    //     text: '取消',
-    //     onPress: () => console.log('cancel'),
-    //     style: 'cancel'
-    //   },
-    //   {
-    //     text: '确定',
-    //     onPress: () => {
-    //       this.submitLogout();
-    //     }
-    //   }
-    // ]);
+    Modal.alert('确定退出吗？', '', [
+      {
+        text: '取消',
+        style: 'cancel'
+      },
+      {
+        text: '确定',
+        onPress: () => {
+          this.submitLogout();
+        }
+      }
+    ]);
   };
 
   submitLogout = () => {

@@ -1,15 +1,3 @@
-import Toast from 'react-native-root-toast';
+import { Toast } from '@ant-design/react-native';
 
-export default class CustomToast {
-  static show(message: string) {
-    return (
-      Toast.show(message, {
-        duration: Toast.durations.LONG,
-        position: Toast.positions.CENTER,
-        shadow: true,
-        animation: true
-      })
-    )
-  }
-    
-}
+export default Toast;

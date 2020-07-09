@@ -84,4 +84,5 @@ export interface IUserInfo extends IAuthor {
   headline?: string;
   following_number?: number;
   followers_number?: number;
+  address?: string;
 }

@@ -1,14 +1,13 @@
 import React from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
-import { ListItem } from 'react-native-elements';
 import { Modal } from '@ant-design/react-native';
 
 import { MainStackNavigation } from '@/navigator/MainNavigation';
 import { Navigator } from '@/utils/index';
 import { RootState } from '@/models/index';
-import { Button, WhiteSpace } from '@/components/index';
-import Icon from '@/assets/iconfont';
+import { Avatar, List, Button, WhiteSpace } from '@/components/index';
+const Item = List.Item;
 
 const mapStateToProps = (state: RootState) => ({
   currentUser: state.account.currentUser
@@ -26,13 +25,14 @@ class Setting extends React.Component<IProps> {
   renderAccount = () => {
     const { currentUser } = this.props;
     return (
-      <ListItem
-        title={currentUser.nickname}
-        leftAvatar={{ source: { uri: currentUser.avatar_url } }}
-        rightIcon={<Icon name="icon-arrow-right" size={30} color="#999" />}
-        onPress={() => this.goPage('SettingProfile')}
-        bottomDivider
-      />
+      <List>
+        <Item
+          thumb={<Avatar url={currentUser.avatar_url} />}
+          arrow="horizontal"
+          onPress={() => this.goPage('SettingProfile')}>
+          {currentUser.nickname}
+        </Item>
+      </List>
     );
   };
 
@@ -64,7 +64,7 @@ class Setting extends React.Component<IProps> {
 
   render() {
     return (
-      <ScrollView>
+      <ScrollView style={styles.container}>
         {this.renderAccount()}
         <WhiteSpace size="xl" />
         <View style={styles.logout}>
@@ -82,6 +82,9 @@ class Setting extends React.Component<IProps> {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
   logout: {
     paddingVertical: 10,
     alignItems: 'center'

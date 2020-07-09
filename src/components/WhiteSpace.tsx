@@ -2,17 +2,18 @@
  * 上下留白
  */
 import React from 'react';
-import { View } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
 type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 
 interface WhiteSpaceProps {
   backgroundColor?: string;
   size?: Size;
+  text?: string;
 }
 
 const WhiteSpace: React.FC<WhiteSpaceProps> = React.memo(props => {
-  const { size, backgroundColor = 'trannsparent' } = props;
+  const { size, backgroundColor, text } = props;
   let height = 10;
   switch (size) {
     case 'xs':
@@ -36,11 +37,27 @@ const WhiteSpace: React.FC<WhiteSpaceProps> = React.memo(props => {
     default:
       break;
   }
-  return <View style={{ height, backgroundColor }} />;
+  return (
+    <View style={[styles.container, { height, backgroundColor }]}>
+      <Text style={styles.text}>{text}</Text>
+    </View>
+  );
 });
 
 WhiteSpace.defaultProps = {
+  backgroundColor: 'trannsparent',
   size: 'md'
-}
+};
+
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 14,
+    justifyContent: 'center'
+  },
+  text: {
+    fontSize: 12,
+    color: 'rgb(136, 136, 136)'
+  }
+})
 
 export default WhiteSpace;

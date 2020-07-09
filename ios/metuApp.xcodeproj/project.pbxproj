@@ -22,6 +22,8 @@
 		A72414320A18EB2EF00EDAD5 /* libPods-metuApp-metuAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 61B5E8212B43BD5D3E76F5D1 /* libPods-metuApp-metuAppTests.a */; };
 		FF78D70E24ADE2A600D5CEF6 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF78D70D24ADE2A600D5CEF6 /* Launch Screen.storyboard */; };
 		FF8BAC5824B409F500297D63 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FF8BAC5724B409F500297D63 /* Config.xcconfig */; };
+		FFF7E4A424B69FFC0083AF31 /* antfill.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FFF7E4A324B69FFC0083AF31 /* antfill.ttf */; settings = {ASSET_TAGS = (New, ); }; };
+		FFF7E4A624B6A0030083AF31 /* antoutline.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FFF7E4A524B6A0030083AF31 /* antoutline.ttf */; settings = {ASSET_TAGS = (New, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +73,8 @@
 		FD6D9CDDB22D4A1E9957EF6D /* Pods-metuApp-metuAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-metuApp-metuAppTests.release.xcconfig"; path = "Target Support Files/Pods-metuApp-metuAppTests/Pods-metuApp-metuAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		FF78D70D24ADE2A600D5CEF6 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		FF8BAC5724B409F500297D63 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		FFF7E4A324B69FFC0083AF31 /* antfill.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = antfill.ttf; sourceTree = "<group>"; };
+		FFF7E4A524B6A0030083AF31 /* antoutline.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = antoutline.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +133,8 @@
 		13B07FAE1A68108700A75B9A /* metuApp */ = {
 			isa = PBXGroup;
 			children = (
+				FFF7E4A524B6A0030083AF31 /* antoutline.ttf */,
+				FFF7E4A324B69FFC0083AF31 /* antfill.ttf */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -293,6 +299,9 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					New,
+				);
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -300,6 +309,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = B3LXBJ5QT8;
 						LastSwiftMigration = 1120;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -347,9 +357,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF8BAC5824B409F500297D63 /* Config.xcconfig in Resources */,
+				FFF7E4A624B6A0030083AF31 /* antoutline.ttf in Resources */,
 				FF78D70E24ADE2A600D5CEF6 /* Launch Screen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				FFF7E4A424B69FFC0083AF31 /* antfill.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -753,6 +765,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B3LXBJ5QT8;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -780,6 +793,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B3LXBJ5QT8;
 				INFOPLIST_FILE = metuApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (

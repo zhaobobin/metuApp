@@ -120,6 +120,11 @@ export default class Item extends React.Component<ListItemProps, any> {
               alignItems: 'flex-end'
             };
           }
+          const hasAvatar =
+            (thumb && typeof thumb !== 'string') || typeof extra !== 'string'
+              ? itemStyles.hasThumb
+              : null;
+          const columnStyle = [itemStyles.column, hasAvatar];
 
           let contentDom;
           if (Array.isArray(children)) {
@@ -138,15 +143,13 @@ export default class Item extends React.Component<ListItemProps, any> {
                 );
               }
             });
-            contentDom = (
-              <View style={[itemStyles.column]}>{tempContentDom}</View>
-            );
+            contentDom = <View style={columnStyle}>{tempContentDom}</View>;
           } else {
             if (children && React.isValidElement(children)) {
-              contentDom = <View style={[itemStyles.column]}>{children}</View>;
+              contentDom = <View style={columnStyle}>{children}</View>;
             } else {
               contentDom = (
-                <View style={[itemStyles.column]}>
+                <View style={columnStyle}>
                   <Text style={[itemStyles.Content]} {...numberOfLines}>
                     {children}
                   </Text>
@@ -157,6 +160,7 @@ export default class Item extends React.Component<ListItemProps, any> {
 
           let extraDom;
           if (extra) {
+            //(extraAvatar)
             extraDom = (
               <View style={[itemStyles.column]}>
                 <Text style={[itemStyles.Extra]} {...numberOfLines}>

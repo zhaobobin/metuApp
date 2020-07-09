@@ -19,6 +19,7 @@ export interface ListStyle {
   multipleLine: ViewStyle;
   multipleThumb: ImageStyle;
   column: ViewStyle;
+  hasThumb: ViewStyle;
 }
 export default (variables: Theme) =>
   StyleSheet.create<ListStyle>({
@@ -117,6 +118,9 @@ export default (variables: Theme) =>
     column: {
       flex: 1,
       flexDirection: 'column',
-      paddingVertical: 15,
+      paddingVertical: 15
     },
+    hasThumb: {
+      paddingVertical: 25
+    }
   });

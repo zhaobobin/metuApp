@@ -1,13 +1,11 @@
 import React from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
-import { Modal } from '@ant-design/react-native';
 
 import { MainStackNavigation } from '@/navigator/MainNavigation';
 import { Navigator } from '@/utils/index';
 import { RootState } from '@/models/index';
-import { Avatar, List, Button, WhiteSpace } from '@/components/index';
-const Item = List.Item;
+import { Avatar, List, ListItem, Button, WhiteSpace, Modal } from '@/components/index';
 
 const mapStateToProps = (state: RootState) => ({
   currentUser: state.account.currentUser
@@ -26,12 +24,12 @@ class Setting extends React.Component<IProps> {
     const { currentUser } = this.props;
     return (
       <List>
-        <Item
+        <ListItem
           thumb={<Avatar url={currentUser.avatar_url} />}
           arrow="horizontal"
           onPress={() => this.goPage('SettingProfile')}>
           {currentUser.nickname}
-        </Item>
+        </ListItem>
       </List>
     );
   };

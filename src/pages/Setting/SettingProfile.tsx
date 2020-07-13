@@ -3,8 +3,7 @@ import { ScrollView } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { Navigator } from '@/utils/index';
 import { RootState } from '@/models/index';
-import { Avatar, List } from '@/components/index';
-const Item = List.Item;
+import { Avatar, List, ListItem } from '@/components/index';
 
 const mapStateToProps = (state: RootState) => ({
   currentUser: state.account.currentUser
@@ -28,39 +27,39 @@ class SettingProfile extends React.Component<IProps> {
     return (
       <ScrollView style={{ flex: 1 }}>
         <List>
-          <Item
+          <ListItem
             extra={<Avatar url={currentUser.avatar_url} />}
             arrow="horizontal"
             onPress={this.showAvatarMenu}>
             头像
-          </Item>
-          <Item
+          </ListItem>
+          <ListItem
             extra={currentUser.nickname}
             onPress={() => this.goPage('editNickname')}
             arrow="horizontal">
             昵称
-          </Item>
-          <Item
+          </ListItem>
+          <ListItem
             extra={currentUser.address}
             onPress={() => this.goPage('editAddress')}
             arrow="horizontal">
             居住地
-          </Item>
-          <Item
+          </ListItem>
+          <ListItem
             extra={currentUser.mobile}
             onPress={() => this.goPage('editMobile')}
             arrow="horizontal">
             手机号
-          </Item>
-          <Item onPress={() => this.goPage('editPassword')} arrow="horizontal">
+          </ListItem>
+          <ListItem onPress={() => this.goPage('editPassword')} arrow="horizontal">
             密码
-          </Item>
+          </ListItem>
         </List>
 
         <List renderHeader={'社交账号绑定'}>
-          <Item arrow="horizontal">微信</Item>
-          <Item arrow="horizontal">微博</Item>
-          <Item arrow="horizontal">QQ</Item>
+          <ListItem arrow="horizontal">微信</ListItem>
+          <ListItem arrow="horizontal">微博</ListItem>
+          <ListItem arrow="horizontal">QQ</ListItem>
         </List>
       </ScrollView>
     );

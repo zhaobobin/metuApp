@@ -9,7 +9,7 @@ export interface ListProps extends ListPropsType, WithThemeStyles<ListStyle> {
   style?: StyleProp<ViewStyle>;
 }
 
-export default class List extends React.Component<ListProps, any> {
+class List extends React.Component<ListProps, any> {
   static Item = Item;
 
   render() {
@@ -64,3 +64,7 @@ export default class List extends React.Component<ListProps, any> {
     );
   }
 }
+
+export const ListItem = List.Item;
+
+export default List;

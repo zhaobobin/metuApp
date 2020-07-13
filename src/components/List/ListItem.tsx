@@ -121,7 +121,8 @@ export default class Item extends React.Component<ListItemProps, any> {
             };
           }
           const hasAvatar =
-            (thumb && typeof thumb !== 'string') || typeof extra !== 'string'
+            (thumb && typeof thumb !== 'string') ||
+            (extra && typeof extra !== 'string')
               ? itemStyles.hasThumb
               : null;
           const columnStyle = [itemStyles.column, hasAvatar];

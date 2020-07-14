@@ -1492,6 +1492,11 @@ ajv@^6.10.0, ajv@^6.10.2, ajv@^6.5.5:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
+aliyun-oss-react-native@^1.0.0-alpha.7:
+  version "1.0.0-alpha.7"
+  resolved "https://registry.npm.taobao.org/aliyun-oss-react-native/download/aliyun-oss-react-native-1.0.0-alpha.7.tgz#62f25ccd90ac0cff983c62f6f939d1862092ab4e"
+  integrity sha1-YvJczZCsDP+YPGL2+TnRhiCSq04=
+
 anser@^1.4.9:
   version "1.4.9"
   resolved "https://registry.npm.taobao.org/anser/download/anser-1.4.9.tgz#1f85423a5dcf8da4631a341665ff675b96845760"

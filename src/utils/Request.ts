@@ -5,7 +5,8 @@
  */
 import { Base64 } from 'js-base64';
 import Config from 'react-native-config';
-import { ENV, Storage } from '@/utils/index';
+import ENV from '@/config/env';
+import Storage from '@/utils/Storage';
 
 type RequestMethod = 'get' | 'post' | 'put' | 'patch' | 'delete';
 interface IOptions {
@@ -54,6 +55,18 @@ export default async function Request(options: IOptions) {
 
   return fetch(url, options)
     .then(checkStatus)
+    .then(response => response.json())
+    .catch(error => {
+      return error;
+    });
+}
+
+export function FetchGet(url: string) {
+  let option = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  };
+  return fetch(url, option)
     .then(response => response.json())
     .catch(error => {
       return error;

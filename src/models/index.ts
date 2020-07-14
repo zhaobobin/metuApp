@@ -5,8 +5,9 @@ import photo, { IPhotoState } from './photo';
 import user, { IUserState } from './user';
 import account, { IAccountState } from './account';
 import message, { IMessageState } from './message';
+import oss, { IOssState } from './oss';
 
-const models = [home, category, photo, user, account, message];
+const models = [home, category, photo, user, account, message, oss];
 
 export type RootState = {
   loading: DvaLoadingState;
@@ -16,6 +17,7 @@ export type RootState = {
   user: IUserState;
   account: IAccountState;
   message: IMessageState;
+  oss: IOssState;
 };
 
 export default models;

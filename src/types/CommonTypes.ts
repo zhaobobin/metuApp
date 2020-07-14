@@ -86,3 +86,17 @@ export interface IUserInfo extends IAuthor {
   followers_number?: number;
   address?: string;
 }
+
+export interface IImagePickerResponse {
+  didCancel?: boolean;
+  data?: string;
+  error?: any;
+  fileName?: string;
+  fileSize?: number;
+  height?: number;
+  isVertical?: boolean;
+  origURL?: string;
+  type?: string;
+  uri?: string;
+  width?: number;
+}

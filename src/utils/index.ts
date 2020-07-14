@@ -3,7 +3,7 @@ import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper';
 import ENV from '@/config/env';
 import { Encrypt, Decrypt } from '@/utils/Crypto';
 import Navigator from '@/utils/Navigator';
-import Request from '@/utils/Request';
+import Request, { FetchGet } from '@/utils/Request';
 import Storage from '@/utils/Storage';
 import Validator from '@/utils/Validator';
 
@@ -33,6 +33,7 @@ export {
   Decrypt,
   Navigator,
   Request,
+  FetchGet,
   Storage,
   Validator
 };

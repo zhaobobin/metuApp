@@ -1,11 +1,12 @@
 import React from 'react';
-import { ScrollView, Platform } from 'react-native';
+import { ScrollView } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { Navigator } from '@/utils/index';
 import { RootState } from '@/models/index';
-import { Avatar, List, ListItem, ImagePicker } from '@/components/index';
+import { Avatar, List, ListItem, ImagePicker, Toast } from '@/components/index';
 
 const mapStateToProps = (state: RootState) => ({
+  loading: state.loading.effects['oss/upload'],
   currentUser: state.account.currentUser
 });
 
@@ -21,8 +22,30 @@ class SettingProfile extends React.Component<IProps> {
   };
 
   showAvatarMenu = () => {
-    const imgUrl = ImagePicker();
-    console.log(imgUrl)
+    ImagePicker()
+      .then((response: any) => {
+        // const base64 = 'data:image/jpeg;base64,' + response.data;
+        let option = {
+          uid: this.props.currentUser._id,
+          category: 'avatar',
+          unix: new Date().getTime(),
+          type: response.type.split('/')[1],
+        };
+        let key = option.uid + '/' + option.category + '_' + option.unix + '.' + option.type;
+        this.props.dispatch({
+          type: 'oss/upload',
+          payload: {
+            key,
+            file: response.uri
+          },
+          callback: (url: string) => {
+            console.log(url)
+          }
+        });
+      })
+      .catch(err => {
+        Toast.show(err);
+      });
   };
 
   render() {
@@ -54,7 +77,9 @@ class SettingProfile extends React.Component<IProps> {
             arrow="horizontal">
             手机号
           </ListItem>
-          <ListItem onPress={() => this.goPage('editPassword')} arrow="horizontal">
+          <ListItem
+            onPress={() => this.goPage('editPassword')}
+            arrow="horizontal">
             密码
           </ListItem>
         </List>

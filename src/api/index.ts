@@ -7,3 +7,5 @@ export * from './photo';
 export * from './user';
 
 export * from './message';
+
+export * from './oss';

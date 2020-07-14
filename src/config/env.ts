@@ -71,6 +71,7 @@ export default {
     weiboLoginState: 'metuApp-WeiboLoginState', // 微博授权登录state
     qqLoginState: 'metuApp-QqLoginState', // QQ授权登录state
 
-    accountAuth: 'metuApp-accountAuth' // 帐号身份验证
+    accountAuth: 'metuApp-accountAuth', // 帐号身份验证
+    ossToken: 'metuApp-ossToken' // ossToken
   }
 };

@@ -1,4 +1,8 @@
 PODS:
+  - aliyun-oss-react-native (1.0.0-alpha.7):
+    - AliyunOSSiOS
+    - React
+  - AliyunOSSiOS (2.10.8)
   - boost-for-react-native (1.63.0)
   - BVLinearGradient (2.5.6):
     - React
@@ -335,6 +339,7 @@ PODS:
     - Yoga (~> 1.14)
 
 DEPENDENCIES:
+  - aliyun-oss-react-native (from `../node_modules/aliyun-oss-react-native`)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -404,6 +409,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - AliyunOSSiOS
     - boost-for-react-native
     - CocoaAsyncSocket
     - CocoaLibEvent
@@ -418,6 +424,8 @@ SPEC REPOS:
     - YogaKit
 
 EXTERNAL SOURCES:
+  aliyun-oss-react-native:
+    :path: "../node_modules/aliyun-oss-react-native"
   BVLinearGradient:
     :path: "../node_modules/react-native-linear-gradient"
   DoubleConversion:
@@ -508,6 +516,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  aliyun-oss-react-native: dfcf527949b80bb7feeecac43407e5168b2c0ae2
+  AliyunOSSiOS: 8db92936545593b9e5c66d680ef2ac0738946651
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
   CocoaAsyncSocket: 694058e7c0ed05a9e217d1b3c7ded962f4180845

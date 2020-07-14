@@ -1,9 +1,9 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, Platform } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { Navigator } from '@/utils/index';
 import { RootState } from '@/models/index';
-import { Avatar, List, ListItem } from '@/components/index';
+import { Avatar, List, ListItem, ImagePicker } from '@/components/index';
 
 const mapStateToProps = (state: RootState) => ({
   currentUser: state.account.currentUser
@@ -20,7 +20,10 @@ class SettingProfile extends React.Component<IProps> {
     Navigator.goPage(routeName);
   };
 
-  showAvatarMenu = () => {};
+  showAvatarMenu = () => {
+    const imgUrl = ImagePicker();
+    console.log(imgUrl)
+  };
 
   render() {
     const { currentUser } = this.props;

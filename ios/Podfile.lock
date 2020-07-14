@@ -241,6 +241,8 @@ PODS:
     - React
   - react-native-config (1.2.1):
     - React
+  - react-native-image-picker (2.3.2):
+    - React
   - react-native-safe-area-context (3.0.3):
     - React
   - react-native-segmented-control (2.1.0):
@@ -372,6 +374,7 @@ DEPENDENCIES:
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
   - react-native-config (from `../node_modules/react-native-config`)
+  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-segmented-control (from `../node_modules/@react-native-community/segmented-control`)"
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
@@ -451,6 +454,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/cameraroll"
   react-native-config:
     :path: "../node_modules/react-native-config"
+  react-native-image-picker:
+    :path: "../node_modules/react-native-image-picker"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-segmented-control:
@@ -532,6 +537,7 @@ SPEC CHECKSUMS:
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-cameraroll: ae0a7c0cc8462508855707ff623b1e789b692865
   react-native-config: ae9ef3bdbf539f2d14ebaf4ebeba508f766e066a
+  react-native-image-picker: 97bd3430fc91c7d1b82a51cf03a2a4e99e91c0b8
   react-native-safe-area-context: 45e98227f3d65b31d384a5d0950aec4bf73a884c
   react-native-segmented-control: 4ce904755f67bf17d5250d265d57e40db045ac34
   react-native-slider: 12bd76d3d568c9c5500825db54123d44b48e4ad4

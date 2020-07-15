@@ -25,13 +25,13 @@ class SettingProfile extends React.Component<IProps> {
     ImagePicker()
       .then((response: any) => {
         // const base64 = 'data:image/jpeg;base64,' + response.data;
-        let option = {
+        const option = {
           uid: this.props.currentUser._id,
           category: 'avatar',
           unix: new Date().getTime(),
           type: response.type.split('/')[1],
         };
-        let key = option.uid + '/' + option.category + '_' + option.unix + '.' + option.type;
+        const key = `${option.uid}/${option.category}.${option.type}`;
         this.props.dispatch({
           type: 'oss/upload',
           payload: {

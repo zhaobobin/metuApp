@@ -1,5 +1,3 @@
-import React from 'react';
-import { PermissionsAndroid, Platform, Text, View } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import { IImagePickerResponse } from '@/types/CommonTypes';
 

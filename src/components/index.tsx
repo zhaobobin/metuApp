@@ -1,8 +1,9 @@
+export { default as ActionSheet } from './ActionSheet';
 export { default as Avatar } from './Avatar';
 export { default as Button } from './Button';
 export { default as Empty } from './Empty';
 export { default as Icon } from './Icon';
-export { default as ImagePicker } from './ImagePicker';
+export { pickAvatarImage, selectAvatar, selectBanner } from './ImagePicker';
 export { default as List } from './List';
 export { ListItem } from './List';
 export { default as Modal } from './Modal';

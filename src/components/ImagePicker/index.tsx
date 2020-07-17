@@ -1,32 +1,106 @@
-import ImagePicker from 'react-native-image-picker';
-import { IImagePickerResponse } from '@/types/CommonTypes';
+/**
+ * https://github.com/ivpusic/react-native-image-crop-picker
+ */
+import ImagePicker from 'react-native-image-crop-picker';
+import { ActionSheet } from '@/components/index';
 
-const options = {
-  title: '选择图片',
-  takePhotoButtonTitle: '拍照',
-  chooseFromLibraryButtonTitle: '选择相册',
-  cancelButtonTitle: '取消',
-  allowsEditing: true,
-  noData: false,
-  storageOptions: {
-    skipBackup: true,
-    path: 'images'
-  }
-};
+type pickCallback = (image: any) => void;
 
-export default () => {
-  return new Promise((reject, reslove) => {
-    ImagePicker.showImagePicker(options, (response: IImagePickerResponse) => {
-      if (response.didCancel) {
-        reslove('User cancelled image picker');
-      } else if (response.error) {
-        reslove(response.error);
-      } else {
-        // const source = { uri: response.uri };
-        // You can also display the image using data:
-        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-        reject(response);
+export function pickAvatarImage(callback: pickCallback) {
+  const BUTTONS = ['使用微信头像', '拍照上传', '选择相册', '取消'];
+  ActionSheet.showActionSheetWithOptions(
+    {
+      title: '选择图片',
+      options: BUTTONS,
+      destructiveButtonIndex: 3
+    },
+    buttonIndex => {
+      switch (buttonIndex) {
+        case 0:
+          break;
+        case 1:
+          openCamera()
+            .then(image => {
+              callback(image);
+            })
+            .catch(err => {
+              console.log(err);
+            });
+          break;
+        case 2:
+          selectAvatar()
+            .then(image => {
+              callback(image);
+            })
+            .catch(err => {
+              console.log(err);
+            });
+          break;
+        default:
+          break;
       }
-    });
+    }
+  );
+}
+
+export function openCamera() {
+  return new Promise((reslove, reject) => {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      cropping: true
+    })
+      .then(image => {
+        reslove(image);
+      })
+      .catch(err => {
+        reject(err);
+      });
   });
-};
+}
+
+export function selectAvatar() {
+  return new Promise((reslove, reject) => {
+    ImagePicker.openPicker({
+      width: 400,
+      height: 400,
+      cropping: true
+    })
+      .then(image => {
+        reslove(image);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+}
+
+export function selectBanner() {
+  return new Promise((reslove, reject) => {
+    ImagePicker.openPicker({
+      width: 800,
+      height: 400,
+      cropping: true
+    })
+      .then(image => {
+        reslove(image);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+}
+
+export function selectPhotos() {
+  return new Promise((reslove, reject) => {
+    ImagePicker.openPicker({
+      multiple: true
+    })
+      .then(image => {
+        reslove(image);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+}

@@ -88,15 +88,18 @@ export interface IUserInfo extends IAuthor {
 }
 
 export interface IImagePickerResponse {
-  didCancel?: boolean;
-  data?: string;
-  error?: any;
-  fileName?: string;
-  fileSize?: number;
-  height?: number;
-  isVertical?: boolean;
-  origURL?: string;
-  type?: string;
-  uri?: string;
-  width?: number;
+  creationDate: string;
+  cropRect: { height: 1904; width: 1904; x: 2381; y: 473 };
+  data?: any;
+  duration?: any;
+  exif?: any;
+  filename: string;
+  localIdentifier: string;
+  mime: string;
+  modificationDate?: string;
+  path: string;
+  sourceURL?: string;
+  width: number;
+  height: number;
+  size: number;
 }

@@ -3,7 +3,8 @@ import { ScrollView } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { Navigator } from '@/utils/index';
 import { RootState } from '@/models/index';
-import { Avatar, List, ListItem, ImagePicker, Toast } from '@/components/index';
+import { Avatar, List, ListItem, pickAvatarImage } from '@/components/index';
+import { IImagePickerResponse } from '@/types/CommonTypes';
 
 const mapStateToProps = (state: RootState) => ({
   loading: state.loading.effects['oss/upload'],
@@ -22,30 +23,38 @@ class SettingProfile extends React.Component<IProps> {
   };
 
   showAvatarMenu = () => {
-    ImagePicker()
-      .then((response: any) => {
-        // const base64 = 'data:image/jpeg;base64,' + response.data;
-        const option = {
-          uid: this.props.currentUser._id,
-          category: 'avatar',
-          unix: new Date().getTime(),
-          type: response.type.split('/')[1],
-        };
-        const key = `${option.uid}/${option.category}.${option.type}`;
-        this.props.dispatch({
-          type: 'oss/upload',
-          payload: {
-            key,
-            file: response.uri
-          },
-          callback: (url: string) => {
-            console.log(url)
-          }
-        });
-      })
-      .catch(err => {
-        Toast.show(err);
-      });
+    pickAvatarImage((image: IImagePickerResponse) => {
+      this.uploadOss(image);
+    });
+  };
+
+  uploadOss = (image: IImagePickerResponse) => {
+    const option = {
+      uid: this.props.currentUser._id,
+      category: 'avatar',
+      unix: new Date().getTime(),
+      type: image.mime.split('/')[1]
+    };
+    const key = `${option.uid}/${option.category}.${option.type}`;
+    this.props.dispatch({
+      type: 'oss/upload',
+      payload: {
+        key,
+        file: image.path
+      },
+      callback: (url: string) => {
+        this.updateAvatar(url);
+      }
+    });
+  }
+
+  updateAvatar = (url: string) => {
+    this.props.dispatch({
+      type: 'account/updateAvatar',
+      payload: {
+        url
+      }
+    });
   };
 
   render() {

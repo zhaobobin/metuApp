@@ -5,7 +5,6 @@ import { IUserInfo } from '@/types/CommonTypes';
 
 export interface IUserState {
   userDetail: IUserInfo;
-  accountDetail: IUserInfo;
 }
 
 interface UserModel extends Model {
@@ -24,21 +23,6 @@ const userModel: UserModel = {
 
   state: {
     userDetail: {
-      _id: '',
-      type: '',
-      level: 0,
-      point: 0,
-      status: 0,
-      tags: [],
-      following_number: 0,
-      followers_number: 0,
-      mobile: '',
-      nickname: '',
-      username: '',
-      create_at: '',
-      update_at: ''
-    },
-    accountDetail: {
       _id: '',
       type: '',
       level: 0,

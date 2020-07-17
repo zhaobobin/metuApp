@@ -3,6 +3,7 @@ import { Reducer } from 'redux';
 import { userApi } from '@/api/index';
 import { IUserInfo } from '@/types/CommonTypes';
 import { ENV, Storage } from '@/utils/index';
+import { Toast } from '@/components/index';
 
 export interface IAccountState {
   isAuth: boolean; // 登录状态
@@ -19,6 +20,8 @@ interface UserModel extends Model {
     smscode: Effect;
     logout: Effect;
     queryAccountDetail: Effect;
+    updateAvatar: Effect;
+    updateCover: Effect;
   };
   reducers: {
     setState: Reducer<IAccountState>;
@@ -105,7 +108,7 @@ const userModel: UserModel = {
       }
     },
 
-    *smscode({payload, callback}, { call }) {
+    *smscode({ payload, callback }, { call }) {
       const res = yield call(userApi.smscode, payload);
       yield callback(res);
     },
@@ -125,12 +128,48 @@ const userModel: UserModel = {
       const res = yield call(userApi.getUserDetail, {
         id: payload.id
       });
-      yield put({
-        type: 'setState',
-        payload: {
-          userDetail: res.data
-        }
+      if (res.code === 0) {
+        yield put({
+          type: 'setState',
+          payload: {
+            currentUser: res.data
+          }
+        });
+      } else {
+        Toast.show(res.messge);
+      }
+    },
+
+    *updateAvatar({ payload }, { call, put }) {
+      const res = yield call(userApi.updateAvatar, {
+        url: payload.url
       });
+      if (res.code === 0) {
+        yield put({
+          type: 'setState',
+          payload: {
+            currentUser: res.data
+          }
+        });
+      } else {
+        Toast.show(res.messge);
+      }
+    },
+
+    *updateCover({ payload }, { call, put }) {
+      const res = yield call(userApi.updateCover, {
+        url: payload.url
+      });
+      if (res.code === 0) {
+        yield put({
+          type: 'setState',
+          payload: {
+            currentUser: res.data
+          }
+        });
+      } else {
+        Toast.show(res.messge);
+      }
     }
   },
 

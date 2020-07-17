@@ -10,7 +10,7 @@ const Avatar: React.FC<AvatarProps> = props => {
   return (
     <Image
       source={{
-        uri: props.url
+        uri: `${props.url}?v=${Math.random()}`
       }}
       style={[styles.avatar, props.style]}
     />

@@ -32,7 +32,7 @@ for (const i in Routes) {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  loading: state.loading.effects['user/queryUserDetail'],
+  loading: state.loading.effects['account/queryUserDetail'],
   currentUser: state.account.currentUser
 });
 
@@ -70,7 +70,7 @@ class AccountDetail extends React.Component<IProps, IState> {
 
   getAccountDetail = (userId: string) => {
     this.props.dispatch({
-      type: 'user/queryAccountDetail',
+      type: 'account/queryAccountDetail',
       payload: {
         id: userId
       }
@@ -84,9 +84,13 @@ class AccountDetail extends React.Component<IProps, IState> {
       <View style={[styles.header, { paddingTop: headerTopHeight }]}>
         {loading ? null : (
           <Image
-            source={{
-              uri: currentUser.cover_url + '?x-oss-process=style/thumb'
-            }}
+            source={
+              currentUser.cover_url
+                ? {
+                    uri: currentUser.cover_url + '?x-oss-process=style/thumb'
+                  }
+                : require('@/assets/banner.jpg')
+            }
             style={styles.coverView}
           />
         )}
@@ -97,7 +101,7 @@ class AccountDetail extends React.Component<IProps, IState> {
         />
         <View style={styles.leftView}>
           <Image
-            source={{ uri: currentUser.avatar_url }}
+            source={{ uri: `${currentUser.avatar_url}?v=${Math.random()}` }}
             style={styles.avatar}
           />
         </View>
@@ -209,7 +213,9 @@ const styles = StyleSheet.create({
     height: HEADER_HEIGHT,
     flexDirection: 'row',
     paddingHorizontal: 20,
-    paddingBottom: 40
+    paddingBottom: 40,
+    position: 'relative',
+    overflow: 'hidden'
   },
   coverView: {
     ...StyleSheet.absoluteFillObject,

@@ -6005,10 +6005,10 @@ react-native-iconfont-cli@^2.0.0:
     mkdirp "^0.5.1"
     tslib "^1.10.0"
 
-react-native-image-picker@^2.3.2:
-  version "2.3.2"
-  resolved "https://registry.npm.taobao.org/react-native-image-picker/download/react-native-image-picker-2.3.2.tgz#ddfb257fd0cf2bf7f4b1887477a88265e0720c83"
-  integrity sha1-3fslf9DPK/f0sYh0d6iCZeByDIM=
+react-native-image-crop-picker@^0.32.2:
+  version "0.32.2"
+  resolved "https://registry.npm.taobao.org/react-native-image-crop-picker/download/react-native-image-crop-picker-0.32.2.tgz?cache=0&sync_timestamp=1593868604759&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Freact-native-image-crop-picker%2Fdownload%2Freact-native-image-crop-picker-0.32.2.tgz#862bddc99f7a8e17b7f584846a0c46bfad233917"
+  integrity sha1-hivdyZ96jhe39YSEagxGv60jORc=
 
 react-native-iphone-x-helper@^1.2.1:
   version "1.2.1"

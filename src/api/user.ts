@@ -46,5 +46,25 @@ export const userApi = {
         include: params.include
       }
     });
+  },
+
+  updateAvatar: (params: { url: string }) => {
+    return Request({
+      url: '/user/avatar',
+      method: 'post',
+      params: {
+        avatar_url: params.url
+      }
+    });
+  },
+
+  updateCover: (params: { url: string }) => {
+    return Request({
+      url: '/user/cover',
+      method: 'post',
+      params: {
+        cover_url: params.url
+      }
+    });
   }
 };

@@ -16,6 +16,7 @@ import { MainStackNavigation } from '@/navigator/MainNavigation';
 import { RootState } from '@/models/index';
 import { IPhoto } from '@/types/CommonTypes';
 import { Empty } from '@/components/index';
+import { Navigator } from '@/utils/index';
 import Carousel from './Carsouel';
 import ChannelItem from './ChannelItem';
 import { sliderHeight } from './Carsouel';
@@ -82,7 +83,8 @@ class Editor extends React.Component<IProps, IState> {
   };
 
   goPhotoDetail = (item: IPhoto) => {
-    this.props.navigation.navigate('PhotoDetail', { item });
+    Navigator.goPage('PhotoScreen', { item });
+    // this.props.navigation.navigate('PhotoDetail', { item });
   };
 
   _keyExtractor = (item: IPhoto) => item._id;

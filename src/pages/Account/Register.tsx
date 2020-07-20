@@ -68,7 +68,6 @@ interface IProps extends ModelState {}
 
 interface IState {
   title: string;
-  loginType: 'psd' | 'sms';
   checked: boolean;
 }
 
@@ -77,7 +76,6 @@ class Register extends React.Component<IProps, IState> {
     super(props);
     this.state = {
       title: '用户注册',
-      loginType: 'psd',
       checked: true
     };
   }
@@ -100,7 +98,6 @@ class Register extends React.Component<IProps, IState> {
     if (payload.smscode) {
       payload.smscode = Encrypt(payload.mobile, payload.smscode);
     }
-    payload.loginType = this.state.loginType;
     this.props.dispatch({
       type: 'account/register',
       payload,

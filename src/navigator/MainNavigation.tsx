@@ -20,6 +20,10 @@ import Search from '@/pages/Search/index';
 import Category from '@/pages/Category/index';
 import Setting from '@/pages/Setting/index';
 import SettingProfile from '@/pages/Setting/SettingProfile';
+import SettingProfileNickname from '@/pages/Setting/SettingProfileNickname';
+import SettingProfileHeadline from '@/pages/Setting/SettingProfileHeadline';
+import SettingProfileMobile from '@/pages/Setting/SettingProfileMobile';
+import SettingProfilePassword from '@/pages/Setting/SettingProfilePassword';
 
 export type MainStackParamList = {
   BottomTabs: {
@@ -35,6 +39,10 @@ export type MainStackParamList = {
   Category: undefined;
   Setting: undefined;
   SettingProfile: undefined;
+  SettingProfileNickname: undefined;
+  SettingProfileHeadline: undefined;
+  SettingProfileMobile: undefined;
+  SettingProfilePassword: undefined;
 };
 
 export type MainStackNavigation = StackNavigationProp<MainStackParamList>;
@@ -95,6 +103,26 @@ export default function MainScreen() {
         name="SettingProfile"
         component={SettingProfile}
         options={{ headerTitle: '个人信息' }}
+      />
+      <MainStack.Screen
+        name="SettingProfileNickname"
+        component={SettingProfileNickname}
+        options={{ headerTitle: '修改昵称' }}
+      />
+      <MainStack.Screen
+        name="SettingProfileHeadline"
+        component={SettingProfileHeadline}
+        options={{ headerTitle: '修改简介' }}
+      />
+      <MainStack.Screen
+        name="SettingProfileMobile"
+        component={SettingProfileMobile}
+        options={{ headerTitle: '修改手机号' }}
+      />
+      <MainStack.Screen
+        name="SettingProfilePassword"
+        component={SettingProfilePassword}
+        options={{ headerTitle: '修改密码' }}
       />
     </MainStack.Navigator>
   );

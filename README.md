@@ -73,3 +73,11 @@ or
 ```
 yarn build
 ```
+
+#### react-navigation TransitionPresets 动画
+
+1、PhotoDetail: ScaleFromCenterAndroid
+
+2、CommentList: ModalPresentationIOS
+
+3、Login: ModalSlideFromBottomIOS

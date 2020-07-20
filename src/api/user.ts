@@ -30,7 +30,7 @@ export const userApi = {
     });
   },
 
-  smscode: (params: { type: string, mobile: string }) => {
+  smscode: (params: { type: string; mobile: string }) => {
     return Request({
       url: '/user/smscode',
       method: 'post',
@@ -65,6 +65,38 @@ export const userApi = {
       params: {
         cover_url: params.url
       }
+    });
+  },
+
+  changeProfile: (params: { nickname?: string; headline?: string }) => {
+    return Request({
+      url: '/user/changeProfile',
+      method: 'post',
+      params: params
+    });
+  },
+
+  changeMobile: (params: { mobile: string }) => {
+    return Request({
+      url: '/user/changeMobile',
+      method: 'post',
+      params: params
+    });
+  },
+
+  changePsd: (params: { oldPassword: string; newPassword: string }) => {
+    return Request({
+      url: '/user/changePsd',
+      method: 'post',
+      params: params
+    });
+  },
+
+  resetPsd: (params: { mobile: string; password: string; smscode: string }) => {
+    return Request({
+      url: '/user/resetPsd',
+      method: 'post',
+      params: params
     });
   }
 };

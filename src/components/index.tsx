@@ -1,6 +1,7 @@
 export { default as ActionSheet } from './ActionSheet';
 export { default as Avatar } from './Avatar';
 export { default as Button } from './Button';
+export { default as CityPicker } from './CityPicker';
 export { default as Empty } from './Empty';
 export { default as Icon } from './Icon';
 export { pickAvatarImage, selectAvatar, selectBanner } from './ImagePicker';

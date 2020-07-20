@@ -4,6 +4,7 @@ import { userApi } from '@/api/index';
 import { IUserInfo } from '@/types/CommonTypes';
 import { ENV, Storage } from '@/utils/index';
 import { Toast } from '@/components/index';
+import { RootState } from './index';
 
 export interface IAccountState {
   isAuth: boolean; // 登录状态
@@ -22,6 +23,10 @@ interface UserModel extends Model {
     queryAccountDetail: Effect;
     updateAvatar: Effect;
     updateCover: Effect;
+    changeProfile: Effect;
+    changeMobile: Effect;
+    changePsd: Effect;
+    resetPsd: Effect;
   };
   reducers: {
     setState: Reducer<IAccountState>;
@@ -140,7 +145,8 @@ const userModel: UserModel = {
       }
     },
 
-    *updateAvatar({ payload }, { call, put }) {
+    *updateAvatar({ payload }, { call, put, select }) {
+      const { currentUser } = yield select((state: RootState) => state.account);
       const res = yield call(userApi.updateAvatar, {
         url: payload.url
       });
@@ -148,7 +154,7 @@ const userModel: UserModel = {
         yield put({
           type: 'setState',
           payload: {
-            currentUser: res.data
+            currentUser: Object.assign(currentUser, res.data)
           }
         });
       } else {
@@ -156,7 +162,8 @@ const userModel: UserModel = {
       }
     },
 
-    *updateCover({ payload }, { call, put }) {
+    *updateCover({ payload }, { call, put, select }) {
+      const { currentUser } = yield select((state: RootState) => state.account);
       const res = yield call(userApi.updateCover, {
         url: payload.url
       });
@@ -164,12 +171,55 @@ const userModel: UserModel = {
         yield put({
           type: 'setState',
           payload: {
-            currentUser: res.data
+            currentUser: Object.assign(currentUser, res.data)
           }
         });
       } else {
         Toast.show(res.messge);
       }
+    },
+
+    *changeProfile({ payload, callback }, { call, put, select }) {
+      const { currentUser } = yield select((state: RootState) => state.account);
+      const res = yield call(userApi.changeProfile, payload);
+      if (res.code === 0) {
+        yield put({
+          type: 'setState',
+          payload: {
+            currentUser: Object.assign(currentUser, res.data)
+          }
+        });
+      } else {
+        Toast.show(res.messge);
+      }
+      callback(res);
+    },
+
+    *changeMobile({ payload, callback }, { call }) {
+      const res = yield call(userApi.changeMobile, payload);
+      if (res.code === 0) {
+      } else {
+        Toast.show(res.messge);
+      }
+      callback(res);
+    },
+
+    *changePsd({ payload, callback }, { call }) {
+      const res = yield call(userApi.changePsd, payload);
+      if (res.code === 0) {
+      } else {
+        Toast.show(res.messge);
+      }
+      callback(res);
+    },
+
+    *resetPsd({ payload, callback }, { call }) {
+      const res = yield call(userApi.changePsd, payload);
+      if (res.code === 0) {
+      } else {
+        Toast.show(res.messge);
+      }
+      callback(res);
     }
   },
 

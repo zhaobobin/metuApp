@@ -5,7 +5,8 @@ import { Toast } from '@/components/index';
 
 // 1、创建dva实例
 const app = create({
-  onError() {
+  onError(err) {
+    console.log(err);
     Toast.show('网络异常');
   }
 });

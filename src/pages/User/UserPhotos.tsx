@@ -95,7 +95,7 @@ class UserPhotos extends React.Component<IProps, IState> {
   };
 
   goPhotoDetail = (item: IPhoto) => {
-    Navigator.goPage('PhotoDetailModal', { item });
+    Navigator.goPage('PhotoScreen', { item });
   };
 
   _keyExtractor = (item: IPhoto) => item._id;

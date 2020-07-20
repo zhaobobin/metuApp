@@ -3,7 +3,13 @@ import { ScrollView } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { Navigator } from '@/utils/index';
 import { RootState } from '@/models/index';
-import { Avatar, List, ListItem, pickAvatarImage } from '@/components/index';
+import {
+  Avatar,
+  List,
+  ListItem,
+  pickAvatarImage,
+  CityPicker
+} from '@/components/index';
 import { IImagePickerResponse } from '@/types/CommonTypes';
 
 const mapStateToProps = (state: RootState) => ({
@@ -46,7 +52,7 @@ class SettingProfile extends React.Component<IProps> {
         this.updateAvatar(url);
       }
     });
-  }
+  };
 
   updateAvatar = (url: string) => {
     this.props.dispatch({
@@ -54,6 +60,16 @@ class SettingProfile extends React.Component<IProps> {
       payload: {
         url
       }
+    });
+  };
+
+  cityPickerCallback = (value: string) => {
+    this.props.dispatch({
+      type: 'account/changeProfile',
+      payload: {
+        location: value
+      },
+      callback: () => {}
     });
   };
 
@@ -70,24 +86,32 @@ class SettingProfile extends React.Component<IProps> {
           </ListItem>
           <ListItem
             extra={currentUser.nickname}
-            onPress={() => this.goPage('editNickname')}
+            onPress={() => this.goPage('SettingProfileNickname')}
             arrow="horizontal">
             昵称
           </ListItem>
           <ListItem
-            extra={currentUser.address}
-            onPress={() => this.goPage('editAddress')}
+            extra={currentUser.headline}
+            onPress={() => this.goPage('SettingProfileHeadline')}
             arrow="horizontal">
-            居住地
+            简介
           </ListItem>
+          <CityPicker
+            value={
+              currentUser.location ? currentUser.location.split(',') : undefined
+            }
+            callback={this.cityPickerCallback}
+            >
+            <ListItem arrow="horizontal">居住地</ListItem>
+          </CityPicker>
           <ListItem
             extra={currentUser.mobile}
-            onPress={() => this.goPage('editMobile')}
+            onPress={() => this.goPage('SettingProfileMobile')}
             arrow="horizontal">
             手机号
           </ListItem>
           <ListItem
-            onPress={() => this.goPage('editPassword')}
+            onPress={() => this.goPage('SettingProfilePassword')}
             arrow="horizontal">
             密码
           </ListItem>

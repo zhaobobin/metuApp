@@ -16,7 +16,7 @@ import LoginScreen from './LoginNavigation';
 export type RootStackParamList = {
   Welcome: undefined;
   LoginScreen: undefined;
-  AppScreen: undefined; // AppStackScreen
+  AppScreen: undefined;
 };
 
 const RootStack = createStackNavigator<RootStackParamList>();
@@ -32,8 +32,7 @@ export default function RootScreen() {
         headerTitleAlign: 'center',
         headerTintColor: '#666',
         headerBackTitleVisible: false,
-        gestureEnabled: true,
-        ...TransitionPresets.ModalSlideFromBottomIOS
+        gestureEnabled: true
       }}>
       <RootStack.Screen
         name="Welcome"
@@ -41,14 +40,17 @@ export default function RootScreen() {
         options={{ headerShown: false }}
       />
       <RootStack.Screen
+        name="LoginScreen"
+        component={LoginScreen}
+        options={{
+          headerShown: false,
+          ...TransitionPresets.ModalSlideFromBottomIOS
+        }}
+      />
+      <RootStack.Screen
         name="AppScreen"
         component={AppScreen}
         options={{ headerShown: false, animationEnabled: false }}
-      />
-      <RootStack.Screen
-        name="LoginScreen"
-        component={LoginScreen}
-        options={{ headerShown: false }}
       />
     </RootStack.Navigator>
   );

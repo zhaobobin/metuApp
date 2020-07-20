@@ -15,14 +15,14 @@ import Icon from '@/assets/iconfont';
 import MainScreen from './MainNavigation';
 import Publish from '@/pages/Publish/index';
 import PhotoDetail from '@/pages/Photo/PhotoDetail';
+import Comment from '@/pages/Comment/index';
 
 // App页面参数声明
 export type AppStackParamList = {
-  MainScreen: undefined; // MainStackScreen
-  Publish: undefined;
-  PhotoDetailModal: {
-    item: IPhoto;
-  };
+  MainScreen: undefined;
+  PublishScreen: undefined;
+  PhotoScreen: { item: IPhoto };
+  CommentScreen: undefined;
 };
 
 const AppStack = createStackNavigator<AppStackParamList>();
@@ -38,8 +38,7 @@ export default function AppScreen() {
         headerTitleAlign: 'center',
         headerTintColor: '#666',
         headerBackTitleVisible: false,
-        gestureEnabled: true,
-        ...TransitionPresets.ModalSlideFromBottomIOS
+        gestureEnabled: true
       }}>
       <AppStack.Screen
         name="MainScreen"
@@ -47,37 +46,43 @@ export default function AppScreen() {
         options={{ headerShown: false, animationEnabled: false }}
       />
       <AppStack.Screen
-        name="Publish"
+        name="PublishScreen"
         component={Publish}
-        options={getPublishOptions}
+        options={getPublishScreenOptions}
       />
       <AppStack.Screen
-        name="PhotoDetailModal"
+        name="PhotoScreen"
         component={PhotoDetail}
-        options={getPhotoDetailModalOptions}
+        options={getPhotoScreenOptions}
+      />
+      <AppStack.Screen
+        name="CommentScreen"
+        component={Comment}
+        options={getCommentScreenOptions}
       />
     </AppStack.Navigator>
   );
 }
 
-function getPublishOptions() {
+function getPublishScreenOptions() {
   return {
     headerTitle: '发布',
     headerBackImage: ({ tintColor }: { tintColor: string }) => (
       <Icon
         name="icon-arrow-down"
-        size={36}
+        size={30}
         color={tintColor}
         style={styles.headerBackImage}
       />
-    )
+    ),
+    ...TransitionPresets.ModalSlideFromBottomIOS
   };
 }
 
-function getPhotoDetailModalOptions({
-                                      route
-                                    }: {
-  route: RouteProp<AppStackParamList, 'PhotoDetailModal'>;
+function getPhotoScreenOptions({
+  route
+}: {
+  route: RouteProp<AppStackParamList, 'PhotoScreen'>;
 }) {
   return {
     headerTitle: route.params.item.title,
@@ -88,12 +93,28 @@ function getPhotoDetailModalOptions({
     },
     headerBackImage: ({ tintColor }: { tintColor: string }) => (
       <Icon
-        name="icon-arrow-down"
-        size={36}
+        name="icon-close"
+        size={30}
         color={tintColor}
         style={styles.headerBackImage}
       />
-    )
+    ),
+    ...TransitionPresets.ScaleFromCenterAndroid
+  };
+}
+
+function getCommentScreenOptions() {
+  return {
+    headerTitle: '评论',
+    headerBackImage: ({ tintColor }: { tintColor: string }) => (
+      <Icon
+        name="icon-arrow-down"
+        size={30}
+        color={tintColor}
+        style={styles.headerBackImage}
+      />
+    ),
+    ...TransitionPresets.ModalPresentationIOS
   };
 }
 

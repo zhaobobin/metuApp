@@ -85,6 +85,7 @@ export interface IUserInfo extends IAuthor {
   following_number?: number;
   followers_number?: number;
   address?: string;
+  location?: string;
 }
 
 export interface IImagePickerResponse {

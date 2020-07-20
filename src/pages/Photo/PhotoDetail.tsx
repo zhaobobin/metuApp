@@ -1,13 +1,12 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteProp } from '@react-navigation/native';
-import {
-  MainStackNavigation,
-  MainStackParamList
-} from '@/navigator/MainNavigation';
+import { MainStackParamList } from '@/navigator/MainNavigation';
+import Icon from '@/assets/iconfont';
 import { RootState } from '@/models/index';
 import { Touchable } from '@/components/index';
+import { Navigator } from '@/utils/index';
 import PhotoSwiper from './PhotoSwiper';
 
 const mapStateToProps = (state: RootState) => ({
@@ -21,7 +20,6 @@ type ModelState = ConnectedProps<typeof connector>;
 
 interface IProps extends ModelState {
   route: RouteProp<MainStackParamList, 'PhotoDetail'>;
-  navigation: MainStackNavigation;
 }
 
 class PhotoDetail extends React.Component<IProps> {
@@ -40,13 +38,28 @@ class PhotoDetail extends React.Component<IProps> {
   };
 
   goUserPage = (id: string) => {
-    this.props.navigation.navigate('UserDetail', { id });
+    Navigator.goPage('UserDetail', { id });
+  };
+
+  goBack = () => {
+    Navigator.goBack();
   };
 
   render() {
-    const { photoDetail } = this.props;
+    const { loading, photoDetail, route } = this.props;
+    if (loading) {
+      return null;
+    }
     return (
-      <View>
+      <View style={styles.container}>
+        {
+          route.params.modal &&
+          <View style={styles.icon}>
+            <Touchable onPress={this.goBack}>
+              <Icon name="icon-close" size={30} color="#fff" />
+            </Touchable>
+          </View>
+        }
         <PhotoSwiper images={photoDetail.images} />
         <Text>PhotoDetail</Text>
         <Text>标题: {photoDetail.title}</Text>
@@ -59,5 +72,18 @@ class PhotoDetail extends React.Component<IProps> {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    position: 'relative'
+  },
+  icon: {
+    position: 'absolute',
+    left: 10,
+    top: Platform.OS === 'ios' ? 50 : 30,
+    zIndex: 999,
+    marginHorizontal: Platform.OS === 'android' ? 0 : 8
+  }
+});
 
 export default connector(PhotoDetail);

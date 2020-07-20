@@ -83,8 +83,10 @@ class Editor extends React.Component<IProps, IState> {
   };
 
   goPhotoDetail = (item: IPhoto) => {
-    Navigator.goPage('PhotoScreen', { item });
-    // this.props.navigation.navigate('PhotoDetail', { item });
+    Navigator.goPage('PhotoScreen', {
+      screen: 'PhotoDetail',
+      params: { item, modal: true }
+    });
   };
 
   _keyExtractor = (item: IPhoto) => item._id;

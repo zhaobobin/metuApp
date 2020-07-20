@@ -12,7 +12,7 @@ import { IPhoto } from '@/types/CommonTypes';
 import Empty from '@/components/Empty';
 import PhotoItem from '@/components/PhotoItem';
 import { photoApi } from '@/api/index';
-import { Navigator } from '@/utils/index'
+import { Navigator } from '@/utils/index';
 
 const HFlatList = HPageViewHoc(FlatList);
 
@@ -95,7 +95,10 @@ class UserPhotos extends React.Component<IProps, IState> {
   };
 
   goPhotoDetail = (item: IPhoto) => {
-    Navigator.goPage('PhotoScreen', { item });
+    Navigator.goPage('PhotoScreen', {
+      screen: 'PhotoDetail',
+      params: { item, modal: true }
+    });
   };
 
   _keyExtractor = (item: IPhoto) => item._id;

@@ -20,14 +20,14 @@ type StatusBarShape = {
 };
 
 interface NavigationBarProps {
-  style: ViewStyle;
+  style?: ViewStyle;
   title: string;
   titleView?: React.ReactNode;
-  titleLayoutStyle: ViewStyle;
-  hide: boolean;
-  statusBar: StatusBarShape;
-  rightButton: React.ReactNode;
-  leftButton: React.ReactNode;
+  titleLayoutStyle?: ViewStyle;
+  hide?: boolean;
+  statusBar?: StatusBarShape;
+  rightButton?: React.ReactNode;
+  leftButton?: React.ReactNode;
 }
 
 const NavigationBar: React.FC<NavigationBarProps> = React.memo(props => {
@@ -35,7 +35,7 @@ const NavigationBar: React.FC<NavigationBarProps> = React.memo(props => {
     return <View style={styles.navBarButton}>{data ? data : null}</View>;
   };
 
-  const renderStatusBar = props.statusBar.hidden ? null : (
+  const renderStatusBar = props.statusBar?.hidden ? null : (
     <View style={styles.statusBar}>
       <StatusBar {...props.statusBar} />
     </View>

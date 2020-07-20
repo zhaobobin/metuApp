@@ -3,7 +3,6 @@
  */
 import React from 'react';
 import { Platform, StyleSheet } from 'react-native';
-import { RouteProp } from '@react-navigation/native';
 import {
   createStackNavigator,
   StackNavigationProp,
@@ -13,16 +12,18 @@ import { IPhoto } from '@/types/CommonTypes';
 import Icon from '@/assets/iconfont';
 
 import MainScreen from './MainNavigation';
+import Search from '@/pages/Search/index';
 import Publish from '@/pages/Publish/index';
-import PhotoDetail from '@/pages/Photo/PhotoDetail';
+import PhotoScreen from './PhotoScreen';
 import Comment from '@/pages/Comment/index';
 
 // App页面参数声明
 export type AppStackParamList = {
   MainScreen: undefined;
+  SearchScreen: undefined;
   PublishScreen: undefined;
-  PhotoScreen: { item: IPhoto };
-  CommentScreen: undefined;
+  PhotoScreen: undefined;
+  CommentScreen: { item: IPhoto };
 };
 
 const AppStack = createStackNavigator<AppStackParamList>();
@@ -46,13 +47,18 @@ export default function AppScreen() {
         options={{ headerShown: false, animationEnabled: false }}
       />
       <AppStack.Screen
+        name="SearchScreen"
+        component={Search}
+        options={getSearchOptions}
+      />
+      <AppStack.Screen
         name="PublishScreen"
         component={Publish}
         options={getPublishScreenOptions}
       />
       <AppStack.Screen
         name="PhotoScreen"
-        component={PhotoDetail}
+        component={PhotoScreen}
         options={getPhotoScreenOptions}
       />
       <AppStack.Screen
@@ -62,6 +68,22 @@ export default function AppScreen() {
       />
     </AppStack.Navigator>
   );
+}
+
+// 搜索
+function getSearchOptions() {
+  return {
+    headerTitle: '搜索',
+    headerBackImage: ({ tintColor }: { tintColor: string }) => (
+      <Icon
+        name="icon-close"
+        size={30}
+        color={tintColor}
+        style={styles.headerBackImage}
+      />
+    ),
+    ...TransitionPresets.ScaleFromCenterAndroid
+  };
 }
 
 function getPublishScreenOptions() {
@@ -79,26 +101,9 @@ function getPublishScreenOptions() {
   };
 }
 
-function getPhotoScreenOptions({
-  route
-}: {
-  route: RouteProp<AppStackParamList, 'PhotoScreen'>;
-}) {
+function getPhotoScreenOptions() {
   return {
-    headerTitle: route.params.item.title,
-    headerTintColor: '#fff',
-    headerTransparent: true,
-    cardStyle: {
-      backgroundColor: '#f8f8f8'
-    },
-    headerBackImage: ({ tintColor }: { tintColor: string }) => (
-      <Icon
-        name="icon-close"
-        size={30}
-        color={tintColor}
-        style={styles.headerBackImage}
-      />
-    ),
+    headerShown: false,
     ...TransitionPresets.ScaleFromCenterAndroid
   };
 }

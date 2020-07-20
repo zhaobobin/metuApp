@@ -52,7 +52,7 @@ class TopTabBarWrapper extends React.Component<IProps> {
   }
 
   goSearchPage = () => {
-    Navigator.goPage('Search');
+    Navigator.goPage('SearchScreen');
   };
 
   goCategory = () => {

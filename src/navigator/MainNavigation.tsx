@@ -8,7 +8,8 @@ import {
   createStackNavigator,
   StackNavigationProp,
   HeaderStyleInterpolators,
-  CardStyleInterpolators
+  CardStyleInterpolators,
+  TransitionPresets
 } from '@react-navigation/stack';
 import Animated from 'react-native-reanimated';
 import { IPhoto } from '@/types/CommonTypes';
@@ -16,7 +17,6 @@ import { IPhoto } from '@/types/CommonTypes';
 import BottomTabs from '@/navigator/BottomTabs';
 import PhotoDetail from '@/pages/Photo/PhotoDetail';
 import UserDetail from '@/pages/User/UserDetail';
-import Search from '@/pages/Search/index';
 import Category from '@/pages/Category/index';
 import Setting from '@/pages/Setting/index';
 import SettingProfile from '@/pages/Setting/SettingProfile';
@@ -31,11 +31,11 @@ export type MainStackParamList = {
   };
   PhotoDetail: {
     item: IPhoto;
+    modal?: boolean;
   };
   UserDetail: {
     id: string;
   };
-  Search: undefined;
   Category: undefined;
   Setting: undefined;
   SettingProfile: undefined;
@@ -85,11 +85,6 @@ export default function MainScreen() {
         options={getUserDetailOptions}
       />
       <MainStack.Screen
-        name="Search"
-        component={Search}
-        options={getSearchOptions}
-      />
-      <MainStack.Screen
         name="Category"
         component={Category}
         options={getCategoryOptions}
@@ -137,8 +132,8 @@ function getBottomTabsOptions() {
 
 // 图片详情 标题配置
 function getPhotoDetailOptions({
-                                 route
-                               }: {
+  route
+}: {
   route: RouteProp<MainStackParamList, 'PhotoDetail'>;
 }) {
   return {
@@ -158,13 +153,6 @@ function getUserDetailOptions() {
     headerBackground: () => {
       return <Animated.View style={styles.userDetailBg} />;
     }
-  };
-}
-
-// 搜索
-function getSearchOptions() {
-  return {
-    headerTitle: '搜索'
   };
 }
 

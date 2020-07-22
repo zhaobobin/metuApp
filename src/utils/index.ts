@@ -1,5 +1,5 @@
 import { Dimensions } from 'react-native';
-import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper';
+import { isIphoneX, getStatusBarHeight, getBottomSpace } from 'react-native-iphone-x-helper';
 import ENV from '@/config/env';
 import { Encrypt, Decrypt } from '@/utils/Crypto';
 import Navigator from '@/utils/Navigator';
@@ -24,6 +24,7 @@ function hp(percentage: number) {
 export {
   isIphoneX,
   getStatusBarHeight,
+  getBottomSpace,
   screenWidth,
   screenHeight,
   wp,

@@ -38,7 +38,7 @@ export default function PhotoScreen() {
       <PhotoStack.Screen
         name="PhotoDetail"
         component={PhotoDetail}
-        options={getPhotoDetailOptions}
+        options={{ headerShown: false }}
       />
       <PhotoStack.Screen
         name="UserDetail"

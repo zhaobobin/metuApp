@@ -6,7 +6,7 @@ import { MainStackParamList } from '@/navigator/MainNavigation';
 import Icon from '@/assets/iconfont';
 import { RootState } from '@/models/index';
 import { Touchable } from '@/components/index';
-import { Navigator } from '@/utils/index';
+import { Navigator, getStatusBarHeight, getBottomSpace, screenWidth } from '@/utils/index';
 import PhotoSwiper from './PhotoSwiper';
 
 const mapStateToProps = (state: RootState) => ({
@@ -52,22 +52,30 @@ class PhotoDetail extends React.Component<IProps> {
     }
     return (
       <View style={styles.container}>
-        {
-          route.params.modal &&
-          <View style={styles.icon}>
-            <Touchable onPress={this.goBack}>
-              <Icon name="icon-close" size={30} color="#fff" />
-            </Touchable>
-          </View>
-        }
-        <PhotoSwiper images={photoDetail.images} />
-        <Text>PhotoDetail</Text>
+        <View style={styles.head}>
+          {
+            route.params.modal &&
+            <View style={styles.headBack}>
+              <Touchable onPress={this.goBack}>
+                <Icon name="icon-close" size={30} color="#fff" />
+              </Touchable>
+            </View>
+          }
+        </View>
+        <View style={styles.body}>
+          <PhotoSwiper images={photoDetail.images} style={styles.swiper} />
+        </View>
+        <View style={styles.foot}>
+
+        </View>
+        
+        {/* <Text>PhotoDetail</Text>
         <Text>标题: {photoDetail.title}</Text>
         <Text>id: {photoDetail._id}</Text>
         <Text>作者:</Text>
         <Touchable onPress={() => this.goUserPage(photoDetail.author._id)}>
           <Text>{photoDetail.author?.nickname}</Text>
-        </Touchable>
+        </Touchable> */}
       </View>
     );
   }
@@ -75,14 +83,42 @@ class PhotoDetail extends React.Component<IProps> {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    backgroundColor: '#000',
     position: 'relative'
   },
-  icon: {
+  head: {
+    width: screenWidth,
+    height: 50,
+    paddingHorizontal: 10,
     position: 'absolute',
-    left: 10,
-    top: Platform.OS === 'ios' ? 50 : 30,
-    zIndex: 999,
-    marginHorizontal: Platform.OS === 'android' ? 0 : 8
+    left: 0,
+    top: getStatusBarHeight() + 3,
+    zIndex: 99,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    // backgroundColor: 'red'
+  },
+  headBack: {
+    // marginHorizontal: Platform.OS === 'android' ? 0 : 8
+  },
+  body: {
+    flex: 1
+  },
+  swiper: {
+    flex: 1
+  },
+  foot: {
+    width: screenWidth,
+    height: 50,
+    paddingHorizontal: 10,
+    position: 'absolute',
+    left: 0,
+    bottom: getBottomSpace(),
+    zIndex: 99,
+    flexDirection: 'row',
+    // backgroundColor: 'blue'
   }
 });
 

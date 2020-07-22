@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image, ViewStyle } from 'react-native';
 import SnapCarsouel, {
   ParallaxImage,
   AdditionalParallaxProps,
@@ -7,13 +7,15 @@ import SnapCarsouel, {
 } from 'react-native-snap-carousel';
 import { screenWidth, wp, hp } from '@/utils/index';
 import { IImage } from '@/types/CommonTypes';
+import PhotoSwiperItem from './PhotoSwiperItem';
 
 const sliderWidth = screenWidth;
 const itemWidth = wp(100);
-export const sliderHeight = hp(50);
+export const sliderHeight = hp(70);
 
 interface IProps {
   images: IImage[];
+  style?: ViewStyle;
 }
 
 interface IState {
@@ -32,34 +34,19 @@ class PhotoSwiper extends React.Component<IProps, IState> {
   };
 
   renderItem = (
-    { item }: { item: string },
+    { item }: { item: IImage },
     parallaxProps?: AdditionalParallaxProps
   ) => {
-    return (
-      <ParallaxImage
-        source={{ uri: item + '?x-oss-process=style/thumb' }}
-        style={styles.image}
-        containerStyle={styles.imageContainer}
-        parallaxFactor={0}
-        showSpinner
-        spinnerColor="rgba(0, 0, 0, .3)"
-        {...parallaxProps}
-      />
-    );
+    return <PhotoSwiperItem item={item} parallaxProps={parallaxProps} />;
   };
 
   render() {
+    const { images, style } = this.props;
     const { carsouelActiveIndex } = this.state;
-    const { images } = this.props;
-    const data = [];
-    for (let i in images) {
-      data.push(images[i].url);
-    }
-
     return (
-      <View>
+      <View style={[styles.container, style]}>
         <SnapCarsouel
-          data={data}
+          data={images}
           renderItem={this.renderItem}
           sliderWidth={sliderWidth}
           itemWidth={itemWidth}
@@ -73,7 +60,7 @@ class PhotoSwiper extends React.Component<IProps, IState> {
             dotContainerStyle={styles.dotContainner}
             dotStyle={styles.dot}
             activeDotIndex={carsouelActiveIndex}
-            dotsLength={data.length}
+            dotsLength={images.length}
             inactiveDotScale={0.7}
             inactiveDotOpacity={0.4}
           />
@@ -84,13 +71,9 @@ class PhotoSwiper extends React.Component<IProps, IState> {
 }
 
 const styles = StyleSheet.create({
-  imageContainer: {
-    width: itemWidth,
-    height: sliderHeight
-  },
-  image: {
-    ...StyleSheet.absoluteFillObject,
-    resizeMode: 'cover'
+  container: {
+    position: 'relative',
+    backgroundColor: '#000'
   },
   paginationWrapper: {
     justifyContent: 'center',

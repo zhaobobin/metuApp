@@ -39,7 +39,7 @@ export interface IImage {
   status: number;
   title: string;
   description: string;
-  exif: string;
+  exif: any;
   camera: string;
   lens: string;
   url: string;

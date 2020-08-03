@@ -47,6 +47,7 @@ class PhotoSwiper extends React.Component<IProps, IState> {
       <View style={[styles.container, style]}>
         <SnapCarsouel
           data={images}
+          style={styles.snapCarsouel}
           renderItem={this.renderItem}
           sliderWidth={sliderWidth}
           itemWidth={itemWidth}
@@ -72,8 +73,12 @@ class PhotoSwiper extends React.Component<IProps, IState> {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'relative',
-    backgroundColor: '#000'
+    position: 'relative'
+  },
+  snapCarsouel: {
+    flex: 1,
+    alignContent: 'center',
+    justifyContent: 'center'
   },
   paginationWrapper: {
     justifyContent: 'center',

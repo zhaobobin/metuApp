@@ -1,5 +1,5 @@
 /**
- * AppNavigation - modal全屏模式：登录、发布、图片详情等页面
+ * PhotoScreen
  */
 import React from 'react';
 import { Platform, StyleSheet } from 'react-native';
@@ -40,11 +40,11 @@ export default function PhotoScreen() {
         component={PhotoDetail}
         options={{ headerShown: false }}
       />
-      <PhotoStack.Screen
+      {/* <PhotoStack.Screen
         name="UserDetail"
         component={UserDetail}
         options={getUserDetailOptions}
-      />
+      /> */}
     </PhotoStack.Navigator>
   );
 }

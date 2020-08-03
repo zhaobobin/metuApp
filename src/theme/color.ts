@@ -18,5 +18,7 @@ export const color = {
   border: '#d9d9d9',
   link: '#1890ff',
 
-  background: '#f5f5f5'
+  background: '#f5f5f5',
+
+  blueGradient: 'linear-gradient(#1890ff, #005bea)',
 };

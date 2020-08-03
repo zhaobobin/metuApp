@@ -13,4 +13,5 @@ export { default as PhotoItem } from './PhotoItem';
 export { default as StickyHeader } from './StickyHeader';
 export { default as Toast } from './Toast';
 export { default as Touchable } from './Touchable';
+export { default as UserinfoBar } from './User/UserinfoBar';
 export { default as WhiteSpace } from './WhiteSpace';

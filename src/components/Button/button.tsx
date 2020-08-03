@@ -9,19 +9,20 @@ import {
 import _ from 'lodash';
 import { color } from '@/theme/index';
 
-export type ButtonSize = 'large' | 'middle' | 'small';
+export type ButtonSize = 'small' | 'middle' | 'large' | undefined;
 export type ButtonType = 'primary' | 'default' | 'danger' | 'link' | undefined;
 
 interface ButtonProps {
   style?: ViewStyle;
   //文本
   title: string;
-  //字体大小
-  fontSize?: string;
   //按钮
   btnSize?: ButtonSize;
+  //字体大小
+  fontSize?: number | undefined;
   type?: ButtonType;
   width?: number | string;
+  height?: number | undefined;
   ghost?: boolean;
   //按钮事件
   onPress: any;
@@ -31,7 +32,32 @@ interface ButtonProps {
 }
 
 const Button: React.FC<ButtonProps> = React.memo(props => {
-  const { title, type, disabled, style, width, ghost, onPress, accessibilityLabel } = props;
+  const {
+    title,
+    type,
+    btnSize,
+    fontSize,
+    disabled,
+    style,
+    width,
+    height,
+    ghost,
+    onPress,
+    accessibilityLabel
+  } = props;
+
+  const renderBtnSize = (btnSize: ButtonSize) => {
+    switch (btnSize) {
+      case 'small':
+        return 32;
+      case 'middle':
+        return 40;
+      case 'large':
+        return 50;
+      default:
+        return 40;
+    }
+  };
 
   const renderBtnTheme = (type: ButtonType) => {
     switch (type) {
@@ -78,19 +104,19 @@ const Button: React.FC<ButtonProps> = React.memo(props => {
   }
   // 防双击
   let throttleOnPress = undefined;
-    if (typeof onPress === 'function') {
-      throttleOnPress = useCallback(
-        _.throttle(onPress, 1000, { leading: true, trailing: false }),
-        [onPress]
-      );
-    }
+  if (typeof onPress === 'function') {
+    throttleOnPress = useCallback(
+      _.throttle(onPress, 1000, { leading: true, trailing: false }),
+      [onPress]
+    );
+  }
   return (
     <TouchableOpacity onPress={throttleOnPress} disabled={disabled}>
       <View
         style={{
           width,
+          height: height || renderBtnSize(btnSize),
           paddingHorizontal: 12,
-          paddingVertical: 15,
           borderRadius: 5,
           borderWidth: StyleSheet.hairlineWidth,
           borderColor: theme.borderColor,
@@ -102,7 +128,7 @@ const Button: React.FC<ButtonProps> = React.memo(props => {
         <Text
           style={{
             color: theme.color,
-            fontSize: 16
+            fontSize
           }}
           accessibilityLabel={accessibilityLabel}>
           {title}
@@ -111,5 +137,9 @@ const Button: React.FC<ButtonProps> = React.memo(props => {
     </TouchableOpacity>
   );
 });
+
+Button.defaultProps = {
+  fontSize: 16
+}
 
 export default Button;

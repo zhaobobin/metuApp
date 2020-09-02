@@ -5,9 +5,11 @@ import { RootState } from '@/models/index';
 import { Avatar, Button, Touchable } from '@/components/index';
 import { Navigator } from '@/utils/index';
 import { IAuthor } from '@/types/CommonTypes';
+import { Storage, ENV } from '@/utils/index';
 import { color } from '@/theme/index';
 
 const mapStateToProps = (state: RootState) => ({
+  isAuth: state.account.isAuth,
   currentUser: state.account.currentUser
 });
 
@@ -18,6 +20,7 @@ type ModelState = ConnectedProps<typeof connector>;
 interface IProps extends ModelState {
   userInfo: IAuthor;
   height?: number;
+  goLoginScreen: () => void;
 }
 
 class UserinfoBar extends React.Component<IProps> {
@@ -28,9 +31,14 @@ class UserinfoBar extends React.Component<IProps> {
   goUserProfile = () => {
     const { userInfo } = this.props;
     Navigator.goPage('UserDetail', { id: userInfo._id });
-  }
+  };
 
-  onPressFollow = () => {};
+  onPressFollow = () => {
+    if (this.props.isAuth) {
+    } else {
+      this.props.goLoginScreen();
+    }
+  };
 
   render() {
     const { userInfo } = this.props;
@@ -73,9 +81,7 @@ const styles = StyleSheet.create({
     color: '#fff'
   },
   follow: {},
-  followBtn: {
-    
-  }
+  followBtn: {}
 });
 
 export default connector(UserinfoBar);

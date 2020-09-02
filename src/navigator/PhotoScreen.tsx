@@ -17,7 +17,7 @@ import UserDetail from '@/pages/User/UserDetail';
 
 // App页面参数声明
 export type PhotoStackParamList = {
-  PhotoDetail: { item: IPhoto; modal?: boolean };
+  PhotoDetail: { photo_id: string; modal?: boolean };
   UserDetail: { id: string };
 };
 

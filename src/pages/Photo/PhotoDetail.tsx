@@ -2,12 +2,14 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteProp } from '@react-navigation/native';
-import { MainStackParamList } from '@/navigator/MainNavigation';
+import { PhotoStackParamList } from '@/navigator/PhotoScreen';
 import Icon from '@/assets/iconfont';
 import { RootState } from '@/models/index';
 import { Touchable, UserinfoBar } from '@/components/index';
 import {
   Navigator,
+  Storage,
+  ENV,
   getStatusBarHeight,
   getBottomSpace,
   screenWidth
@@ -29,7 +31,7 @@ const connector = connect(mapStateToProps);
 type ModelState = ConnectedProps<typeof connector>;
 
 interface IProps extends ModelState {
-  route: RouteProp<MainStackParamList, 'PhotoDetail'>;
+  route: RouteProp<PhotoStackParamList, 'PhotoDetail'>;
 }
 
 class PhotoDetail extends React.Component<IProps> {
@@ -42,9 +44,21 @@ class PhotoDetail extends React.Component<IProps> {
     this.props.dispatch({
       type: 'photo/queryPhotoDetail',
       payload: {
-        id: route.params.item._id
+        id: route.params.photo_id
       }
     });
+  };
+
+  goLoginScreen = async () => {
+    const route = {
+      routeName: 'PhotoScreen',
+      routeParam: {
+        screen: 'PhotoDetail',
+        params: { photo_id: this.props.photoDetail._id, modal: true }
+      }
+    };
+    await Storage.set(ENV.storage.loginRedirect, JSON.stringify(route));
+    Navigator.goPage('LoginScreen');
   };
 
   goUserPage = (id: string) => {
@@ -71,17 +85,25 @@ class PhotoDetail extends React.Component<IProps> {
             )}
           </View>
           <View style={styles.headCenter}>
-            <UserinfoBar userInfo={photoDetail.author} />
+            <UserinfoBar
+              userInfo={photoDetail.author}
+              goLoginScreen={this.goLoginScreen}
+            />
           </View>
           <View style={styles.headRight}>
             <Icon name="icon-ellipsis" size={30} color="#fff" />
           </View>
         </View>
         <View style={styles.body}>
-          <PhotoSwiper images={photoDetail.images} style={styles.swiper} />
+          <PhotoSwiper
+            images={photoDetail.images}
+            title={photoDetail.title}
+            style={styles.swiper}
+            pagination={false}
+          />
         </View>
         <View style={styles.foot}>
-          <PhotoDetailFoot />
+          <PhotoDetailFoot goLoginScreen={this.goLoginScreen} />
         </View>
 
         {/* <Text>PhotoDetail</Text>
@@ -125,8 +147,7 @@ const styles = StyleSheet.create({
   },
   headRight: {},
   body: {
-    flex: 1,
-    backgroundColor: '#000'
+    flex: 1
   },
   swiper: {
     flex: 1,

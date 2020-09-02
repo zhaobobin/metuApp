@@ -2,6 +2,7 @@ import { Model, Effect } from 'dva-core-ts';
 import { Reducer } from 'redux';
 import { photoApi } from '@/api/index';
 import { IPhotoDetail } from '@/types/CommonTypes';
+import { Toast } from '@/components/index';
 
 export interface IPhotoState {
   photoDetail: IPhotoDetail;
@@ -12,6 +13,8 @@ interface PhotoModel extends Model {
   state: IPhotoState;
   effects: {
     queryPhotoDetail: Effect;
+    favorPhoto: Effect;
+    collectPhoto: Effect;
   };
   reducers: {
     setState: Reducer<IPhotoState>;
@@ -65,6 +68,24 @@ const photoModel: PhotoModel = {
           photoDetail: res.data
         }
       });
+    },
+    *favorPhoto({ payload }, { call }) {
+      const res = yield call(photoApi.favorPhoto, {
+        photo_id: payload.photo_id,
+        favoring_state: payload.favoring_state
+      });
+      if (res.code !== 0) {
+        Toast.info(res.message, 2);
+      }
+    },
+    *collectPhoto({ payload }, { call }) {
+      const res = yield call(photoApi.collectPhoto, {
+        photo_id: payload.photo_id,
+        collecting_state: payload.collecting_state
+      });
+      if (res.code !== 0) {
+        Toast.info(res.message, 2);
+      }
     }
   },
 

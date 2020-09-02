@@ -8,11 +8,9 @@ import {
   createStackNavigator,
   StackNavigationProp,
   HeaderStyleInterpolators,
-  CardStyleInterpolators,
-  TransitionPresets
+  CardStyleInterpolators
 } from '@react-navigation/stack';
 import Animated from 'react-native-reanimated';
-import { IPhoto } from '@/types/CommonTypes';
 
 import BottomTabs from '@/navigator/BottomTabs';
 import PhotoDetail from '@/pages/Photo/PhotoDetail';
@@ -24,6 +22,7 @@ import SettingProfileNickname from '@/pages/Setting/SettingProfileNickname';
 import SettingProfileHeadline from '@/pages/Setting/SettingProfileHeadline';
 import SettingProfileMobile from '@/pages/Setting/SettingProfileMobile';
 import SettingProfilePassword from '@/pages/Setting/SettingProfilePassword';
+import { IPhoto } from '@/types/CommonTypes';
 
 export type MainStackParamList = {
   BottomTabs: {

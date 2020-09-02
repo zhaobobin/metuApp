@@ -26,6 +26,8 @@ export interface IPhoto {
   status: number;
   create_at: string;
   update_at: string;
+  favoring_state?: boolean;
+  collecting_state?: boolean;
 }
 
 // 影集、专辑信息
@@ -103,4 +105,9 @@ export interface IImagePickerResponse {
   width: number;
   height: number;
   size: number;
+}
+
+export interface ILoginRedirect{
+  routeName: string;
+  routeParam?: any;
 }

@@ -12,6 +12,7 @@ import { MainStackNavigation } from '@/navigator/MainNavigation';
 import { RootState } from '@/models/index';
 import { IPhoto } from '@/types/CommonTypes';
 import { Touchable } from '@/components/index';
+import { Navigator } from '@/utils/index';
 import IconArrowRight from '@/assets/iconfont/IconArrowRight';
 
 const mapStateToProps = (state: RootState) => ({
@@ -41,7 +42,10 @@ class Popular extends React.Component<IProps> {
   refresh = () => {};
 
   onPressImage = (item: IPhoto) => {
-    this.props.navigation.navigate('PhotoDetail', { item });
+    Navigator.goPage('PhotoScreen', {
+      screen: 'PhotoDetail',
+      params: { photo_id: item._id, modal: true }
+    });
   };
 
   renderItem = ({ item }: ListRenderItemInfo<IPhoto>) => {

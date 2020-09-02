@@ -9,6 +9,8 @@ import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '@/models/index';
 import { screenWidth, wp, hp } from '@/utils/index';
 import { IPhoto } from '@/types/CommonTypes';
+import { Navigator } from '@/utils/index';
+import { Touchable } from '@/components/index';
 
 const sliderWidth = screenWidth;
 const itemWidth = wp(90) + wp(2) * 2;
@@ -48,33 +50,37 @@ class Carsouel extends React.Component<IProps> {
   };
 
   renderItem = (
-    { item }: { item: string },
+    { item }: { item: IPhoto },
     parallaxProps?: AdditionalParallaxProps
   ) => {
     return (
-      <ParallaxImage
-        source={{ uri: item + '?x-oss-process=style/thumb' }}
-        style={styles.image}
-        containerStyle={styles.imageContainer}
-        // parallaxFactor={0.5}
-        showSpinner
-        spinnerColor="rgba(0, 0, 0, .3)"
-        {...parallaxProps}
-      />
+      <Touchable activeOpacity={1} onPress={() => this.goPhotoDetail(item)}>
+        <ParallaxImage
+          source={{ uri: item.thumb.url + '?x-oss-process=style/thumb' }}
+          style={styles.image}
+          containerStyle={styles.imageContainer}
+          // parallaxFactor={0.5}
+          showSpinner
+          spinnerColor="rgba(0, 0, 0, .3)"
+          {...parallaxProps}
+        />
+      </Touchable>
     );
+  };
+
+  goPhotoDetail = (item: IPhoto) => {
+    Navigator.goPage('PhotoScreen', {
+      screen: 'PhotoDetail',
+      params: { photo_id: item._id, modal: true }
+    });
   };
 
   render() {
     const { carsouel, carsouelActiveIndex } = this.props;
-    const data = [];
-    for (let i in carsouel) {
-      data.push(carsouel[i].thumb.url);
-    }
-
     return (
       <View>
         <SnapCarsouel
-          data={data}
+          data={carsouel}
           renderItem={this.renderItem}
           sliderWidth={sliderWidth}
           itemWidth={itemWidth}
@@ -89,7 +95,7 @@ class Carsouel extends React.Component<IProps> {
             dotContainerStyle={styles.dotContainner}
             dotStyle={styles.dot}
             activeDotIndex={carsouelActiveIndex}
-            dotsLength={data.length}
+            dotsLength={carsouel.length}
             inactiveDotScale={0.7}
             inactiveDotOpacity={0.4}
           />

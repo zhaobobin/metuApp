@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 
 import { RootState } from '@/models/index';
 import { ENV, Storage, Navigator, Encrypt } from '@/utils/index';
-import { IResponse } from '@/types/CommonTypes';
+import { IResponse, ILoginRedirect } from '@/types/CommonTypes';
 import { layout } from '@/theme/index';
 
 import { Button, Touchable, Toast } from '@/components/index';
@@ -90,7 +90,8 @@ class Login extends React.Component<IProps, IState> {
         if (res.code === 0) {
           const loginRedirect = await Storage.get(ENV.storage.loginRedirect);
           if (loginRedirect) {
-            Navigator.goPage(loginRedirect);
+            const route: ILoginRedirect = JSON.parse(loginRedirect);
+            Navigator.goPage(route.routeName);
           } else {
             Navigator.goBack();
           }

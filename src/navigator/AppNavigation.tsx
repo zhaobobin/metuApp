@@ -8,7 +8,6 @@ import {
   StackNavigationProp,
   TransitionPresets
 } from '@react-navigation/stack';
-import { IPhoto } from '@/types/CommonTypes';
 import Icon from '@/assets/iconfont';
 
 import MainScreen from './MainNavigation';
@@ -23,7 +22,7 @@ export type AppStackParamList = {
   SearchScreen: undefined;
   PublishScreen: undefined;
   PhotoScreen: undefined;
-  CommentScreen: { item: IPhoto };
+  CommentScreen: { id: string; type: 'photos' | 'articles' };
 };
 
 const AppStack = createStackNavigator<AppStackParamList>();
@@ -110,15 +109,16 @@ function getPhotoScreenOptions() {
 
 function getCommentScreenOptions() {
   return {
-    headerTitle: '评论',
-    headerBackImage: ({ tintColor }: { tintColor: string }) => (
-      <Icon
-        name="icon-arrow-down"
-        size={30}
-        color={tintColor}
-        style={styles.headerBackImage}
-      />
-    ),
+    // headerTitle: '评论',
+    // headerBackImage: ({ tintColor }: { tintColor: string }) => (
+    //   <Icon
+    //     name="icon-arrow-down"
+    //     size={30}
+    //     color={tintColor}
+    //     style={styles.headerBackImage}
+    //   />
+    // ),
+    headerShown: false,
     ...TransitionPresets.ModalPresentationIOS
   };
 }

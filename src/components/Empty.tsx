@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 
 interface EmptyProps {
   loading?: boolean;
+  text?: string;
 }
 
 export const Empty: FC<EmptyProps> = props => {
@@ -11,7 +12,7 @@ export const Empty: FC<EmptyProps> = props => {
   }
   return (
     <View style={styles.empty}>
-      <Text>暂无数据</Text>
+      <Text>{props.text || '暂无数据'}</Text>
     </View>
   );
 };

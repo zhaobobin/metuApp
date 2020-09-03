@@ -97,7 +97,7 @@ class UserPhotos extends React.Component<IProps, IState> {
   goPhotoDetail = (item: IPhoto) => {
     Navigator.goPage('PhotoScreen', {
       screen: 'PhotoDetail',
-      params: { item, modal: true }
+      params: { photo_id: item._id, modal: true }
     });
   };
 

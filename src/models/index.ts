@@ -4,10 +4,11 @@ import category, { ICategoryState } from './category';
 import photo, { IPhotoState } from './photo';
 import user, { IUserState } from './user';
 import account, { IAccountState } from './account';
+import comment, { ICommentState } from './comment';
 import message, { IMessageState } from './message';
 import oss, { IOssState } from './oss';
 
-const models = [home, category, photo, user, account, message, oss];
+const models = [home, category, photo, user, account, comment, message, oss];
 
 export type RootState = {
   loading: DvaLoadingState;
@@ -16,6 +17,7 @@ export type RootState = {
   photo: IPhotoState;
   user: IUserState;
   account: IAccountState;
+  comment: ICommentState;
   message: IMessageState;
   oss: IOssState;
 };

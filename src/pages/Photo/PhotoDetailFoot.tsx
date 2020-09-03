@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
-import { screenWidth } from '@/utils/index';
+import { screenWidth, Navigator } from '@/utils/index';
 import { Touchable } from '@/components/index';
 import { IResponse } from '@/types/CommonTypes';
 import Icon from '@/assets/iconfont';
@@ -64,10 +64,10 @@ class PhotoDetailFoot extends React.Component<IProps, IState> {
   };
 
   handleComment = () => {
-    if (this.props.isAuth) {
-    } else {
-      this.props.goLoginScreen();
-    }
+    Navigator.goPage('CommentScreen', {
+      id: this.props.photoDetail._id,
+      type: 'photos'
+    });
   };
 
   handleCollect = async () => {

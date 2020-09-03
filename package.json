@@ -36,6 +36,7 @@
     "formik": "^2.1.4",
     "js-base64": "^2.5.2",
     "lodash": "^4.17.15",
+    "moment": "^2.27.0",
     "react": "16.11.0",
     "react-hook-form": "^5.7.2",
     "react-native": "0.62.2",

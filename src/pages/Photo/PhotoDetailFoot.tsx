@@ -1,12 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
-import { Navigator, screenWidth } from '@/utils/index';
+import { screenWidth } from '@/utils/index';
 import { Touchable } from '@/components/index';
-
+import { IResponse } from '@/types/CommonTypes';
 import Icon from '@/assets/iconfont';
 import { RootState } from '@/models/index';
-import { Storage, ENV } from '@/utils/index';
 
 export const itemWidth = (screenWidth - 20) / 5;
 export const itemHeight = 50;
@@ -22,10 +21,10 @@ const connector = connect(mapStateToProps);
 type ModelState = ConnectedProps<typeof connector>;
 
 interface IState {
-  favoring_state: boolean;
+  favoring_state?: boolean;
   favor_number: number;
   comment_number: number;
-  collecting_state: boolean;
+  collecting_state?: boolean;
 }
 
 interface IProps extends ModelState {
@@ -36,21 +35,27 @@ class PhotoDetailFoot extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      favoring_state: false, // 点赞状态
+      favoring_state: props.photoDetail.favoring_state, // 点赞状态
       favor_number: 0, // 点赞数量
       comment_number: 0, // 评论数量
-      collecting_state: false // 对应当前用户的收藏状态
+      collecting_state: props.photoDetail.collecting_state // 对应当前用户的收藏状态
     };
   }
 
   handleFavor = async () => {
     if (this.props.isAuth) {
       const { photoDetail } = this.props;
+      const { favoring_state } = this.state;
       this.props.dispatch({
         type: 'photo/favorPhoto',
         payload: {
           photo_id: photoDetail._id,
-          favoring_state: photoDetail.favoring_state
+          favoring_state: favoring_state
+        },
+        callback: (res: IResponse) => {
+          this.setState({
+            favoring_state: res.data.favoring_state
+          });
         }
       });
     } else {
@@ -68,11 +73,17 @@ class PhotoDetailFoot extends React.Component<IProps, IState> {
   handleCollect = async () => {
     if (this.props.isAuth) {
       const { photoDetail } = this.props;
+      const { collecting_state } = this.state;
       this.props.dispatch({
         type: 'photo/collectPhoto',
         payload: {
           photo_id: photoDetail._id,
-          collecting_state: photoDetail.collecting_state
+          collecting_state: collecting_state
+        },
+        callback: (res: IResponse) => {
+          this.setState({
+            collecting_state: res.data.collecting_state
+          });
         }
       });
     } else {
@@ -87,15 +98,28 @@ class PhotoDetailFoot extends React.Component<IProps, IState> {
     }
   };
 
-  handleNextPhotos = () => {};
+  handleNextPhotos = () => {
+    const { photoDetail } = this.props;
+    this.props.dispatch({
+      type: 'photo/nextPhoto',
+      payload: {
+        photo_id: photoDetail._id
+      }
+    });
+  };
 
   render() {
+    const { favoring_state, collecting_state } = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.item}>
           <Touchable style={styles.itemWrapper} onPress={this.handleFavor}>
             <View style={styles.iconView}>
-              <Icon name="icon-favorites" size={30} color="#fff" />
+              <Icon
+                name={favoring_state ? 'icon-favorites-fill' : 'icon-favorites'}
+                size={30}
+                color="#fff"
+              />
             </View>
             <View style={styles.textView}>
               <Text style={styles.footText}>喜欢</Text>
@@ -115,7 +139,13 @@ class PhotoDetailFoot extends React.Component<IProps, IState> {
         <View style={styles.item}>
           <Touchable style={styles.itemWrapper} onPress={this.handleCollect}>
             <View style={styles.iconView}>
-              <Icon name="icon-collection" size={30} color="#fff" />
+              <Icon
+                name={
+                  collecting_state ? 'icon-collection-fill' : 'icon-collection'
+                }
+                size={30}
+                color="#fff"
+              />
             </View>
             <View style={styles.textView}>
               <Text style={styles.footText}>收藏</Text>

@@ -15,6 +15,7 @@ interface PhotoModel extends Model {
     queryPhotoDetail: Effect;
     favorPhoto: Effect;
     collectPhoto: Effect;
+    nextPhoto: Effect;
   };
   reducers: {
     setState: Reducer<IPhotoState>;
@@ -69,21 +70,32 @@ const photoModel: PhotoModel = {
         }
       });
     },
-    *favorPhoto({ payload }, { call }) {
-      const res = yield call(photoApi.favorPhoto, {
-        photo_id: payload.photo_id,
-        favoring_state: payload.favoring_state
-      });
-      if (res.code !== 0) {
+    *favorPhoto({ payload, callback }, { call }) {
+      const res = yield call(photoApi.favorPhoto, payload);
+      if (res.code === 0) {
+        callback(res);
+      } else {
         Toast.info(res.message, 2);
       }
     },
-    *collectPhoto({ payload }, { call }) {
-      const res = yield call(photoApi.collectPhoto, {
-        photo_id: payload.photo_id,
-        collecting_state: payload.collecting_state
-      });
-      if (res.code !== 0) {
+    *collectPhoto({ payload, callback }, { call }) {
+      const res = yield call(photoApi.collectPhoto, payload);
+      if (res.code === 0) {
+        callback(res);
+      } else {
+        Toast.info(res.message, 2);
+      }
+    },
+    *nextPhoto({ payload }, { call, put }) {
+      const res = yield call(photoApi.getNextPhoto, payload);
+      if (res.code === 0) {
+        yield put({
+          type: 'setState',
+          payload: {
+            photoDetail: res.data
+          }
+        });
+      } else {
         Toast.info(res.message, 2);
       }
     }

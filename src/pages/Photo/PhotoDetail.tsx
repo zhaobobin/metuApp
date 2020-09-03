@@ -86,6 +86,7 @@ class PhotoDetail extends React.Component<IProps> {
           </View>
           <View style={styles.headCenter}>
             <UserinfoBar
+              detail={photoDetail}
               userInfo={photoDetail.author}
               goLoginScreen={this.goLoginScreen}
             />

@@ -13,6 +13,7 @@ export interface IPageInfo {
   has_more?: boolean;
 }
 
+// 图像作品详情
 export interface IPhoto {
   _id: string;
   title: string;
@@ -26,6 +27,7 @@ export interface IPhoto {
   status: number;
   create_at: string;
   update_at: string;
+  following_state?: boolean;
   favoring_state?: boolean;
   collecting_state?: boolean;
 }
@@ -62,7 +64,24 @@ export interface IThumb {
   height: number;
 }
 
-export interface IArticle {}
+export interface IArticle {
+  _id: string;
+  title: string;
+  thumb: IThumb;
+  author: IAuthor;
+  content: string;
+  view_number: number;
+  favor_number: number;
+  collect_number: number;
+  comment_number: number;
+  editor: number;
+  status: number;
+  create_at: string;
+  update_at: string;
+  following_state?: boolean;
+  favoring_state?: boolean;
+  collecting_state?: boolean;
+}
 
 // 作者
 export interface IAuthor {
@@ -78,6 +97,7 @@ export interface IAuthor {
   cover_url?: string;
   create_at: string;
   update_at: string;
+  following_state?: boolean;
 }
 
 // 用户信息

@@ -98,5 +98,13 @@ export const userApi = {
       method: 'post',
       params: params
     });
+  },
+
+  followUser: (params: { user_id: string, following_state: boolean }) => {
+    const method = params.following_state ? 'delete' : 'put';
+    return Request({
+      url: `/users/following/${params.user_id}`,
+      method
+    });
   }
 };

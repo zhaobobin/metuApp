@@ -4,9 +4,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '@/models/index';
 import { Avatar, Button, Touchable } from '@/components/index';
 import { Navigator } from '@/utils/index';
-import { IAuthor } from '@/types/CommonTypes';
-import { Storage, ENV } from '@/utils/index';
-import { color } from '@/theme/index';
+import { IAuthor, IArticle, IPhoto, IResponse } from '@/types/CommonTypes';
 
 const mapStateToProps = (state: RootState) => ({
   isAuth: state.account.isAuth,
@@ -19,14 +17,26 @@ type ModelState = ConnectedProps<typeof connector>;
 
 interface IProps extends ModelState {
   userInfo: IAuthor;
+  detail: IArticle | IPhoto;
   height?: number;
   goLoginScreen: () => void;
 }
 
-class UserinfoBar extends React.Component<IProps> {
+interface IState {
+  following_state?: boolean;
+}
+
+class UserinfoBar extends React.Component<IProps, IState> {
   static defaultProps = {
     height: 50
   };
+
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      following_state: props.detail.following_state
+    };
+  }
 
   goUserProfile = () => {
     const { userInfo } = this.props;
@@ -35,6 +45,20 @@ class UserinfoBar extends React.Component<IProps> {
 
   onPressFollow = () => {
     if (this.props.isAuth) {
+      const { userInfo } = this.props;
+      const { following_state } = this.state;
+      this.props.dispatch({
+        type: 'user/followUser',
+        payload: {
+          user_id: userInfo._id,
+          following_state: following_state
+        },
+        callback: (res: IResponse) => {
+          this.setState({
+            following_state: res.data.following_state
+          });
+        }
+      });
     } else {
       this.props.goLoginScreen();
     }
@@ -42,6 +66,7 @@ class UserinfoBar extends React.Component<IProps> {
 
   render() {
     const { userInfo } = this.props;
+    const { following_state } = this.state;
     return (
       <View style={styles.container}>
         <Touchable onPress={this.goUserProfile} style={styles.avatar}>
@@ -53,7 +78,7 @@ class UserinfoBar extends React.Component<IProps> {
         <View style={styles.follow}>
           <Button
             type="primary"
-            title={'关注'}
+            title={following_state ? '取消' : '关注'}
             height={24}
             fontSize={12}
             onPress={this.onPressFollow}

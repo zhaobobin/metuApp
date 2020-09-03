@@ -2,6 +2,7 @@ import { Model, Effect } from 'dva-core-ts';
 import { Reducer } from 'redux';
 import { userApi } from '@/api/index';
 import { IUserInfo } from '@/types/CommonTypes';
+import { Toast } from '@/components/index';
 
 export interface IUserState {
   userDetail: IUserInfo;
@@ -12,6 +13,7 @@ interface UserModel extends Model {
   state: IUserState;
   effects: {
     queryUserDetail: Effect;
+    followUser: Effect;
   };
   reducers: {
     setState: Reducer<IUserState>;
@@ -50,6 +52,14 @@ const userModel: UserModel = {
           userDetail: res.data
         }
       });
+    },
+    *followUser({ payload, callback }, { call }) {
+      const res = yield call(userApi.followUser, payload);
+      if (res.code === 0) {
+        callback(res);
+      } else {
+        Toast.info(res.message, 2);
+      }
     }
   },
 

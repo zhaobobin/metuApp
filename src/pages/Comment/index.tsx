@@ -20,7 +20,7 @@ class Commont extends React.Component<IProps> {
   render() {
     return (
       <View>
-        <Text>Publish</Text>
+        <Text>Commont</Text>
       </View>
     );
   }

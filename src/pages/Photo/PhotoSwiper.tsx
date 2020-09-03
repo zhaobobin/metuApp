@@ -33,6 +33,14 @@ class PhotoSwiper extends React.Component<IProps, IState> {
     carsouelActiveIndex: 0
   };
 
+  componentWillReceiveProps(nextProps: IProps) {
+    if(nextProps.title !== this.props.title) {
+      this.setState({
+        carsouelActiveIndex: 0
+      });
+    }
+  }
+
   onSnapToItem = (index: number) => {
     this.setState({
       carsouelActiveIndex: index

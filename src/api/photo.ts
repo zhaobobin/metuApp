@@ -21,6 +21,16 @@ export const photoApi = {
     return Request({ url: `/photos/${params.id}`, method: 'get' });
   },
 
+  // 状态
+  getPhotoState: (params: { photo_id: string }) => {
+    return Request({ url: `/photos/${params.photo_id}/state`, method: 'get' });
+  },
+
+  // 下一组
+  getNextPhoto: (params: { photo_id: string }) => {
+    return Request({ url: `/photos/${params.photo_id}/next`, method: 'get' });
+  },
+
   // 点赞图片、取消点赞
   favorPhoto: (params: { photo_id: string, favoring_state: boolean }) => {
     const method = params.favoring_state ? 'delete' : 'put';
@@ -37,6 +47,5 @@ export const photoApi = {
   sharePhoto: (params: { photo_id: string }) => {
     return Request({ url: `/photos/shareing/${params.photo_id}`, method: 'put' });
   }
-
 
 };

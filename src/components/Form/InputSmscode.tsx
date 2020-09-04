@@ -62,10 +62,18 @@ class InputSmscode extends React.PureComponent<IProps, IState> {
     if (this.props.auto) this.sendSmsCode(); //自动发送验证码
   }
 
-  componentWillReceiveProps(nextProps: IProps) {
-    //按钮在激活状态，才重置倒计时
-    if (nextProps.mobile !== this.props.mobile) {
-      this.initBtnStyle(nextProps.mobile);
+  static getDerivedStateFromProps(nextProps: IProps, prevState: IState) {
+    if (nextProps.mobile !== prevState.mobile) {
+      return {
+        mobile: nextProps.mobile
+      };
+    }
+    return null;
+  }
+
+  componentDidUpdate(prevProps: IProps, prevState: IState) {
+    if (this.state.mobile !== prevState.mobile) {
+      this.initBtnStyle(this.state.mobile);
     }
   }
 

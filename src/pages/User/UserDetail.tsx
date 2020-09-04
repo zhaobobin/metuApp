@@ -51,26 +51,40 @@ interface IRoute {
 }
 
 interface IState {
+  user_id: string;
   routes: IRoute[];
   tabs: string[];
   index: number;
 }
 
 class UserDetail extends React.Component<IProps, IState> {
-  state = {
-    routes: Routes,
-    tabs: Tabs,
-    index: 0
-  };
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      user_id: '',
+      routes: Routes,
+      tabs: Tabs,
+      index: 0
+    };
+  }
 
   componentDidMount() {
     const { route } = this.props;
     this.getUserDetail(route.params.id);
   }
 
-  componentWillReceiveProps(nextProps: IProps) {
-    if (nextProps.route.params.id !== this.props.route.params.id) {
-      this.getUserDetail(nextProps.route.params.id);
+  static getDerivedStateFromProps(nextProps: IProps, prevState: IState) {
+    if (nextProps.route.params.id !== prevState.user_id) {
+      return {
+        user_id: nextProps.route.params.id
+      };
+    }
+    return null;
+  }
+
+  componentDidUpdate(prevProps: IProps, prevState: IState) {
+    if (this.state.user_id !== prevState.user_id) {
+      this.getUserDetail(this.state.user_id);
     }
   }
 

@@ -34,22 +34,36 @@ interface IProps extends ModelState {
 }
 
 interface IState {
+  type: string;
   refreshing: boolean;
 }
 
 class Following extends React.Component<IProps, IState> {
-  state = {
-    refreshing: false
-  };
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      type: '',
+      refreshing: false
+    };
+  }
 
   componentDidMount() {
     const { route } = this.props;
     this.getMessageList(route.params.type, false);
   }
 
-  componentWillReceiveProps(nextProps: IProps) {
-    if (nextProps.route.params.type !== this.props.route.params.type) {
-      this.getMessageList(nextProps.route.params.type, false);
+  static getDerivedStateFromProps(nextProps: IProps, prevState: IState) {
+    if (nextProps.route.params.type !== prevState.type) {
+      return {
+        type: nextProps.route.params.type
+      };
+    }
+    return null;
+  }
+
+  componentDidUpdate(prevProps: IProps, prevState: IState) {
+    if (this.state.type !== prevState.type) {
+      this.getMessageList(this.state.type, false);
     }
   }
 

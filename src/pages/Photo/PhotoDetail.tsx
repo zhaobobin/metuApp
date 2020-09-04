@@ -36,17 +36,44 @@ interface IProps extends ModelState {
   route: RouteProp<PhotoStackParamList, 'PhotoDetail'>;
 }
 
-class PhotoDetail extends React.Component<IProps> {
+interface IState {
+  isAuth: boolean;
+  photo_id: string;
+}
+
+class PhotoDetail extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      isAuth: props.isAuth,
+      photo_id: props.photoDetail._id
+    };
+  }
+
   componentDidMount() {
     const { photo_id } = this.props.route.params;
     this.getPhotoDetail(photo_id);
   }
 
-  componentWillReceiveProps(nextProps: IProps) {
-    if (nextProps.route.params.photo_id !== this.props.route.params.photo_id) {
-      this.getPhotoDetail(nextProps.route.params.photo_id);
+  static getDerivedStateFromProps(nextProps: IProps, prevState: IState) {
+    if (nextProps.route.params.photo_id !== prevState.photo_id) {
+      return {
+        photo_id: nextProps.route.params.photo_id
+      };
     }
-    if (nextProps.isAuth !== this.props.isAuth) {
+    if (nextProps.isAuth !== prevState.isAuth) {
+      return {
+        isAuth: nextProps.isAuth
+      };
+    }
+    return null;
+  }
+
+  componentDidUpdate(prevProps: IProps, prevState: IState) {
+    if (this.state.photo_id !== prevState.photo_id) {
+      this.getPhotoDetail(this.state.photo_id);
+    }
+    if (this.state.isAuth !== prevState.isAuth) {
       this.getPhotoState(this.props.photoDetail._id);
     }
   }
@@ -77,7 +104,7 @@ class PhotoDetail extends React.Component<IProps> {
   };
 
   handleFollow = () => {
-    if (this.props.isAuth) {
+    if (this.state.isAuth) {
       const { photoDetail } = this.props;
       this.props.dispatch({
         type: 'user/followUser',
@@ -95,9 +122,8 @@ class PhotoDetail extends React.Component<IProps> {
   };
 
   handleFavor = async () => {
-    if (this.props.isAuth) {
+    if (this.state.isAuth) {
       const { photoDetail } = this.props;
-      console.log(this.props.isAuth);
       this.props.dispatch({
         type: 'photo/favorPhoto',
         payload: {
@@ -118,7 +144,7 @@ class PhotoDetail extends React.Component<IProps> {
   };
 
   handleCollect = async () => {
-    if (this.props.isAuth) {
+    if (this.state.isAuth) {
       const { photoDetail } = this.props;
       this.props.dispatch({
         type: 'photo/collectPhoto',
@@ -133,7 +159,7 @@ class PhotoDetail extends React.Component<IProps> {
   };
 
   handleShare = () => {
-    if (this.props.isAuth) {
+    if (this.state.isAuth) {
     } else {
       this.goLoginScreen();
     }
@@ -171,6 +197,7 @@ class PhotoDetail extends React.Component<IProps> {
 
   render() {
     const { loading, photoDetail, route } = this.props;
+    console.log(111)
     if (loading) {
       return null;
     }

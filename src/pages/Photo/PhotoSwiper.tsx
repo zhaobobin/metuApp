@@ -21,6 +21,7 @@ interface IProps {
 }
 
 interface IState {
+  title?: string;
   carsouelActiveIndex: number;
 }
 
@@ -29,16 +30,22 @@ class PhotoSwiper extends React.Component<IProps, IState> {
     pagination: true
   };
 
-  state = {
-    carsouelActiveIndex: 0
-  };
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      title: props.title,
+      carsouelActiveIndex: 0
+    };
+  }
 
-  componentWillReceiveProps(nextProps: IProps) {
-    if(nextProps.title !== this.props.title) {
-      this.setState({
+  static getDerivedStateFromProps(nextProps: IProps, prevState: IState) {
+    if (nextProps.title !== prevState.title) {
+      return {
+        title: nextProps.title,
         carsouelActiveIndex: 0
-      });
+      };
     }
+    return null;
   }
 
   onSnapToItem = (index: number) => {

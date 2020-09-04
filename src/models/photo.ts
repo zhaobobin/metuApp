@@ -13,56 +13,58 @@ interface PhotoModel extends Model {
   state: IPhotoState;
   effects: {
     queryPhotoDetail: Effect;
+    queryPhotoState: Effect;
     favorPhoto: Effect;
     collectPhoto: Effect;
     nextPhoto: Effect;
   };
   reducers: {
     setState: Reducer<IPhotoState>;
+    updatePhotoDetail: Reducer<IPhotoState>;
   };
 }
+
+const initialState: IPhotoState = {
+  photoDetail: {
+    _id: '',
+    title: '',
+    thumb: {
+      url: '',
+      width: 0,
+      height: 0
+    },
+    author: {
+      _id: '',
+      type: '',
+      level: 0,
+      point: 0,
+      status: 0,
+      tags: [],
+      nickname: '',
+      username: '',
+      create_at: '',
+      update_at: ''
+    },
+    images: [],
+    view_number: 0,
+    favor_number: 0,
+    collect_number: 0,
+    comment_number: 0,
+    editor: 0,
+    status: 0,
+    create_at: '',
+    update_at: ''
+  }
+};
 
 const photoModel: PhotoModel = {
   namespace: 'photo',
 
-  state: {
-    photoDetail: {
-      _id: '',
-      title: '',
-      thumb: {
-        url: '',
-        width: 0,
-        height: 0
-      },
-      author: {
-        _id: '',
-        type: '',
-        level: 0,
-        point: 0,
-        status: 0,
-        tags: [],
-        nickname: '',
-        username: '',
-        create_at: '',
-        update_at: ''
-      },
-      images: [],
-      view_number: 0,
-      favor_number: 0,
-      collect_number: 0,
-      comment_number: 0,
-      editor: 0,
-      status: 0,
-      create_at: '',
-      update_at: ''
-    }
-  },
+  state: initialState,
 
   effects: {
     *queryPhotoDetail({ payload }, { call, put }) {
-      const res = yield call(photoApi.getPhotoDetail, {
-        id: payload.id
-      });
+      const res = yield call(photoApi.getPhotoDetail, payload);
       yield put({
         type: 'setState',
         payload: {
@@ -70,18 +72,31 @@ const photoModel: PhotoModel = {
         }
       });
     },
-    *favorPhoto({ payload, callback }, { call }) {
+    *queryPhotoState({ payload }, { call, put }) {
+      const res = yield call(photoApi.getPhotoState, payload);
+      yield put({
+        type: 'updatePhotoDetail',
+        payload: res.data
+      });
+    },
+    *favorPhoto({ payload }, { call, put }) {
       const res = yield call(photoApi.favorPhoto, payload);
       if (res.code === 0) {
-        callback(res);
+        yield put({
+          type: 'updatePhotoDetail',
+          payload: res.data
+        });
       } else {
         Toast.info(res.message, 2);
       }
     },
-    *collectPhoto({ payload, callback }, { call }) {
+    *collectPhoto({ payload }, { call, put }) {
       const res = yield call(photoApi.collectPhoto, payload);
       if (res.code === 0) {
-        callback(res);
+        yield put({
+          type: 'updatePhotoDetail',
+          payload: res.data
+        });
       } else {
         Toast.info(res.message, 2);
       }
@@ -106,6 +121,15 @@ const photoModel: PhotoModel = {
       return {
         ...state,
         ...payload
+      };
+    },
+    updatePhotoDetail(state = initialState, { payload }) {
+      return {
+        ...state,
+        photoDetail: {
+          ...state.photoDetail,
+          ...payload
+        }
       };
     }
   }

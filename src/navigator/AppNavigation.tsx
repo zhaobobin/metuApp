@@ -8,12 +8,14 @@ import {
   StackNavigationProp,
   TransitionPresets
 } from '@react-navigation/stack';
+import Animated from 'react-native-reanimated';
 import Icon from '@/assets/iconfont';
 
 import MainScreen from './MainNavigation';
 import Search from '@/pages/Search/index';
 import Publish from '@/pages/Publish/index';
 import PhotoScreen from './PhotoScreen';
+import UserDetail from '@/pages/User/UserDetail';
 import Comment from '@/pages/Comment/index';
 
 // App页面参数声明
@@ -22,6 +24,7 @@ export type AppStackParamList = {
   SearchScreen: undefined;
   PublishScreen: undefined;
   PhotoScreen: undefined;
+  UserDetail: { id: string };
   CommentScreen: { id: string; type: 'photos' | 'articles' };
 };
 
@@ -59,6 +62,11 @@ export default function AppScreen() {
         name="PhotoScreen"
         component={PhotoScreen}
         options={getPhotoScreenOptions}
+      />
+      <AppStack.Screen
+        name="UserDetail"
+        component={UserDetail}
+        options={getUserDetailOptions}
       />
       <AppStack.Screen
         name="CommentScreen"
@@ -107,17 +115,24 @@ function getPhotoScreenOptions() {
   };
 }
 
+// 用户详情 标题配置
+function getUserDetailOptions() {
+  return {
+    headerTitle: '用户详情',
+    headerTransparent: true,
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      opacity: 0
+    },
+    headerBackground: () => {
+      return <Animated.View style={styles.userDetailBg} />;
+    },
+    ...TransitionPresets.DefaultTransition
+  };
+}
+
 function getCommentScreenOptions() {
   return {
-    // headerTitle: '评论',
-    // headerBackImage: ({ tintColor }: { tintColor: string }) => (
-    //   <Icon
-    //     name="icon-arrow-down"
-    //     size={30}
-    //     color={tintColor}
-    //     style={styles.headerBackImage}
-    //   />
-    // ),
     headerShown: false,
     ...TransitionPresets.ModalPresentationIOS
   };
@@ -126,5 +141,10 @@ function getCommentScreenOptions() {
 const styles = StyleSheet.create({
   headerBackImage: {
     marginHorizontal: Platform.OS === 'android' ? 0 : 8
+  },
+  userDetailBg: {
+    flex: 1,
+    backgroundColor: '#fff',
+    opacity: 0
   }
 });

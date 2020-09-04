@@ -6,6 +6,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '@/models/index';
 import { IComment } from '@/types/comment/CommentState';
+import { Navigator } from '@/utils/index';
 import { Avatar, Touchable } from '@/components/index';
 import Icon from '@/assets/iconfont';
 import moment from 'moment';
@@ -22,12 +23,20 @@ interface IProps extends ModelState {
 }
 
 class CommentListItem extends React.Component<IProps> {
+
+  goUserProfile = () => {
+    const { item } = this.props;
+    Navigator.goPage('UserDetail', { id: item.author._id });
+  };
+
   render() {
     const { item } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.left}>
-          <Avatar url={item.author.avatar_url} size={40} />
+          <Touchable onPress={this.goUserProfile} activeOpacity={1}>
+            <Avatar url={item.author.avatar_url} size={40} />
+          </Touchable>
         </View>
         <View style={styles.right}>
           <Text style={styles.nicknameText}>{item.author.nickname}:</Text>

@@ -17,13 +17,15 @@ import {
 
 import PhotoSwiper from './PhotoSwiper';
 import PhotoDetailFoot from './PhotoDetailFoot';
+import { IResponse } from '@/types/CommonTypes';
 
 const statusBarHeight = getStatusBarHeight();
 const bottomSpace = getBottomSpace();
 
 const mapStateToProps = (state: RootState) => ({
   loading: state.loading.effects['photo/queryPhotoDetail'],
-  photoDetail: state.photo.photoDetail
+  photoDetail: state.photo.photoDetail,
+  isAuth: state.account.isAuth
 });
 
 const connector = connect(mapStateToProps);
@@ -36,15 +38,113 @@ interface IProps extends ModelState {
 
 class PhotoDetail extends React.Component<IProps> {
   componentDidMount() {
-    this.getPhotoDetail();
+    const { photo_id } = this.props.route.params;
+    this.getPhotoDetail(photo_id);
   }
 
-  getPhotoDetail = () => {
-    const { route } = this.props;
+  componentWillReceiveProps(nextProps: IProps) {
+    if (nextProps.route.params.photo_id !== this.props.route.params.photo_id) {
+      this.getPhotoDetail(nextProps.route.params.photo_id);
+    }
+    if (nextProps.isAuth !== this.props.isAuth) {
+      this.getPhotoState(this.props.photoDetail._id);
+    }
+  }
+
+  getPhotoDetail = (photo_id: string) => {
     this.props.dispatch({
       type: 'photo/queryPhotoDetail',
       payload: {
-        id: route.params.photo_id
+        photo_id
+      }
+    });
+  };
+
+  getPhotoState = (photo_id: string) => {
+    this.props.dispatch({
+      type: 'photo/queryPhotoState',
+      payload: {
+        photo_id
+      }
+    });
+  };
+
+  updatePhotoState = (payload: any) => {
+    this.props.dispatch({
+      type: 'photo/updatePhotoDetail',
+      payload
+    });
+  };
+
+  handleFollow = () => {
+    if (this.props.isAuth) {
+      const { photoDetail } = this.props;
+      this.props.dispatch({
+        type: 'user/followUser',
+        payload: {
+          user_id: photoDetail.author._id,
+          following_state: photoDetail.following_state
+        },
+        callback: (res: IResponse) => {
+          this.updatePhotoState(res.data);
+        }
+      });
+    } else {
+      this.goLoginScreen();
+    }
+  };
+
+  handleFavor = async () => {
+    if (this.props.isAuth) {
+      const { photoDetail } = this.props;
+      console.log(this.props.isAuth);
+      this.props.dispatch({
+        type: 'photo/favorPhoto',
+        payload: {
+          photo_id: photoDetail._id,
+          favoring_state: photoDetail.favoring_state
+        }
+      });
+    } else {
+      this.goLoginScreen();
+    }
+  };
+
+  handleComment = () => {
+    Navigator.goPage('CommentScreen', {
+      id: this.props.photoDetail._id,
+      type: 'photos'
+    });
+  };
+
+  handleCollect = async () => {
+    if (this.props.isAuth) {
+      const { photoDetail } = this.props;
+      this.props.dispatch({
+        type: 'photo/collectPhoto',
+        payload: {
+          photo_id: photoDetail._id,
+          collecting_state: photoDetail.collecting_state
+        }
+      });
+    } else {
+      this.goLoginScreen();
+    }
+  };
+
+  handleShare = () => {
+    if (this.props.isAuth) {
+    } else {
+      this.goLoginScreen();
+    }
+  };
+
+  handleNextPhotos = () => {
+    const { photoDetail } = this.props;
+    this.props.dispatch({
+      type: 'photo/nextPhoto',
+      payload: {
+        photo_id: photoDetail._id
       }
     });
   };
@@ -86,9 +186,9 @@ class PhotoDetail extends React.Component<IProps> {
           </View>
           <View style={styles.headCenter}>
             <UserinfoBar
-              detail={photoDetail}
               userInfo={photoDetail.author}
-              goLoginScreen={this.goLoginScreen}
+              following_state={photoDetail.following_state}
+              handleFollow={this.handleFollow}
             />
           </View>
           <View style={styles.headRight}>
@@ -104,7 +204,14 @@ class PhotoDetail extends React.Component<IProps> {
           />
         </View>
         <View style={styles.foot}>
-          <PhotoDetailFoot goLoginScreen={this.goLoginScreen} />
+          <PhotoDetailFoot
+            photoDetail={photoDetail}
+            handleFavor={this.handleFavor}
+            handleComment={this.handleComment}
+            handleCollect={this.handleCollect}
+            handleShare={this.handleShare}
+            handleNextPhotos={this.handleNextPhotos}
+          />
         </View>
 
         {/* <Text>PhotoDetail</Text>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, View } from 'react-native';
+import { Image, View, StyleSheet } from 'react-native';
 import Icon from '@/assets/iconfont';
 
 interface AvatarProps {
@@ -10,16 +10,12 @@ interface AvatarProps {
 const Avatar: React.FC<AvatarProps> = props => {
   const { url, size } = props;
   const borderRadius = size ? size / 2 : 25;
-  const styles = {
+  const style = {
     width: size,
     height: size,
     borderRadius,
     backgroundColor: '#ccc'
   };
-  const iconView = {
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
 
   return (
     <>
@@ -28,10 +24,10 @@ const Avatar: React.FC<AvatarProps> = props => {
           source={{
             uri: `${url}?v=${Math.random()}`
           }}
-          style={styles}
+          style={style}
         />
       ) : (
-        <View style={[styles, iconView]}>
+        <View style={[style, styles.iconView]}>
           <Icon name="icon-account" size={borderRadius} color="#fff" />
         </View>
       )}
@@ -42,5 +38,12 @@ const Avatar: React.FC<AvatarProps> = props => {
 Avatar.defaultProps = {
   size: 50
 };
+
+const styles = StyleSheet.create({
+  iconView: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+})
 
 export default Avatar;

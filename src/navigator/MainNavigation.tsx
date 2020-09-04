@@ -74,16 +74,6 @@ export default function MainScreen() {
         options={getBottomTabsOptions}
       />
       <MainStack.Screen
-        name="PhotoDetail"
-        component={PhotoDetail}
-        options={getPhotoDetailOptions}
-      />
-      <MainStack.Screen
-        name="UserDetail"
-        component={UserDetail}
-        options={getUserDetailOptions}
-      />
-      <MainStack.Screen
         name="Category"
         component={Category}
         options={getCategoryOptions}
@@ -126,32 +116,6 @@ function getBottomTabsOptions() {
   return {
     headerTitle: '底部导航'
     // headerShown: false
-  };
-}
-
-// 图片详情 标题配置
-function getPhotoDetailOptions({
-  route
-}: {
-  route: RouteProp<MainStackParamList, 'PhotoDetail'>;
-}) {
-  return {
-    headerTitle: route.params.item.title
-  };
-}
-
-// 用户详情 标题配置
-function getUserDetailOptions() {
-  return {
-    headerTitle: '用户详情',
-    headerTransparent: true,
-    headerTintColor: '#fff',
-    headerTitleStyle: {
-      opacity: 0
-    },
-    headerBackground: () => {
-      return <Animated.View style={styles.userDetailBg} />;
-    }
   };
 }
 

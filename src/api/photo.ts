@@ -17,8 +17,8 @@ export const photoApi = {
     });
   },
 
-  getPhotoDetail: (params: { id: string }) => {
-    return Request({ url: `/photos/${params.id}`, method: 'get' });
+  getPhotoDetail: (params: { photo_id: string }) => {
+    return Request({ url: `/photos/${params.photo_id}`, method: 'get' });
   },
 
   // 状态

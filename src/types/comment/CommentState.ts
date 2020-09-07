@@ -15,4 +15,6 @@ export interface IComment {
   photo_id: string;
   create_at: string;
   update_at: string;
+  favoring_state?: boolean;
+  collect_state?: boolean;
 }

@@ -7,7 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RouteProp, TabNavigationState } from '@react-navigation/native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { MainStackNavigation, MainStackParamList } from './MainNavigation';
-import { ENV, Navigator, Storage } from '@/utils/index';
+import { ENV, Storage, Navigator } from '@/utils/index';
 import { RootState } from '@/models/index';
 import { IResponse } from '@/types/CommonTypes';
 import Icon from '@/assets/iconfont';

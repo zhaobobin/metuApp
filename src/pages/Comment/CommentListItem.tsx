@@ -10,12 +10,12 @@ import moment from 'moment';
 interface IProps {
   item: IComment;
   goUserProfile: (item: IComment) => void;
-  handleRelpy: (item: IComment) => void;
+  handleReply: (item: IComment) => void;
   handleFavor: (item: IComment) => void;
 }
 
 const CommentListItem = (props: IProps) => {
-  const { item, goUserProfile, handleRelpy, handleFavor } = props;
+  const { item, goUserProfile, handleReply, handleFavor } = props;
   return (
     <View style={styles.container}>
       <View style={styles.left}>
@@ -25,7 +25,7 @@ const CommentListItem = (props: IProps) => {
       </View>
       <View style={styles.right}>
         <Text style={styles.nicknameText}>{item.author.nickname}:</Text>
-        <Touchable onPress={() => handleRelpy(item)}>
+        <Touchable onPress={() => handleReply(item)}>
           <Text style={styles.contentText}>{item.content}</Text>
         </Touchable>
         <View style={styles.foot}>
@@ -36,10 +36,10 @@ const CommentListItem = (props: IProps) => {
             <IconView
               iconName="icon-comments"
               style={styles.iconView}
-              onPress={() => handleRelpy(item)}
+              onPress={() => handleReply(item)}
             />
             <IconView
-              iconName="icon-favorites"
+              iconName={item.favoring_state ? 'icon-favorites-fill' : 'icon-favorites'}
               text={item.favor_number}
               style={styles.iconView}
               onPress={() => handleFavor(item)}

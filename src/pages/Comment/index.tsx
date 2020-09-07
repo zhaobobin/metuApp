@@ -14,8 +14,8 @@ import { RouteProp } from '@react-navigation/native';
 import { RootState } from '@/models/index';
 import { AppStackParamList } from '@/navigator/AppNavigation';
 import { IComment } from '@/types/comment/CommentState';
-import { Navigator, getStatusBarHeight } from '@/utils/index';
-import { Empty } from '@/components/index';
+import { Storage, ENV, Navigator } from '@/utils/index';
+import { Empty, Modal } from '@/components/index';
 
 import CommentListHead from './CommentListHead';
 import CommentListItem from './CommentListItem';
@@ -25,7 +25,8 @@ const mapStateToProps = (state: RootState) => ({
   loading: state.loading.effects['comment/queryCommentList'],
   list: state.comment.commentList.list,
   count: state.comment.commentList.pageInfo.count,
-  hasMore: state.comment.commentList.pageInfo.has_more
+  hasMore: state.comment.commentList.pageInfo.has_more,
+  isAuth: state.account.isAuth
 });
 
 const connector = connect(mapStateToProps);
@@ -37,6 +38,7 @@ interface IProps extends ModelState {
 }
 
 interface IState {
+  isAuth: boolean;
   refreshing: boolean;
 }
 
@@ -44,12 +46,28 @@ class Commont extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
+      isAuth: props.isAuth,
       refreshing: false
     };
   }
 
   componentDidMount() {
     this.queryCommentList();
+  }
+
+  static getDerivedStateFromProps(nextProps: IProps, prevState: IState) {
+    if (nextProps.isAuth !== prevState.isAuth) {
+      return {
+        isAuth: nextProps.isAuth
+      };
+    }
+    return null;
+  }
+
+  componentDidUpdate(prevProps: IProps, prevState: IState) {
+    if (this.state.isAuth !== prevState.isAuth) {
+      this.queryCommentList();
+    }
   }
 
   queryCommentList = (loadMore?: boolean) => {
@@ -99,7 +117,7 @@ class Commont extends React.Component<IProps, IState> {
       <CommentListItem
         item={item}
         goUserProfile={this.goUserProfile}
-        handleRelpy={this.handleRelpy}
+        handleReply={this.handleReplyComment}
         handleFavor={this.handleFavor}
       />
     );
@@ -114,11 +132,87 @@ class Commont extends React.Component<IProps, IState> {
     Navigator.goPage('UserDetail', { id: item.author._id });
   };
 
-  handleRelpy = (item: IComment) => {
-    console.log(item)
+  handleCreateComment = (item: IComment) => {
+    if (this.state.isAuth) {
+      
+    } else {
+      this.goLoginScreen();
+    }
   };
 
-  handleFavor = (item: IComment) => {};
+  submitCreateComment = (item: IComment) => {
+    const { route } = this.props;
+    this.props.dispatch({
+      type: 'comment/create',
+      payload: {
+        category: route.params.type,
+        detail_id: route.params.id,
+        content: ''
+      },
+      callback: () => {
+        this.onRefresh();
+      }
+    });
+  };
+
+  handleReplyComment = (item: IComment) => {
+    if (this.state.isAuth) {
+      
+    } else {
+      this.goLoginScreen();
+    }
+  };
+
+  submitReplyComment = (item: IComment) => {
+    const { route } = this.props;
+    this.props.dispatch({
+      type: 'comment/reply',
+      payload: {
+        category: route.params.type,
+        detail_id: route.params.id,
+        comment_id: item._id,
+        reply_to: '',
+        content: ''
+      },
+      callback: () => {
+        this.onRefresh();
+      }
+    });
+  };
+
+  showCommentModal = (item: IComment) => {
+    const { route } = this.props;
+  }
+
+  handleFavor = (item: IComment) => {
+    if (this.state.isAuth) {
+      const { route } = this.props;
+      this.props.dispatch({
+        type: 'comment/favor',
+        payload: {
+          category: route.params.type,
+          detail_id: route.params.id,
+          comment_id: item._id,
+          favoring_state: item.favoring_state
+        }
+      });
+    } else {
+      this.goLoginScreen();
+    }
+  };
+
+  goLoginScreen = async () => {
+    const { route } = this.props;
+    const redirectRoute = {
+      routeName: 'CommentScreen',
+      routeParam: {
+        id: route.params.id,
+        type: route.params.type
+      }
+    };
+    await Storage.set(ENV.storage.loginRedirect, JSON.stringify(redirectRoute));
+    Navigator.goPage('LoginScreen');
+  };
 
   goBack = () => {
     Navigator.goBack();

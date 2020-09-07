@@ -14,6 +14,9 @@ interface CommentModel extends Model {
   state: ICommentState;
   effects: {
     queryCommentList: Effect;
+    create: Effect;
+    reply: Effect;
+    favor: Effect;
   };
   reducers: {
     setState: Reducer<ICommentState>;
@@ -70,6 +73,47 @@ const commentModel: CommentModel = {
       });
       if (callback) {
         callback();
+      }
+    },
+    *create({ payload, callback }, { call }) {
+      const res = yield call(commentApi.createComment, payload);
+      if (res.code === 0) {
+        callback();
+      } else {
+        Toast.info(res.message, 2);
+      }
+    },
+    *reply({ payload, callback }, { call }) {
+      const res = yield call(commentApi.replyComment, payload);
+      if (res.code === 0) {
+        callback();
+      } else {
+        Toast.info(res.message, 2);
+      }
+    },
+    *favor({ payload }, { call, put, select }) {
+      const { list, pageInfo } = yield select(
+        (state: RootState) => state.comment.commentList
+      );
+      const res = yield call(commentApi.favorComment, payload);
+      if (res.code === 0) {
+        for(const item of list) {
+          if (item._id === payload.comment_id) {
+            item.favor_number = res.data.favor_number;
+            item.favoring_state = res.data.favoring_state;
+          }
+        }
+        yield put({
+          type: 'setState',
+          payload: {
+            commentList: {
+              list: list.slice(0),
+              pageInfo
+            }
+          }
+        });
+      } else {
+        Toast.info(res.message, 2);
       }
     }
   },

@@ -95,7 +95,7 @@ class Carsouel extends React.Component<IProps> {
             dotContainerStyle={styles.dotContainner}
             dotStyle={styles.dot}
             activeDotIndex={carsouelActiveIndex}
-            dotsLength={carsouel.length}
+            dotsLength={carsouel ? carsouel.length : 0}
             inactiveDotScale={0.7}
             inactiveDotOpacity={0.4}
           />

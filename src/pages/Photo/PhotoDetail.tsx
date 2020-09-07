@@ -3,9 +3,8 @@ import { View, StyleSheet } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteProp } from '@react-navigation/native';
 import { PhotoStackParamList } from '@/navigator/PhotoScreen';
-import Icon from '@/assets/iconfont';
 import { RootState } from '@/models/index';
-import { Touchable, UserinfoBar } from '@/components/index';
+import { IResponse } from '@/types/CommonTypes';
 import {
   Navigator,
   Storage,
@@ -15,9 +14,9 @@ import {
   screenWidth
 } from '@/utils/index';
 
+import PhotoDetailHead from './PhotoDetailHead';
 import PhotoSwiper from './PhotoSwiper';
 import PhotoDetailFoot from './PhotoDetailFoot';
-import { IResponse } from '@/types/CommonTypes';
 
 const statusBarHeight = getStatusBarHeight();
 const bottomSpace = getBottomSpace();
@@ -197,30 +196,18 @@ class PhotoDetail extends React.Component<IProps, IState> {
 
   render() {
     const { loading, photoDetail, route } = this.props;
-    console.log(111)
     if (loading) {
       return null;
     }
     return (
       <View style={styles.container}>
         <View style={styles.head}>
-          <View style={styles.headBack}>
-            {route.params.modal && (
-              <Touchable onPress={this.goBack}>
-                <Icon name="icon-close" size={30} color="#fff" />
-              </Touchable>
-            )}
-          </View>
-          <View style={styles.headCenter}>
-            <UserinfoBar
-              userInfo={photoDetail.author}
-              following_state={photoDetail.following_state}
-              handleFollow={this.handleFollow}
-            />
-          </View>
-          <View style={styles.headRight}>
-            <Icon name="icon-ellipsis" size={30} color="#fff" />
-          </View>
+          <PhotoDetailHead
+            photoDetail={photoDetail}
+            modal={route.params.modal}
+            goBack={this.goBack}
+            handleFollow={this.handleFollow}
+          />
         </View>
         <View style={styles.body}>
           <PhotoSwiper
@@ -240,14 +227,6 @@ class PhotoDetail extends React.Component<IProps, IState> {
             handleNextPhotos={this.handleNextPhotos}
           />
         </View>
-
-        {/* <Text>PhotoDetail</Text>
-        <Text>标题: {photoDetail.title}</Text>
-        <Text>id: {photoDetail._id}</Text>
-        <Text>作者:</Text>
-        <Touchable onPress={() => this.goUserPage(photoDetail.author._id)}>
-          <Text>{photoDetail.author?.nickname}</Text>
-        </Touchable> */}
       </View>
     );
   }
@@ -268,19 +247,8 @@ const styles = StyleSheet.create({
     top: 0,
     paddingTop: statusBarHeight + 3,
     zIndex: 99,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     backgroundColor: 'rgba(0,0,0,.7)'
   },
-  headBack: {
-    // marginHorizontal: Platform.OS === 'android' ? 0 : 8
-  },
-  headCenter: {
-    flex: 1,
-    paddingHorizontal: 20
-  },
-  headRight: {},
   body: {
     flex: 1
   },

@@ -3,56 +3,53 @@
  */
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { connect, ConnectedProps } from 'react-redux';
-import { RootState } from '@/models/index';
 import { IComment } from '@/types/comment/CommentState';
-import { Navigator } from '@/utils/index';
-import { Avatar, Touchable } from '@/components/index';
-import Icon from '@/assets/iconfont';
+import { Avatar, Touchable, IconView } from '@/components/index';
 import moment from 'moment';
 
-const mapStateToProps = (state: RootState) => ({});
-
-const connector = connect(mapStateToProps);
-
-type ModelState = ConnectedProps<typeof connector>;
-
-interface IProps extends ModelState {
+interface IProps {
   item: IComment;
-  onPress: () => void;
+  goUserProfile: (item: IComment) => void;
+  handleRelpy: (item: IComment) => void;
+  handleFavor: (item: IComment) => void;
 }
 
-class CommentListItem extends React.Component<IProps> {
-
-  goUserProfile = () => {
-    const { item } = this.props;
-    Navigator.goPage('UserDetail', { id: item.author._id });
-  };
-
-  render() {
-    const { item } = this.props;
-    return (
-      <View style={styles.container}>
-        <View style={styles.left}>
-          <Touchable onPress={this.goUserProfile} activeOpacity={1}>
-            <Avatar url={item.author.avatar_url} size={40} />
-          </Touchable>
-        </View>
-        <View style={styles.right}>
-          <Text style={styles.nicknameText}>{item.author.nickname}:</Text>
+const CommentListItem = (props: IProps) => {
+  const { item, goUserProfile, handleRelpy, handleFavor } = props;
+  return (
+    <View style={styles.container}>
+      <View style={styles.left}>
+        <Touchable onPress={() => goUserProfile(item)} activeOpacity={1}>
+          <Avatar url={item.author.avatar_url} size={40} />
+        </Touchable>
+      </View>
+      <View style={styles.right}>
+        <Text style={styles.nicknameText}>{item.author.nickname}:</Text>
+        <Touchable onPress={() => handleRelpy(item)}>
           <Text style={styles.contentText}>{item.content}</Text>
-          <View style={styles.foot}>
-            <Text style={styles.dateText}>{moment(item.create_at).format('YYYY-MM-DD')}</Text>
-            <Text style={styles.favorText}>
-              <Icon name="icon-favorites" size={14} color="#999" />
-              {item.favor_number}
-            </Text>
+        </Touchable>
+        <View style={styles.foot}>
+          <Text style={styles.dateText}>
+            {moment(item.create_at).format('YYYY-MM-DD')}
+          </Text>
+          <View style={styles.iconGroup}>
+            <IconView
+              iconName="icon-comments"
+              style={styles.iconView}
+              onPress={() => handleRelpy(item)}
+            />
+            <IconView
+              iconName="icon-favorites"
+              text={item.favor_number}
+              style={styles.iconView}
+              onPress={() => handleFavor(item)}
+            />
           </View>
         </View>
       </View>
-    );
-  }
-}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -70,7 +67,7 @@ const styles = StyleSheet.create({
   nicknameText: {
     marginBottom: 10,
     fontWeight: 'bold',
-    fontSize: 14,
+    fontSize: 12,
     color: '#333'
   },
   contentText: {
@@ -86,10 +83,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#999'
   },
-  favorText: {
-    fontSize: 12,
-    color: '#999'
+  iconGroup: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  iconView: {
+    marginLeft: 20
   }
 });
 
-export default connector(CommentListItem);
+export default CommentListItem;

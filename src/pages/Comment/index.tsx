@@ -6,7 +6,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Platform,
   FlatList,
   ListRenderItemInfo
 } from 'react-native';
@@ -15,12 +14,12 @@ import { RouteProp } from '@react-navigation/native';
 import { RootState } from '@/models/index';
 import { AppStackParamList } from '@/navigator/AppNavigation';
 import { IComment } from '@/types/comment/CommentState';
-import { Navigator, getBottomSpace } from '@/utils/index';
-import Icon from '@/assets/iconfont';
-import { Empty, Touchable } from '@/components/index';
-import CommentListItem from './CommentListItem';
+import { Navigator, getStatusBarHeight } from '@/utils/index';
+import { Empty } from '@/components/index';
 
-const bottomSpace = getBottomSpace();
+import CommentListHead from './CommentListHead';
+import CommentListItem from './CommentListItem';
+import CommentListFoot from './CommentListFoot';
 
 const mapStateToProps = (state: RootState) => ({
   loading: state.loading.effects['comment/queryCommentList'],
@@ -42,9 +41,12 @@ interface IState {
 }
 
 class Commont extends React.Component<IProps, IState> {
-  state = {
-    refreshing: false
-  };
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      refreshing: false
+    };
+  }
 
   componentDidMount() {
     this.queryCommentList();
@@ -75,26 +77,6 @@ class Commont extends React.Component<IProps, IState> {
     this.queryCommentList(true);
   };
 
-  renderHeader = () => {
-    return (
-      <View style={styles.head}>
-        <View style={styles.back}>
-          <Touchable onPress={this.goBack} activeOpacity={1}>
-            <Icon
-              name="icon-arrow-down"
-              size={30}
-              color="#666"
-              style={styles.headerBackImage}
-            />
-          </Touchable>
-        </View>
-        <View style={styles.title}>
-          <Text style={styles.titleText}>评论</Text>
-        </View>
-      </View>
-    );
-  };
-
   renderFooter = () => {
     const { list, hasMore, loading } = this.props;
     if (!hasMore && list.length > 0) {
@@ -113,7 +95,14 @@ class Commont extends React.Component<IProps, IState> {
   _keyExtractor = (item: IComment) => item._id;
 
   renderItem = ({ item }: ListRenderItemInfo<IComment>) => {
-    return <CommentListItem item={item} onPress={this.showCommentInput} />;
+    return (
+      <CommentListItem
+        item={item}
+        goUserProfile={this.goUserProfile}
+        handleRelpy={this.handleRelpy}
+        handleFavor={this.handleFavor}
+      />
+    );
   };
 
   renderEmpty = () => {
@@ -121,47 +110,38 @@ class Commont extends React.Component<IProps, IState> {
     return <Empty loading={loading} text="暂无评论" />;
   };
 
-  showCommentInput = () => {};
+  goUserProfile = (item: IComment) => {
+    Navigator.goPage('UserDetail', { id: item.author._id });
+  };
+
+  handleRelpy = (item: IComment) => {
+    console.log(item)
+  };
+
+  handleFavor = (item: IComment) => {};
 
   goBack = () => {
     Navigator.goBack();
   };
 
   render() {
-    const { list, count } = this.props;
+    const { loading, list, count } = this.props;
+    if (loading) {
+      return null;
+    }
     return (
       <View style={styles.container}>
-        <View style={styles.head}>
-          <View style={styles.back}>
-            <Touchable onPress={this.goBack} activeOpacity={1}>
-              <Icon
-                name="icon-arrow-down"
-                size={30}
-                color="#666"
-                style={styles.headerBackImage}
-              />
-            </Touchable>
-          </View>
-          <View style={styles.title}>
-            <Text style={styles.titleText}>{count} 条评论</Text>
-          </View>
-        </View>
-        <View style={styles.body}>
-          <FlatList
-            data={list}
-            renderItem={this.renderItem}
-            keyExtractor={this._keyExtractor}
-            ListFooterComponent={this.renderFooter}
-            ListEmptyComponent={this.renderEmpty}
-            onEndReached={this.loadMore}
-            onEndReachedThreshold={0.2}
-          />
-        </View>
-        <View style={styles.foot}>
-          <View style={styles.footView}>
-            <Text>foot</Text>
-          </View>
-        </View>
+        <CommentListHead count={count} goBack={this.goBack} />
+        <FlatList
+          data={list}
+          renderItem={this.renderItem}
+          keyExtractor={this._keyExtractor}
+          ListFooterComponent={this.renderFooter}
+          ListEmptyComponent={this.renderEmpty}
+          onEndReached={this.loadMore}
+          onEndReachedThreshold={0.2}
+        />
+        <CommentListFoot />
       </View>
     );
   }
@@ -170,41 +150,7 @@ class Commont extends React.Component<IProps, IState> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    position: 'relative',
-    backgroundColor: '#fff'
-  },
-  head: {
-    height: 50,
-    flexDirection: 'row',
-    position: 'relative',
-    borderBottomColor: '#efefef',
-    borderBottomWidth: StyleSheet.hairlineWidth
-  },
-  back: {
-    width: 60,
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    zIndex: 9
-  },
-  title: {
-    flex: 1,
-    paddingHorizontal: 60,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  titleText: {
-    fontSize: 16,
-    color: '#333'
-  },
-  headerBackImage: {
-    marginHorizontal: Platform.OS === 'android' ? 0 : 8
-  },
-  body: {
-    flex: 1
+    position: 'relative'
   },
   end: {
     alignItems: 'center',
@@ -217,18 +163,6 @@ const styles = StyleSheet.create({
   loading: {
     alignItems: 'center',
     paddingVertical: 10
-  },
-  foot: {
-    height: bottomSpace + 50,
-    flexDirection: 'row',
-    borderTopColor: '#efefef',
-    borderTopWidth: StyleSheet.hairlineWidth
-  },
-  footView: {
-    flex: 1,
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center'
   }
 });
 

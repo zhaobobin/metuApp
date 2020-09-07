@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { IPhoto } from '@/types/CommonTypes';
-import { Touchable } from '@/components/index';
-import Icon from '@/assets/iconfont';
+import { Touchable, IconView } from '@/components/index';
 
 interface IProps {
   item: IPhoto;
@@ -29,18 +28,9 @@ class ChannelItem extends React.PureComponent<IProps> {
           </Text>
           <Text style={styles.user}>{item.author?.nickname}</Text>
           <View style={styles.info}>
-            <View style={styles.view}>
-              <Icon name="icon-browse" style={styles.icon} />
-              <Text style={styles.text}>{item.view_number}</Text>
-            </View>
-            <View style={styles.favor}>
-              <Icon name="icon-favorites" style={styles.icon} color="#888" />
-              <Text style={styles.text}>{item.favor_number}</Text>
-            </View>
-            <View style={styles.comment}>
-              <Icon name="icon-comments" style={styles.icon} />
-              <Text style={styles.text}>{item.comment_number}</Text>
-            </View>
+            <IconView iconName="icon-browse" text={item.view_number} />
+            <IconView iconName="icon-favorites" text={item.favor_number} />
+            <IconView iconName="icon-comments" text={item.comment_number} />
           </View>
         </View>
       </Touchable>
@@ -80,31 +70,12 @@ const styles = StyleSheet.create({
   },
   user: {
     marginBottom: 15,
-    fontSize: 12,
+    fontSize: 14,
     color: '#888'
   },
   info: {
     flexDirection: 'row',
     justifyContent: 'space-between'
-  },
-  view: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  favor: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  comment: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  icon: {
-    marginRight: 5,
-    color: '#888'
-  },
-  text: {
-    color: '#888'
   }
 });
 

@@ -3,16 +3,18 @@ import { View, Text, StyleSheet } from 'react-native';
 
 interface EmptyProps {
   loading?: boolean;
+  data?: any;
   text?: string;
 }
 
 export const Empty: FC<EmptyProps> = props => {
-  if (props.loading) {
+  const { loading, text } = props;
+  if (loading) {
     return null;
   }
   return (
     <View style={styles.empty}>
-      <Text>{props.text || '暂无数据'}</Text>
+      <Text>{text || '暂无数据'}</Text>
     </View>
   );
 };

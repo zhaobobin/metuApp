@@ -168,7 +168,7 @@ class BottomTabs extends React.Component<IProps> {
           options={{
             tabBarLabel: '发现',
             tabBarIcon: ({ color, size }) => (
-              <Icon name="icon-hot" size={size} color={color} />
+              <Icon name="icon-search" size={size} color={color} />
             )
           }}
         />
@@ -188,7 +188,7 @@ class BottomTabs extends React.Component<IProps> {
           options={{
             tabBarLabel: '消息',
             tabBarIcon: ({ color, size }) => (
-              <Icon name="icon-search" size={size} color={color} />
+              <Icon name="icon-remind" size={size} color={color} />
             )
           }}
         />

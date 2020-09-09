@@ -27,9 +27,10 @@ class WelcomePage extends React.Component<IProps> {
   };
 
   componentDidMount() {
-    this.timer = setTimeout(() => {
+    this.timer = setTimeout(async () => {
       SplashScreen.hide();
-      this.authToken();
+      await this.authToken();
+      this.initWelcome();
     }, 200);
   }
 
@@ -37,7 +38,20 @@ class WelcomePage extends React.Component<IProps> {
     clearTimeout(this.timer);
   }
 
-  welcome = () => {
+  authToken = async () => {
+    const token = await Storage.get(ENV.storage.token);
+    if (token) {
+      this.props.dispatch({
+        type: 'account/token',
+        payload: {
+          token
+        },
+        callback: () => {}
+      });
+    }
+  }
+
+  initWelcome = () => {
     let { num } = this.state;
     this.interval = setInterval(() => {
       if (num === 1) {
@@ -55,23 +69,6 @@ class WelcomePage extends React.Component<IProps> {
   goHome = () => {
     Navigator.goPage('AppScreen');
   };
-
-  authToken = async () => {
-    const token = await Storage.get(ENV.storage.token);
-    if (token) {
-      this.props.dispatch({
-        type: 'account/token',
-        payload: {
-          token
-        },
-        callback: () => {
-          this.welcome();
-        }
-      });
-    } else {
-      this.welcome();
-    }
-  }
 
   render() {
     const { num } = this.state;

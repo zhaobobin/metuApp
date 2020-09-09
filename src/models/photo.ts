@@ -81,6 +81,7 @@ const photoModel: PhotoModel = {
     },
     *favorPhoto({ payload }, { call, put }) {
       const res = yield call(photoApi.favorPhoto, payload);
+      console.log(res)
       if (res.code === 0) {
         yield put({
           type: 'updatePhotoDetail',

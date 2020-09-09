@@ -15,11 +15,12 @@ import { RootState } from '@/models/index';
 import { AppStackParamList } from '@/navigator/AppNavigation';
 import { IComment } from '@/types/comment/CommentState';
 import { Storage, ENV, Navigator } from '@/utils/index';
-import { Empty, Modal } from '@/components/index';
+import { Empty } from '@/components/index';
 
 import CommentListHead from './CommentListHead';
 import CommentListItem from './CommentListItem';
 import CommentListFoot from './CommentListFoot';
+import CommentModal, { CommentModalComponent } from './CommentModal';
 
 const mapStateToProps = (state: RootState) => ({
   loading: state.loading.effects['comment/queryCommentList'],
@@ -43,6 +44,8 @@ interface IState {
 }
 
 class Commont extends React.Component<IProps, IState> {
+  private commentModalRef: any;
+
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -134,7 +137,7 @@ class Commont extends React.Component<IProps, IState> {
 
   handleCreateComment = (item: IComment) => {
     if (this.state.isAuth) {
-      
+      this.commentModalRef.show(item);
     } else {
       this.goLoginScreen();
     }
@@ -157,7 +160,7 @@ class Commont extends React.Component<IProps, IState> {
 
   handleReplyComment = (item: IComment) => {
     if (this.state.isAuth) {
-      
+      this.commentModalRef.show(item);
     } else {
       this.goLoginScreen();
     }
@@ -236,6 +239,7 @@ class Commont extends React.Component<IProps, IState> {
           onEndReachedThreshold={0.2}
         />
         <CommentListFoot />
+        <CommentModal onRef={ref => this.commentModalRef = ref} />
       </View>
     );
   }

@@ -16,16 +16,12 @@ import {
   InputPassword,
   CheckBox
 } from '@/components/Form/index';
+import { truncate } from 'lodash';
 
 interface FormValues {
   mobile: string;
   password: string;
 }
-
-const initialValues = {
-  mobile: '',
-  password: ''
-};
 
 const validationSchema = Yup.object().shape({
   mobile: Yup.string()
@@ -50,19 +46,33 @@ type ModelState = ConnectedProps<typeof connector>;
 interface IProps extends ModelState {}
 
 interface IState {
+  initial: boolean;
   title: string;
   loginType: 'psd' | 'sms';
   checked: boolean;
+  lastTel: string;
 }
 
 class Login extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
+      initial: false,
       title: '密码登录',
       loginType: 'psd',
-      checked: false
+      checked: false,
+      lastTel: ''
     };
+  }
+
+  async componentDidMount() {
+    const lastTel = await Storage.get(ENV.storage.lastTel);
+    const remenber = await Storage.get(ENV.storage.remenber);
+    this.setState({
+      initial: true,
+      lastTel: remenber ? lastTel : '',
+      checked: remenber
+    })
   }
 
   onSubmit = (values: FormValues) => {
@@ -75,6 +85,8 @@ class Login extends React.Component<IProps, IState> {
     };
     if (this.state.checked) {
       Storage.set(ENV.storage.lastTel, payload.mobile);
+    } else {
+      Storage.remove(ENV.storage.lastTel);
     }
     if (payload.password) {
       payload.password = Encrypt(payload.mobile, payload.password);
@@ -104,6 +116,7 @@ class Login extends React.Component<IProps, IState> {
 
   toggleRemeber = () => {
     const checked = !this.state.checked;
+    Storage.set(ENV.storage.remenber, checked);
     this.setState({
       checked
     });
@@ -123,7 +136,14 @@ class Login extends React.Component<IProps, IState> {
 
   render() {
     const { loading } = this.props;
-    const { title, checked } = this.state;
+    const { initial, title, checked, lastTel } = this.state;
+    if (!initial) {
+      return null;
+    }
+    const initialValues = {
+      mobile: lastTel,
+      password: ''
+    };
     return (
       <ScrollView keyboardShouldPersistTaps="handled" style={styles.container}>
         <View style={styles.head}>

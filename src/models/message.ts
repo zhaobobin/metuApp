@@ -48,7 +48,6 @@ const messageModel: MessageModel = {
         page,
         per_page: pageInfo.per_page
       });
-      console.log(res)
       let newList = res.data.list;
       if (payload && payload.loadMore) {
         newList = list.concat(newList);

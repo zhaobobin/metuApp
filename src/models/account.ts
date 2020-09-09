@@ -89,7 +89,6 @@ const userModel: UserModel = {
 
     *token({ payload, callback }, { call, put }) {
       const token = yield Storage.get(ENV.storage.token);
-
       if (token) {
         const res = yield call(userApi.token, payload);
         if (res.code === 0) {

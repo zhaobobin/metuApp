@@ -148,7 +148,6 @@ class InputSmscode extends React.PureComponent<IProps, IState> {
     return (
       <View style={styles.inputView}>
         <TextInput
-          {...rest}
           maxLength={6}
           keyboardType="phone-pad"
           clearButtonMode="while-editing"
@@ -157,6 +156,7 @@ class InputSmscode extends React.PureComponent<IProps, IState> {
           value={form.values[field.name]}
           onChangeText={form.handleChange(field.name)}
           onBlur={form.handleBlur(field.name)}
+          {...rest}
         />
         <View style={styles.error}>
           <Text style={styles.errorText}>

@@ -13,21 +13,22 @@ import { connect, ConnectedProps } from 'react-redux';
 import { RouteProp } from '@react-navigation/native';
 import { RootState } from '@/models/index';
 import { AppStackParamList } from '@/navigator/AppNavigation';
-import { IComment } from '@/types/comment/CommentState';
+import { IComment, ICommentModalResult } from '@/types/comment/CommentState';
 import { Storage, ENV, Navigator } from '@/utils/index';
 import { Empty } from '@/components/index';
 
 import CommentListHead from './CommentListHead';
 import CommentListItem from './CommentListItem';
 import CommentListFoot from './CommentListFoot';
-import CommentModal, { CommentModalComponent } from './CommentModal';
+import CommentModal from './CommentModal';
 
 const mapStateToProps = (state: RootState) => ({
   loading: state.loading.effects['comment/queryCommentList'],
   list: state.comment.commentList.list,
   count: state.comment.commentList.pageInfo.count,
   hasMore: state.comment.commentList.pageInfo.has_more,
-  isAuth: state.account.isAuth
+  isAuth: state.account.isAuth,
+  currentUser: state.account.currentUser
 });
 
 const connector = connect(mapStateToProps);
@@ -81,6 +82,13 @@ class Commont extends React.Component<IProps, IState> {
         id: route.params.id,
         type: route.params.type,
         loadMore
+      },
+      callback: () => {
+        setTimeout(() => {
+          this.setState({
+            refreshing: false
+          });
+        }, 1000);
       }
     });
   };
@@ -127,30 +135,29 @@ class Commont extends React.Component<IProps, IState> {
   };
 
   renderEmpty = () => {
-    const { loading } = this.props;
-    return <Empty loading={loading} text="暂无评论" />;
+    return <Empty text="暂无评论" />;
   };
 
   goUserProfile = (item: IComment) => {
     Navigator.goPage('UserDetail', { id: item.author._id });
   };
 
-  handleCreateComment = (item: IComment) => {
+  handleCreateComment = () => {
     if (this.state.isAuth) {
-      this.commentModalRef.show(item);
+      this.commentModalRef.show();
     } else {
       this.goLoginScreen();
     }
   };
 
-  submitCreateComment = (item: IComment) => {
+  submitCreateComment = (payload: ICommentModalResult) => {
     const { route } = this.props;
     this.props.dispatch({
       type: 'comment/create',
       payload: {
         category: route.params.type,
         detail_id: route.params.id,
-        content: ''
+        content: payload.content
       },
       callback: () => {
         this.onRefresh();
@@ -160,22 +167,25 @@ class Commont extends React.Component<IProps, IState> {
 
   handleReplyComment = (item: IComment) => {
     if (this.state.isAuth) {
+      if (item.author._id === this.props.currentUser._id) {
+        return;
+      }
       this.commentModalRef.show(item);
     } else {
       this.goLoginScreen();
     }
   };
 
-  submitReplyComment = (item: IComment) => {
+  submitReplyComment = (payload: ICommentModalResult) => {
     const { route } = this.props;
     this.props.dispatch({
       type: 'comment/reply',
       payload: {
         category: route.params.type,
         detail_id: route.params.id,
-        comment_id: item._id,
-        reply_to: '',
-        content: ''
+        comment_id: payload.root_comment?._id,
+        reply_to: payload.root_comment?.author._id,
+        content: payload.content
       },
       callback: () => {
         this.onRefresh();
@@ -183,8 +193,12 @@ class Commont extends React.Component<IProps, IState> {
     });
   };
 
-  showCommentModal = (item: IComment) => {
-    const { route } = this.props;
+  publishComment = (payload: ICommentModalResult) => {
+    if (payload.root_comment) { // 回复
+      this.submitReplyComment(payload);
+    } else { // 创建
+      this.submitCreateComment(payload);
+    }
   }
 
   handleFavor = (item: IComment) => {
@@ -223,9 +237,8 @@ class Commont extends React.Component<IProps, IState> {
 
   render() {
     const { loading, list, count } = this.props;
-    if (loading) {
-      return null;
-    }
+    const { refreshing } = this.state;
+    
     return (
       <View style={styles.container}>
         <CommentListHead count={count} goBack={this.goBack} />
@@ -234,12 +247,14 @@ class Commont extends React.Component<IProps, IState> {
           renderItem={this.renderItem}
           keyExtractor={this._keyExtractor}
           ListFooterComponent={this.renderFooter}
-          ListEmptyComponent={this.renderEmpty}
+          ListEmptyComponent={loading ? null : this.renderEmpty}
           onEndReached={this.loadMore}
           onEndReachedThreshold={0.2}
+          onRefresh={this.onRefresh}
+          refreshing={refreshing}
         />
-        <CommentListFoot />
-        <CommentModal onRef={ref => this.commentModalRef = ref} />
+        <CommentListFoot showCommentModal={this.handleCreateComment} />
+        <CommentModal onRef={ref => this.commentModalRef = ref} callback={this.publishComment} />
       </View>
     );
   }
@@ -248,7 +263,8 @@ class Commont extends React.Component<IProps, IState> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    position: 'relative'
+    position: 'relative',
+    backgroundColor: '#fff'
   },
   end: {
     alignItems: 'center',

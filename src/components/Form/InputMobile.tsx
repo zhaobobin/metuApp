@@ -19,7 +19,6 @@ export default class InputMobile extends React.PureComponent<IProps> {
     return (
       <View style={styles.inputView}>
         <TextInput
-          {...rest}
           maxLength={11}
           keyboardType="phone-pad"
           clearButtonMode="while-editing"
@@ -28,6 +27,7 @@ export default class InputMobile extends React.PureComponent<IProps> {
           value={form.values[field.name]}
           onChangeText={form.handleChange(field.name)}
           onBlur={form.handleBlur(field.name)}
+          {...rest}
         />
         <View style={styles.error}>
           <Text style={styles.errorText}>

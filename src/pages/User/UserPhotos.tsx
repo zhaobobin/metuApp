@@ -123,8 +123,7 @@ class UserPhotos extends React.Component<IProps, IState> {
   };
 
   renderEmpty = () => {
-    const { loading } = this.state;
-    return <Empty loading={loading} />;
+    return <Empty />;
   };
 
   render() {

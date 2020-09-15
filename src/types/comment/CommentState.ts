@@ -12,9 +12,15 @@ export interface IComment {
   status: number;
   content: string;
   author: IAuthor;
+  reply_to?: IAuthor;
   photo_id: string;
   create_at: string;
   update_at: string;
   favoring_state?: boolean;
   collect_state?: boolean;
+}
+
+export interface ICommentModalResult {
+  content: string;
+  root_comment?: IComment;
 }

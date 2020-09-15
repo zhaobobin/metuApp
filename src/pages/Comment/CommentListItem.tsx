@@ -24,7 +24,16 @@ const CommentListItem = (props: IProps) => {
         </Touchable>
       </View>
       <View style={styles.right}>
-        <Text style={styles.nicknameText}>{item.author.nickname}:</Text>
+        <View style={styles.head}>
+          <Text style={styles.nicknameText}>{item.author.nickname}:</Text>
+          {
+            item.reply_to &&
+            <>
+              <Text style={styles.reply}>回复</Text>
+              <Text style={styles.nicknameText}>{item.reply_to.nickname}</Text>
+            </>
+          }
+        </View>
         <Touchable onPress={() => handleReply(item)}>
           <Text style={styles.contentText}>{item.content}</Text>
         </Touchable>
@@ -64,8 +73,12 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingRight: 10
   },
+  reply: {
+    marginHorizontal: 10,
+    fontSize: 12,
+    color: '#999'
+  },
   nicknameText: {
-    marginBottom: 10,
     fontWeight: 'bold',
     fontSize: 12,
     color: '#333'
@@ -74,6 +87,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     fontSize: 14,
     color: '#666'
+  },
+  head: {
+    marginBottom: 10,
+    flexDirection: 'row'
   },
   foot: {
     flexDirection: 'row',

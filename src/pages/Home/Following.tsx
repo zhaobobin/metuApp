@@ -119,8 +119,7 @@ class Following extends React.Component<IProps, IState> {
   };
 
   renderEmpty = () => {
-    const { loading } = this.props;
-    return <Empty loading={loading} />;
+    return <Empty />;
   };
 
   onScroll = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -138,7 +137,7 @@ class Following extends React.Component<IProps, IState> {
   };
 
   render() {
-    const { list } = this.props;
+    const { loading, list } = this.props;
     const { refreshing } = this.state;
     return (
       <FlatList
@@ -146,7 +145,7 @@ class Following extends React.Component<IProps, IState> {
         renderItem={this.renderItem}
         keyExtractor={this._keyExtractor}
         ListFooterComponent={this.renderFooter}
-        ListEmptyComponent={this.renderEmpty}
+        ListEmptyComponent={loading ? null : this.renderEmpty}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
         onRefresh={this.onRefresh}

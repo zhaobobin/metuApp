@@ -1,5 +1,5 @@
 /**
- * InputPassword
+ * InputTextarea
  */
 import React from 'react';
 import { TextInput, Text, View, TextInputProps } from 'react-native';
@@ -12,13 +12,15 @@ interface IProps extends TextInputProps {
   placeholder: string;
 }
 
-export default class InputPassword extends React.PureComponent<IProps> {
+export default class InputText extends React.PureComponent<IProps> {
   render() {
     const { field, form, placeholder, ...rest } = this.props;
+
     return (
       <View style={styles.inputView}>
         <TextInput
-          secureTextEntry
+          multiline
+          textAlignVertical="top"
           clearButtonMode="while-editing"
           style={styles.input}
           placeholder={placeholder || '请输入'}

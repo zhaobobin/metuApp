@@ -1,5 +1,5 @@
 /**
- * InputText
+ * InputTextarea
  */
 import React from 'react';
 import { TextInput, Text, View, TextInputProps } from 'react-native';
@@ -12,20 +12,20 @@ interface IProps extends TextInputProps {
   placeholder: string;
 }
 
-export default class InputText extends React.PureComponent<IProps> {
+export default class InputTextarea extends React.PureComponent<IProps> {
   render() {
     const { field, form, placeholder, ...rest } = this.props;
 
     return (
       <View style={styles.inputView}>
         <TextInput
-          {...rest}
           clearButtonMode="while-editing"
           style={styles.input}
           placeholder={placeholder || '请输入'}
           value={form.values[field.name]}
           onChangeText={form.handleChange(field.name)}
           onBlur={form.handleBlur(field.name)}
+          {...rest}
         />
         <View style={styles.error}>
           <Text style={styles.errorText}>

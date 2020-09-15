@@ -8,17 +8,14 @@ import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 
 import { RootState } from '@/models/index';
-import { IComment } from '@/types/comment/CommentState';
+import { IComment, ICommentModalResult } from '@/types/comment/CommentState';
 import { Modal, Button } from '@/components/index';
-import { FormItem, InputText } from '@/components/Form/index';
+import { FormItem, InputTextarea } from '@/components/Form/index';
+import { color } from '@/theme/index';
 
 interface FormValues {
   content: string;
 }
-
-const initialValues = {
-  content: ''
-};
 
 const validationSchema = Yup.object().shape({
   content: Yup.string()
@@ -37,12 +34,15 @@ const connector = connect(mapStateToProps);
 type ModelState = ConnectedProps<typeof connector>;
 
 interface IProps extends ModelState {
+  defaultValue?: string;
   onRef?: (ref: any) => void;
+  callback: (res: ICommentModalResult) => void
 }
 
 interface IState {
   visible: boolean;
-  item?: IComment;
+  root_comment?: IComment;
+  content: string;
 }
 
 export class CommentModalComponent extends React.Component<IProps, IState> {
@@ -50,7 +50,8 @@ export class CommentModalComponent extends React.Component<IProps, IState> {
     super(props);
     this.state = {
       visible: false,
-      item: undefined
+      root_comment: undefined,
+      content: props.defaultValue || ''
     };
   }
 
@@ -63,39 +64,49 @@ export class CommentModalComponent extends React.Component<IProps, IState> {
   show = (item: IComment) => {
     this.setState({
       visible: true,
-      item
+      root_comment: item
     });
   };
 
   hide = () => {
     this.setState({
-      visible: true,
-      item: undefined
+      visible: false,
+      root_comment: undefined
     });
   };
 
-  onSubmit = (values: FormValues) => {
-    this.submitComment(values);
-  };
+  onChange = (val: string) => {
+    this.setState({
+      content: val
+    })
+  }
 
-  submitComment = (values: FormValues) => {
+  onSubmit = (values: FormValues) => {
+    const { callback } = this.props;
+    const { root_comment } = this.state;
     const payload: any = {
       ...values
     };
-  }
+    if (root_comment) {
+      payload.root_comment = root_comment;
+    }
+    callback(payload);
+  };
 
   render() {
-    const { visible } = this.state;
+    const { visible, root_comment, content } = this.state;
+    const initialValues = {
+      content
+    };
     return (
       <Modal
         popup
+        maskClosable
         visible={visible}
         animationType="slide-up"
         onClose={this.hide}>
         <View style={styles.container}>
-          <View style={styles.head}>
-            <Text>回复评论</Text>
-          </View>
+          <View style={styles.head}></View>
           <View style={styles.body}>
             <Formik
               validationSchema={validationSchema}
@@ -107,8 +118,12 @@ export class CommentModalComponent extends React.Component<IProps, IState> {
                     <FormItem style={styles.formItem}>
                       <Field
                         name="content"
-                        placeholder="评论"
-                        component={InputText}
+                        rows={4}
+                        count={100}
+                        value={content}
+                        placeholder={root_comment ? `回复: ${root_comment.author.nickname}` : '发布评论'}
+                        onChange={this.onChange}
+                        component={InputTextarea}
                       />
                     </FormItem>
                     <View style={styles.btn}>
@@ -123,6 +138,9 @@ export class CommentModalComponent extends React.Component<IProps, IState> {
               }}
             </Formik>
           </View>
+          <View style={styles.foot}>
+
+          </View>
         </View>
       </Modal>
     );
@@ -131,16 +149,26 @@ export class CommentModalComponent extends React.Component<IProps, IState> {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20
+    paddingHorizontal: 20,
+    paddingVertical: 40
   },
   head: {
     height: 50
   },
-  body: {},
-  formItem: {
+  body: {
 
   },
+  formItem: {
+    width: '100%',
+    // borderColor: color.border,
+    // borderLeftWidth: StyleSheet.hairlineWidth,
+    // borderTopWidth: StyleSheet.hairlineWidth,
+    // borderRightWidth: StyleSheet.hairlineWidth
+  },
   btn: {
+    marginTop: 20,
+  },
+  foot: {
 
   }
 });

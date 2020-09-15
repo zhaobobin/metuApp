@@ -5,19 +5,19 @@ import React from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
 import Icon from '@/assets/iconfont';
 import { getBottomSpace } from '@/utils/index';
-import { Touchable } from '@/components/index';
+import { Button } from '@/components/index';
 
 const bottomSpace = getBottomSpace();
 
 interface IProps {
-  
+  showCommentModal: () => void;
 }
 
 const CommontListFoot = (props: IProps) => {
   return (
     <View style={styles.foot}>
       <View style={styles.footView}>
-        <Text>foot</Text>
+        <Button title="发表评论" onPress={props.showCommentModal} type="primary" ghost />
       </View>
     </View>
   );

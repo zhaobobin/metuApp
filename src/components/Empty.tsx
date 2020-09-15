@@ -2,16 +2,12 @@ import React, { FC } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 interface EmptyProps {
-  loading?: boolean;
   data?: any;
   text?: string;
 }
 
 export const Empty: FC<EmptyProps> = props => {
-  const { loading, text } = props;
-  if (loading) {
-    return null;
-  }
+  const { text } = props;
   return (
     <View style={styles.empty}>
       <Text>{text || '暂无数据'}</Text>

@@ -96,8 +96,8 @@ export function selectPhotos() {
     ImagePicker.openPicker({
       multiple: true
     })
-      .then(image => {
-        reslove(image);
+      .then(images => {
+        reslove(images);
       })
       .catch(err => {
         reject(err);

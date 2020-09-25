@@ -7,8 +7,9 @@ import account, { IAccountState } from './account';
 import comment, { ICommentState } from './comment';
 import message, { IMessageState } from './message';
 import oss, { IOssState } from './oss';
+import publish, { IPublishState } from './publish';
 
-const models = [home, category, photo, user, account, comment, message, oss];
+const models = [home, category, photo, user, account, comment, message, oss, publish];
 
 export type RootState = {
   loading: DvaLoadingState;
@@ -20,6 +21,7 @@ export type RootState = {
   comment: ICommentState;
   message: IMessageState;
   oss: IOssState;
+  publish: IPublishState;
 };
 
 export default models;

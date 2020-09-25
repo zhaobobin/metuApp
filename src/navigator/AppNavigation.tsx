@@ -22,7 +22,7 @@ import Comment from '@/pages/Comment/index';
 export type AppStackParamList = {
   MainScreen: undefined;
   SearchScreen: undefined;
-  PublishScreen: undefined;
+  PublishScreen: { onPress: (values: any) => void };
   PhotoScreen: undefined;
   UserDetail: { id: string };
   CommentScreen: { id: string; type: 'photos' | 'articles' };
@@ -95,7 +95,7 @@ function getSearchOptions() {
 
 function getPublishScreenOptions() {
   return {
-    headerTitle: '发布',
+    headerTitle: '',
     headerBackImage: ({ tintColor }: { tintColor: string }) => (
       <Icon
         name="icon-arrow-down"
@@ -104,7 +104,7 @@ function getPublishScreenOptions() {
         style={styles.headerBackImage}
       />
     ),
-    ...TransitionPresets.ModalSlideFromBottomIOS
+    ...TransitionPresets.ScaleFromCenterAndroid
   };
 }
 

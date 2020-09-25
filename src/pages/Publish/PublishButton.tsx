@@ -1,10 +1,12 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '@/models/index';
 import { Touchable } from '@/components/index';
 import { ENV, Navigator, Storage } from '@/utils/index';
 import { IResponse } from '@/types/CommonTypes';
+import { color } from '@/theme/color';
+import Icon from '@/assets/iconfont';
 
 const mapStateToProps = (state: RootState) => ({
   isAuth: state.account.isAuth,
@@ -53,7 +55,7 @@ class PublishButton extends React.Component<IProps> {
   render() {
     return (
       <Touchable style={styles.container} onPress={this.goPublish}>
-        <Text style={styles.text}>发布</Text>
+        <Icon name="icon-add-select" size={40} color="#fff" />
       </Touchable>
     );
   }
@@ -61,16 +63,16 @@ class PublishButton extends React.Component<IProps> {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: -10,
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    marginTop: -5,
+    width: 54,
+    height: 54,
+    borderRadius: 27,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'red'
+    backgroundColor: color.blue
   },
   text: {
-    color: '#fff'
+    color: '#666'
   }
 });
 

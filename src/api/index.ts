@@ -4,6 +4,8 @@ export * from './category';
 
 export * from './comment';
 
+export * from './article';
+
 export * from './photo';
 
 export * from './user';

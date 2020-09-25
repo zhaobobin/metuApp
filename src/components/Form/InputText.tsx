@@ -12,7 +12,7 @@ interface IProps extends TextInputProps {
   placeholder: string;
 }
 
-export default class InputTextarea extends React.PureComponent<IProps> {
+export default class InputText extends React.PureComponent<IProps> {
   render() {
     const { field, form, placeholder, ...rest } = this.props;
 

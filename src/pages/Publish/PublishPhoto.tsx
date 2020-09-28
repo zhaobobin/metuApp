@@ -14,36 +14,34 @@ import * as Yup from 'yup';
 
 import { AppStackNavigation } from '@/navigator/AppNavigation';
 import { RootState } from '@/models/index';
-import { Navigator } from '@/utils/index';
+import { ENV, Storage, Navigator, screenWidth } from '@/utils/index';
 import { IResponse } from '@/types/CommonTypes';
+import { IPhotoPublishForm } from '@/types/publish/PublishState';
+import { IImagePickerResponse } from '@/types/CommonTypes';
 import { layout } from '@/theme/index';
 
 import { Button, Touchable, Toast } from '@/components/index';
 import { FormItem, InputText } from '@/components/Form/index';
+import PhotoPicker from '@/components/Photo/PhotoPicker';
 
-interface FormValues {
-  title: string;
-  description?: string;
-  tags: string;
-  images: string[];
-}
+export const parentWidth = screenWidth - 20;
+export const itemWidth = parentWidth / 3;
+export const itemHeight = itemWidth;
 
 const validationSchema = Yup.object().shape({
   title: Yup.string()
     .trim()
+    .required('请输入标题')
     .min(2, '标题不能小于2位')
-    .max(20, '标题不能超过6位')
-    .required('请输入标题'),
-  description: Yup.string()
-    .trim()
-    .min(2, '描述不能小于2位')
-    .max(6, '描述不能超过100位'),
-  tags: Yup.string().trim().min(2, '标签不能小于2位')
+    .max(20, '标题不能超过6位'),
+  description: Yup.string().trim().max(100, '描述不能超过100位')
 });
 
 const mapStateToProps = (state: RootState) => ({
   loading: state.loading.effects['publish/publishPhoto'],
-  photoPublishForm: state.publish.photoPublishForm
+  currentUser: state.account.currentUser,
+  photoFormValues: state.publish.photoFormValues,
+  photoPickerImages: state.publish.photoPickerImages,
 });
 
 const connector = connect(mapStateToProps);
@@ -57,13 +55,15 @@ interface IProps extends ModelState {
 }
 
 class PublishPhoto extends React.Component<IProps> {
+  private formRef = React.createRef();
+
   componentDidMount() {
     if (this.props.onRef) {
       this.props.onRef(this);
     }
     // console.log('PublishPhoto ---->', this.props.navigation)
     this.props.navigation.setParams({
-      onPress: (values: FormValues) => {
+      onPress: (values: IPhotoPublishForm) => {
         this.onSubmit(values);
       }
     });
@@ -100,11 +100,62 @@ class PublishPhoto extends React.Component<IProps> {
     this.savePublishPhotoForm({ images: nativeEvent.text });
   };
 
-  onSubmit = (values: FormValues) => {
-    this.onPublish(values);
+  // 选择相册回调
+  photoPickerCallback = async (images: IImagePickerResponse) => {
+    const { photoPickerImages } = this.props;
+    let ossToken = await Storage.get(ENV.storage.ossToken, 7200);
+    if (!ossToken) {
+      ossToken = await this.props.dispatch({
+        type: 'oss/token'
+      });
+    }
+    
   };
 
-  onPublish = (values: FormValues) => {
+  uploadOss = async (image: IImagePickerResponse) => {
+    const option = {
+      uid: this.props.currentUser._id,
+      category: 'avatar',
+      unix: new Date().getTime(),
+      type: image.mime.split('/')[1]
+    };
+    const key = `${option.uid}/${option.category}.${option.type}`;
+    let ossToken = await Storage.get(ENV.storage.ossToken, 7200);
+    if (!ossToken) {
+      ossToken = await this.props.dispatch({
+        type: 'oss/token'
+      });
+    }
+    this.props.dispatch({
+      type: 'oss/upload',
+      payload: {
+        key,
+        file: image.path,
+        ossToken
+      },
+      callback: (url: string) => {
+        console.log(url)
+      }
+    });
+  };
+
+  onSubmit = (values: IPhotoPublishForm) => {
+    this.dispatchPublish(values);
+  };
+
+  onPublish = () => {
+    const { photoFormValues } = this.props;
+    validationSchema
+      .validate(photoFormValues)
+      .then(function (value) {
+        console.log(value);
+      })
+      .catch(function (err) {
+        Toast.info(err.errors[0], 2);
+      });
+  };
+
+  dispatchPublish = (values: IPhotoPublishForm) => {
     const payload: any = {
       ...values
     };
@@ -122,22 +173,26 @@ class PublishPhoto extends React.Component<IProps> {
   };
 
   render() {
-    const { loading, photoPublishForm } = this.props;
-    const { title, description, tags, images } = photoPublishForm;
+    const { loading, photoFormValues, photoPickerImages } = this.props;
+    const { title, description, tags, images } = photoFormValues;
     const initialValues = {
-      title: '',
-      description: '',
-      tags: '',
-      images: []
+      ...photoFormValues
     };
-
+    // const pickerImages: any = [];
+    // if (pickerImages.length > 0) {
+    //   for(const image of photoPickerImages) {
+    //     pickerImages.push({ path: require(image.path) });
+    //   }
+    // }
+    
     return (
       <ScrollView style={styles.container}>
         <Formik
+          ref="formikRef"
           validationSchema={validationSchema}
           initialValues={initialValues}
           onSubmit={this.onSubmit}>
-          {({ handleSubmit }) => {
+          {() => {
             return (
               <View>
                 <FormItem style={styles.formItem}>
@@ -165,20 +220,26 @@ class PublishPhoto extends React.Component<IProps> {
                   />
                 </FormItem>
                 <View style={styles.imageList}>
-                  {images.map((item, index) => (
+                  {photoPickerImages.map((item: any, index: number) => (
                     <View key={index}>
-                      <Image source={{
-                        uri: `${item.url}`
-                      }} style={styles.image} />
+                      <Image
+                        source={{uri: item.path}}
+                        style={styles.image}
+                      />
                     </View>
                   ))}
-                  <FormItem style={styles.formItem}>
+                  <PhotoPicker
+                    width={itemWidth}
+                    height={itemHeight}
+                    callback={this.photoPickerCallback}
+                  />
+                  {/* <FormItem style={styles.formItem}>
                     <Field
                       name="images"
                       placeholder="图片"
                       component={InputText}
                     />
-                  </FormItem>
+                  </FormItem> */}
                 </View>
                 {/* <View style={styles.btn}>
                     <Button
@@ -202,7 +263,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 15,
     paddingVertical: 50,
-    backgroundColor: '#f9f9f9'
+    backgroundColor: '#fff'
   },
   head: {
     alignItems: 'center'
@@ -219,10 +280,12 @@ const styles = StyleSheet.create({
     marginBottom: 40
   },
   imageList: {
-
+    flexDirection: 'row',
+    flexWrap: 'wrap'
   },
   image: {
-
+    width: itemWidth,
+    height: itemHeight
   }
 });
 

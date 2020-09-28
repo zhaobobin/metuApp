@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
-import { Navigator } from '@/utils/index';
+import { ENV, Storage, Navigator } from '@/utils/index';
 import { RootState } from '@/models/index';
 import {
   Avatar,
@@ -34,7 +34,7 @@ class SettingProfile extends React.Component<IProps> {
     });
   };
 
-  uploadOss = (image: IImagePickerResponse) => {
+  uploadOss = async (image: IImagePickerResponse) => {
     const option = {
       uid: this.props.currentUser._id,
       category: 'avatar',
@@ -42,11 +42,18 @@ class SettingProfile extends React.Component<IProps> {
       type: image.mime.split('/')[1]
     };
     const key = `${option.uid}/${option.category}.${option.type}`;
+    let ossToken = await Storage.get(ENV.storage.ossToken, 7200);
+    if (!ossToken) {
+      ossToken = await this.props.dispatch({
+        type: 'oss/token'
+      });
+    }
     this.props.dispatch({
       type: 'oss/upload',
       payload: {
         key,
-        file: image.path
+        file: image.path,
+        ossToken
       },
       callback: (url: string) => {
         this.updateAvatar(url);
@@ -100,8 +107,7 @@ class SettingProfile extends React.Component<IProps> {
             value={
               currentUser.location ? currentUser.location.split(',') : undefined
             }
-            callback={this.cityPickerCallback}
-            >
+            callback={this.cityPickerCallback}>
             <ListItem arrow="horizontal">居住地</ListItem>
           </CityPicker>
           <ListItem

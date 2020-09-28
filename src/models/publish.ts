@@ -2,14 +2,15 @@ import { Model, Effect } from 'dva-core-ts';
 import { Reducer } from 'redux';
 import { articleApi, photoApi } from '@/api/index';
 import { Toast } from '@/components/index';
-import { IPhoto } from '@/types/CommonTypes';
+import { IPhoto, IImagePickerResponse } from '@/types/CommonTypes';
 import { IPublishType, IPhotoPublishForm, IArticlePublishForm } from '@/types/publish/PublishState';
 
 export interface IPublishState {
   modalVisible: boolean;
   publishType: IPublishType;
-  photoPublishForm: IPhotoPublishForm;
-  articlePublishForm: IArticlePublishForm;
+  photoFormValues: IPhotoPublishForm;
+  photoPickerImages: IImagePickerResponse[]; // 选择相册图片 暂存
+  articleFormValues: IArticlePublishForm;
   formValidate: boolean; // 表单校验通过
 }
 
@@ -30,13 +31,14 @@ interface PublishModel extends Model {
 export const initialState = {
   modalVisible: true,
   publishType: null,
-  photoPublishForm: {
+  photoFormValues: {
     title: '',
     description: '',
     tags: '',
     images: []
   },
-  articlePublishForm: {
+  photoPickerImages: [],
+  articleFormValues: {
     title: '',
     description: '',
     tags: '',
@@ -72,7 +74,7 @@ const publishModel: PublishModel = {
       return {
         ...state,
         photoPublishForm: {
-          ...state.photoPublishForm,
+          ...state.photoFormValues,
           ...payload
         }
       };
@@ -81,7 +83,7 @@ const publishModel: PublishModel = {
       return {
         ...state,
         articlePublishForm: {
-          ...state.articlePublishForm,
+          ...state.articleFormValues,
           ...payload
         }
       };

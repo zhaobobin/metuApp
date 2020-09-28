@@ -36,13 +36,7 @@ class Publish extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     props.navigation.setOptions({
-      headerRight: () => <HeaderRightButton onPress={() => {
-        const { onPress } = props.route.params
-        if (onPress) {
-          console.log(onPress)
-          // onPress({});
-        }
-      }} />
+      headerRight: () => <HeaderRightButton onPress={this.submitPublish} />
     });
   }
 
@@ -84,12 +78,12 @@ class Publish extends React.Component<IProps, IState> {
   // 确定发布
   submitPublish = () => {
     const { publishType } = this.props;
-    console.log(publishType)
-    // if (publishType === 'photo') {
-    //   this.photoForm.onPublish();
-    // } else {
-    //   this.articleForm.onPublish();
-    // }
+    if (publishType === 'photo') {
+      // console.log(this.props.photoPublishForm);
+      this.photoForm.onPublish();
+    } else {
+      // this.articleForm.onPublish();
+    }
   }
 
   goBack = () => {
@@ -171,7 +165,7 @@ const styles = StyleSheet.create({
     borderRadius: 27,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff'
+    backgroundColor: '#f9f9f9'
   },
 })
 

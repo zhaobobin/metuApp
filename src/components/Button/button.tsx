@@ -21,8 +21,8 @@ interface ButtonProps {
   //字体大小
   fontSize?: number | undefined;
   type?: ButtonType;
-  width?: number | string;
-  height?: number | undefined;
+  width?: number | string | undefined;
+  height?: number | string | undefined;
   ghost?: boolean;
   //按钮事件
   onPress: any;

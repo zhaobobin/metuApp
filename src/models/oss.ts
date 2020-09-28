@@ -15,13 +15,14 @@ const configuration = {
   timeoutIntervalForResource: 24 * 60 * 60
 };
 
-export interface IOssState {}
+export interface IOssState { }
 
 interface PhotoModel extends Model {
   namespace: string;
   state: IOssState;
   effects: {
     exif: Effect;
+    token: Effect;
     upload: Effect;
   };
   reducers: {
@@ -41,39 +42,40 @@ const photoModel: PhotoModel = {
       const exif = yield FetchGet(url);
       yield callback(exif);
     },
-
-    // 上传
-    *upload({ payload, callback }, { call }) {
-      let ossTokenRes = yield Storage.get(ENV.storage.ossToken, 7200);
-      if (!ossTokenRes) {
-        ossTokenRes = yield call(ossApi.getOssToken);
-        Storage.set(ENV.storage.ossToken, ossTokenRes);
-      }
-      if (ossTokenRes.code === 0) {
-        const { SecurityToken, AccessKeyId, AccessKeySecret } = ossTokenRes.data.credentials;
-        AliyunOSS.enableDevMode();
-        AliyunOSS.initWithSecurityToken(
-          SecurityToken,
-          AccessKeyId,
-          AccessKeySecret,
-          endPoint,
-          configuration
-        );
-        AliyunOSS.asyncUpload(
-          bucketName,
-          payload.key,
-          payload.file
-        )
-          .then(() => {
-            const url = photoOrigin + payload.key;
-            callback(url);
-          })
-          .catch(() => {
-            Toast.show('上传失败！');
-          });
-      } else {
-        Toast.show(ossTokenRes.message);
-      }
+    *token(_, { call }) {
+      const ossTokenRes = yield call(ossApi.getOssToken);
+      return new Promise((reslove, reject) => {
+        if (ossTokenRes.code === 0) {
+          Storage.set(ENV.storage.ossToken, ossTokenRes);
+          reslove(ossTokenRes);
+        } else {
+          reject(ossTokenRes)
+        }
+      })
+    },
+    // 单个上传
+    *upload({ payload, callback }, _) {
+      const { SecurityToken, AccessKeyId, AccessKeySecret } = payload.ossToken.data.credentials;
+      AliyunOSS.enableDevMode();
+      AliyunOSS.initWithSecurityToken(
+        SecurityToken,
+        AccessKeyId,
+        AccessKeySecret,
+        endPoint,
+        configuration
+      );
+      AliyunOSS.asyncUpload(
+        bucketName,
+        payload.key,
+        payload.file
+      )
+        .then(() => {
+          const url = photoOrigin + payload.key;
+          callback(url);
+        })
+        .catch(() => {
+          Toast.show('上传失败！');
+        });
     }
   },
 

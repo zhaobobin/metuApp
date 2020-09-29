@@ -127,6 +127,12 @@ class PublishArticle extends React.Component<IProps> {
     });
   }
 
+  resetArticleFormValues = () => {
+    this.props.dispatch({
+      type: 'publish/resetArticleFormValues'
+    })
+  }
+
   render() {
     const { loading, articleFormValues } = this.props;
     const { title, description, tags, content } = articleFormValues;

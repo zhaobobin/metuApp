@@ -46,12 +46,16 @@ const userModel: UserModel = {
       const res = yield call(userApi.getUserDetail, {
         id: payload.id
       });
-      yield put({
-        type: 'setState',
-        payload: {
-          userDetail: res.data
-        }
-      });
+      if (res.code === 0) {
+        yield put({
+          type: 'setState',
+          payload: {
+            userDetail: res.data
+          }
+        });
+      } else {
+        Toast.info(res.message, 2);
+      }
     },
     *followUser({ payload, callback }, { call }) {
       const res = yield call(userApi.followUser, payload);

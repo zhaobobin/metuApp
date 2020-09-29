@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, View, ViewStyle, TouchableOpacity } from 'react-native';
 import { selectPhotos } from '@/components/ImagePicker';
 import { screenWidth } from '@/utils/index';
-import { color } from '@/theme/index';
 import Icon from '@/assets/iconfont';
 
 export const parentWidth = screenWidth - 20;
@@ -17,21 +16,21 @@ interface IPhotoPickerProps {
 }
 
 const PhotoPicker: React.FC<IPhotoPickerProps> = props => {
-  const { width, height } = props;
+  const { width, height, callback } = props;
   const onPress = async () => {
     const images = await selectPhotos();
-    console.log(images);
+    callback(images);
   };
   const viewStyle = {
     width,
     height
   };
   return (
-    <View style={[styles.container, viewStyle]}>
-      <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress}>
+      <View style={[styles.container, viewStyle]}>
         <Icon name="icon-add-select" size={60} color="#999" />
-      </TouchableOpacity>
-    </View>
+      </View>
+    </TouchableOpacity>
   );
 };
 
@@ -39,9 +38,6 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: color.border,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderRadius: 2,
     backgroundColor: '#f9f9f9'
   }
 });

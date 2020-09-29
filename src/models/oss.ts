@@ -37,10 +37,16 @@ const photoModel: PhotoModel = {
 
   effects: {
     // 源数据
-    *exif({ payload, callback }, _) {
+    *exif({ payload }, _) {
       const url = payload.url + '?x-oss-process=image/info';
       const exif = yield FetchGet(url);
-      yield callback(exif);
+      return new Promise((reslove, reject) => {
+        if (exif) {
+          reslove(exif);
+        } else {
+          reject('error')
+        }
+      })
     },
     *token(_, { call }) {
       const ossTokenRes = yield call(ossApi.getOssToken);
@@ -54,28 +60,32 @@ const photoModel: PhotoModel = {
       })
     },
     // 单个上传
-    *upload({ payload, callback }, _) {
-      const { SecurityToken, AccessKeyId, AccessKeySecret } = payload.ossToken.data.credentials;
-      AliyunOSS.enableDevMode();
-      AliyunOSS.initWithSecurityToken(
-        SecurityToken,
-        AccessKeyId,
-        AccessKeySecret,
-        endPoint,
-        configuration
-      );
-      AliyunOSS.asyncUpload(
-        bucketName,
-        payload.key,
-        payload.file
-      )
-        .then(() => {
-          const url = photoOrigin + payload.key;
-          callback(url);
-        })
-        .catch(() => {
-          Toast.show('上传失败！');
-        });
+    *upload({ payload }, _) {
+      return new Promise((reslove, reject) => {
+        const { SecurityToken, AccessKeyId, AccessKeySecret } = payload.ossToken.data.credentials;
+        AliyunOSS.enableDevMode();
+        AliyunOSS.initWithSecurityToken(
+          SecurityToken,
+          AccessKeyId,
+          AccessKeySecret,
+          endPoint,
+          configuration
+        );
+        AliyunOSS.asyncUpload(
+          bucketName,
+          payload.key,
+          payload.file
+        )
+          .then(() => {
+            const url = photoOrigin + payload.key;
+            reslove(url);
+          })
+          .catch((error: any) => {
+            Toast.show('上传失败！');
+            console.log(error);
+            reject(error);
+          });
+      })
     }
   },
 

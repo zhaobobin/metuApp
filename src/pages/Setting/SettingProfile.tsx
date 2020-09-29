@@ -10,7 +10,7 @@ import {
   pickAvatarImage,
   CityPicker
 } from '@/components/index';
-import { IImagePickerResponse } from '@/types/CommonTypes';
+import { IImageFile } from '@/types/CommonTypes';
 
 const mapStateToProps = (state: RootState) => ({
   loading: state.loading.effects['oss/upload'],
@@ -29,12 +29,12 @@ class SettingProfile extends React.Component<IProps> {
   };
 
   showAvatarMenu = () => {
-    pickAvatarImage((image: IImagePickerResponse) => {
+    pickAvatarImage((image: IImageFile) => {
       this.uploadOss(image);
     });
   };
 
-  uploadOss = async (image: IImagePickerResponse) => {
+  uploadOss = async (image: IImageFile) => {
     const option = {
       uid: this.props.currentUser._id,
       category: 'avatar',
@@ -48,20 +48,18 @@ class SettingProfile extends React.Component<IProps> {
         type: 'oss/token'
       });
     }
-    this.props.dispatch({
+    const url = await this.props.dispatch({
       type: 'oss/upload',
       payload: {
         key,
         file: image.path,
         ossToken
-      },
-      callback: (url: string) => {
-        this.updateAvatar(url);
       }
     });
+    this.updateAvatar(url);
   };
 
-  updateAvatar = (url: string) => {
+  updateAvatar = (url: any) => {
     this.props.dispatch({
       type: 'account/updateAvatar',
       payload: {

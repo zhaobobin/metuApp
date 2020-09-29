@@ -153,7 +153,10 @@ const userModel: UserModel = {
         yield put({
           type: 'setState',
           payload: {
-            currentUser: Object.assign(currentUser, res.data)
+            currentUser: {
+              ...currentUser,
+              ...res.data
+            }
           }
         });
       } else {

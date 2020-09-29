@@ -65,19 +65,27 @@ const photoModel: PhotoModel = {
   effects: {
     *queryPhotoDetail({ payload }, { call, put }) {
       const res = yield call(photoApi.getPhotoDetail, payload);
-      yield put({
-        type: 'setState',
-        payload: {
-          photoDetail: res.data
-        }
-      });
+      if (res.code === 0) {
+        yield put({
+          type: 'setState',
+          payload: {
+            photoDetail: res.data
+          }
+        });
+      } else {
+        Toast.info(res.message, 2);
+      }
     },
     *queryPhotoState({ payload }, { call, put }) {
       const res = yield call(photoApi.getPhotoState, payload);
-      yield put({
-        type: 'updatePhotoDetail',
-        payload: res.data
-      });
+      if (res.code === 0) {
+        yield put({
+          type: 'updatePhotoDetail',
+          payload: res.data
+        });
+      } else {
+        Toast.info(res.message, 2);
+      }
     },
     *favorPhoto({ payload }, { call, put }) {
       const res = yield call(photoApi.favorPhoto, payload);

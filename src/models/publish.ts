@@ -2,14 +2,14 @@ import { Model, Effect } from 'dva-core-ts';
 import { Reducer } from 'redux';
 import { articleApi, photoApi } from '@/api/index';
 import { Toast } from '@/components/index';
-import { IPhoto, IImagePickerResponse } from '@/types/CommonTypes';
-import { IPublishType, IPhotoPublishForm, IArticlePublishForm } from '@/types/publish/PublishState';
+import { IPhoto } from '@/types/CommonTypes';
+import { IPublishType, IPhotoPublishForm, IArticlePublishForm, IImageSchema } from '@/types/publish/PublishState';
 
 export interface IPublishState {
   modalVisible: boolean;
   publishType: IPublishType;
   photoFormValues: IPhotoPublishForm;
-  photoPickerImages: IImagePickerResponse[]; // 选择相册图片 暂存
+  photoPickerImages: IImageSchema[]; // 选择相册图片 暂存
   articleFormValues: IArticlePublishForm;
   formValidate: boolean; // 表单校验通过
 }
@@ -23,27 +23,34 @@ interface PublishModel extends Model {
   };
   reducers: {
     setState: Reducer<IPublishState>;
-    savePhotoPublishForm: Reducer<IPublishState>;
-    saveArticlePublishForm: Reducer<IPublishState>;
+    savePhotoFormValues: Reducer<IPublishState>;
+    resetPhotoFormValues: Reducer<IPublishState>;
+    saveArticleFormValues: Reducer<IPublishState>;
+    resetArticleFormValues: Reducer<IPublishState>;
   };
+}
+
+const initialPhotoFormValues = {
+  title: '',
+  description: '',
+  tags: '',
+  images: [],
+  thumb: undefined
+}
+
+const initialArticleFormValues = {
+  title: '',
+  description: '',
+  tags: '',
+  content: ''
 }
 
 export const initialState = {
   modalVisible: true,
   publishType: null,
-  photoFormValues: {
-    title: '',
-    description: '',
-    tags: '',
-    images: []
-  },
+  photoFormValues: initialPhotoFormValues,
   photoPickerImages: [],
-  articleFormValues: {
-    title: '',
-    description: '',
-    tags: '',
-    content: ''
-  },
+  articleFormValues: initialArticleFormValues,
   formValidate: false
 }
 
@@ -70,24 +77,37 @@ const publishModel: PublishModel = {
         ...payload
       };
     },
-    savePhotoPublishForm(state = initialState, { payload }) {
+    savePhotoFormValues(state = initialState, { payload }) {
       return {
         ...state,
-        photoPublishForm: {
+        photoFormValues: {
           ...state.photoFormValues,
           ...payload
         }
       };
     },
-    saveArticlePublishForm(state = initialState, { payload }) {
+    resetPhotoFormValues(state = initialState, _) {
       return {
         ...state,
-        articlePublishForm: {
+        photoFormValues: initialPhotoFormValues,
+        photoPickerImages: []
+      };
+    },
+    saveArticleFormValues(state = initialState, { payload }) {
+      return {
+        ...state,
+        articleFormValues: {
           ...state.articleFormValues,
           ...payload
         }
       };
-    }
+    },
+    resetArticleFormValues(state = initialState, _) {
+      return {
+        ...state,
+        articleFormValues: initialArticleFormValues
+      };
+    },
   }
 };
 

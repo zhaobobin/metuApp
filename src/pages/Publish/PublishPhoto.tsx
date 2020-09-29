@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   View,
-  Text,
   Image,
   StyleSheet,
   ScrollView,
@@ -16,16 +15,16 @@ import { AppStackNavigation } from '@/navigator/AppNavigation';
 import { RootState } from '@/models/index';
 import { ENV, Storage, Navigator, screenWidth } from '@/utils/index';
 import { IResponse } from '@/types/CommonTypes';
-import { IPhotoPublishForm } from '@/types/publish/PublishState';
-import { IImagePickerResponse } from '@/types/CommonTypes';
-import { layout } from '@/theme/index';
+import { IPhotoPublishForm, IImageSchema } from '@/types/publish/PublishState';
+import { IImageFile } from '@/types/CommonTypes';
+import { layout, color } from '@/theme/index';
 
-import { Button, Touchable, Toast } from '@/components/index';
+import { Toast } from '@/components/index';
 import { FormItem, InputText } from '@/components/Form/index';
 import PhotoPicker from '@/components/Photo/PhotoPicker';
 
-export const parentWidth = screenWidth - 20;
-export const itemWidth = parentWidth / 3;
+export const parentWidth = screenWidth - 30;
+export const itemWidth = parentWidth / 3 - 4;
 export const itemHeight = itemWidth;
 
 const validationSchema = Yup.object().shape({
@@ -41,7 +40,7 @@ const mapStateToProps = (state: RootState) => ({
   loading: state.loading.effects['publish/publishPhoto'],
   currentUser: state.account.currentUser,
   photoFormValues: state.publish.photoFormValues,
-  photoPickerImages: state.publish.photoPickerImages,
+  photoPickerImages: state.publish.photoPickerImages
 });
 
 const connector = connect(mapStateToProps);
@@ -61,7 +60,6 @@ class PublishPhoto extends React.Component<IProps> {
     if (this.props.onRef) {
       this.props.onRef(this);
     }
-    // console.log('PublishPhoto ---->', this.props.navigation)
     this.props.navigation.setParams({
       onPress: (values: IPhotoPublishForm) => {
         this.onSubmit(values);
@@ -71,7 +69,7 @@ class PublishPhoto extends React.Component<IProps> {
 
   savePublishPhotoForm = (payload: any) => {
     this.props.dispatch({
-      type: 'publish/savePhotoPublishForm',
+      type: 'publish/savePhotoFormValues',
       payload
     });
   };
@@ -97,44 +95,96 @@ class PublishPhoto extends React.Component<IProps> {
   onChangeImages = ({
     nativeEvent
   }: NativeSyntheticEvent<TextInputChangeEventData>) => {
-    this.savePublishPhotoForm({ images: nativeEvent.text });
+    this.savePublishPhotoForm({ files: nativeEvent.text });
   };
 
   // 选择相册回调
-  photoPickerCallback = async (images: IImagePickerResponse) => {
-    const { photoPickerImages } = this.props;
+  photoPickerCallback = async (files: IImageFile[]) => {
     let ossToken = await Storage.get(ENV.storage.ossToken, 7200);
     if (!ossToken) {
       ossToken = await this.props.dispatch({
         type: 'oss/token'
       });
     }
-    
+    for (const file of files) {
+      this.uploadOss(file, ossToken);
+    }
   };
 
-  uploadOss = async (image: IImagePickerResponse) => {
+  uploadOss = async (file: IImageFile, ossToken: any) => {
+    const { photoPickerImages } = this.props;
     const option = {
       uid: this.props.currentUser._id,
-      category: 'avatar',
+      category: 'photo',
       unix: new Date().getTime(),
-      type: image.mime.split('/')[1]
+      type: file.mime.split('/')[1]
     };
-    const key = `${option.uid}/${option.category}.${option.type}`;
-    let ossToken = await Storage.get(ENV.storage.ossToken, 7200);
-    if (!ossToken) {
-      ossToken = await this.props.dispatch({
-        type: 'oss/token'
-      });
-    }
-    this.props.dispatch({
+    const key = `${option.uid}/${option.category}_${option.unix}.${option.type}`;
+    const url: any = await this.props.dispatch({
       type: 'oss/upload',
       payload: {
         key,
-        file: image.path,
+        file: file.path,
         ossToken
-      },
-      callback: (url: string) => {
-        console.log(url)
+      }
+    });
+    const image = {
+      title: file.filename,
+      description: '',
+      tags: '',
+      url,
+      exif: {},
+      width: file.width,
+      height: file.height
+    };
+    const exif: any = await this.props.dispatch({
+      type: 'oss/exif',
+      payload: {
+        url
+      }
+    });
+    if (exif) {
+      const exifInfo = {
+        camera: {
+          brand: exif.Model ? exif.Model.value.split(' ')[0] : '',
+          brandName: exif.Model
+            ? exif.Model.value.split(' ')[0].toLowerCase()
+            : '',
+          model: exif.Model ? exif.Model.value : '',
+          modelName: exif.Model
+            ? exif.Model.value.replace(/\s+/g, '-').toLowerCase()
+            : ''
+        },
+        lens: {
+          brand: exif.LensModel ? exif.LensModel.value.split(' ')[0] : '',
+          brandName: exif.LensModel
+            ? exif.LensModel.value.split(' ')[0].toLowerCase()
+            : '',
+          model: exif.LensModel ? exif.LensModel.value : '',
+          modelName: exif.LensModel
+            ? exif.LensModel.value.replace(/\s+/g, '-').toLowerCase()
+            : ''
+        },
+        exposure: {
+          FNumber: exif.FNumber ? exif.FNumber.value.split('/')[0] : '', // 光圈
+          ExposureTime: exif.ExposureTime ? exif.ExposureTime.value : '', // 速度
+          ISOSpeedRatings: exif.ISOSpeedRatings
+            ? exif.ISOSpeedRatings.value
+            : '' // iso
+        }
+      };
+      image.exif = JSON.stringify(exifInfo);
+    }
+
+    photoPickerImages.push(image);
+    this.savePhotoFormValues(photoPickerImages);
+  };
+
+  savePhotoFormValues = (images: IImageSchema[]) => {
+    this.props.dispatch({
+      type: 'publish/savePhotoFormValues',
+      payload: {
+        images
       }
     });
   };
@@ -144,47 +194,62 @@ class PublishPhoto extends React.Component<IProps> {
   };
 
   onPublish = () => {
+    const _this = this;
     const { photoFormValues } = this.props;
-    validationSchema
-      .validate(photoFormValues)
-      .then(function (value) {
-        console.log(value);
-      })
-      .catch(function (err) {
-        Toast.info(err.errors[0], 2);
-      });
+    if (photoFormValues.images.length > 0) {
+      validationSchema
+        .validate(photoFormValues)
+        .then(function (value: any) {
+          _this.dispatchPublish(value);
+        })
+        .catch(function (err) {
+          Toast.info(err.errors[0], 2);
+        });
+    } else {
+      Toast.info('请选择图片', 2);
+    }
   };
 
   dispatchPublish = (values: IPhotoPublishForm) => {
     const payload: any = {
       ...values
     };
+    if(!payload.thumb) {
+      payload.thumb = {
+        url: payload.images[0].url,
+        width: payload.images[0].width,
+        height: payload.images[0].height,
+      }
+    }
     this.props.dispatch({
       type: 'publish/publishPhoto',
       payload,
       callback: (res: IResponse) => {
         if (res.code === 0) {
-          // todo
+          Toast.info(res.message);
+          this.resetPhotoFormValues();
+          Navigator.goPage('PhotoScreen', {
+            screen: 'PhotoDetail',
+            params: { photo_id: res.data, modal: true }
+          });
         } else {
-          Toast.show(res.message);
+          Toast.info(res.message);
         }
       }
     });
   };
 
+  resetPhotoFormValues = () => {
+    this.props.dispatch({
+      type: 'publish/resetPhotoFormValues'
+    })
+  }
+
   render() {
-    const { loading, photoFormValues, photoPickerImages } = this.props;
-    const { title, description, tags, images } = photoFormValues;
+    const { photoFormValues, photoPickerImages } = this.props;
     const initialValues = {
       ...photoFormValues
     };
-    // const pickerImages: any = [];
-    // if (pickerImages.length > 0) {
-    //   for(const image of photoPickerImages) {
-    //     pickerImages.push({ path: require(image.path) });
-    //   }
-    // }
-    
     return (
       <ScrollView style={styles.container}>
         <Formik
@@ -219,36 +284,21 @@ class PublishPhoto extends React.Component<IProps> {
                     onChange={this.onChangeTags}
                   />
                 </FormItem>
+
                 <View style={styles.imageList}>
                   {photoPickerImages.map((item: any, index: number) => (
-                    <View key={index}>
-                      <Image
-                        source={{uri: item.path}}
-                        style={styles.image}
-                      />
+                    <View key={index} style={styles.imageWrapper}>
+                      <Image source={{ uri: item.url }} style={styles.image} />
                     </View>
                   ))}
-                  <PhotoPicker
-                    width={itemWidth}
-                    height={itemHeight}
-                    callback={this.photoPickerCallback}
-                  />
-                  {/* <FormItem style={styles.formItem}>
-                    <Field
-                      name="images"
-                      placeholder="图片"
-                      component={InputText}
+                  <View style={styles.imageWrapper}>
+                    <PhotoPicker
+                      width={itemWidth}
+                      height={itemHeight}
+                      callback={this.photoPickerCallback}
                     />
-                  </FormItem> */}
+                  </View>
                 </View>
-                {/* <View style={styles.btn}>
-                    <Button
-                      title="发布"
-                      type="primary"
-                      disabled={loading}
-                      onPress={handleSubmit}
-                    />
-                  </View> */}
               </View>
             );
           }}
@@ -261,7 +311,6 @@ class PublishPhoto extends React.Component<IProps> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 15,
     paddingVertical: 50,
     backgroundColor: '#fff'
   },
@@ -277,11 +326,21 @@ const styles = StyleSheet.create({
     ...layout.margin(40, 0, 20, 0)
   },
   formItem: {
+    paddingHorizontal: 15,
     marginBottom: 40
   },
   imageList: {
+    marginHorizontal: -2,
+    paddingHorizontal: 15,
     flexDirection: 'row',
     flexWrap: 'wrap'
+  },
+  imageWrapper: {
+    margin: 2,
+    borderColor: color.border,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderRadius: 2,
+    overflow: 'hidden'
   },
   image: {
     width: itemWidth,

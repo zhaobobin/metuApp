@@ -57,6 +57,23 @@ export interface IImage {
   update_at: string;
 }
 
+export interface IImageFile {
+  creationDate: string;
+  cropRect: { height: number; width: number; x: number; y: number };
+  data?: any;
+  duration?: any;
+  exif?: any;
+  filename: string;
+  localIdentifier: string;
+  mime: string;
+  modificationDate?: string;
+  path: string;
+  sourceURL?: string;
+  width: number;
+  height: number;
+  size: number;
+}
+
 // 缩略图
 export interface IThumb {
   url: string;
@@ -110,22 +127,6 @@ export interface IUserInfo extends IAuthor {
   location?: string;
 }
 
-export interface IImagePickerResponse {
-  creationDate: string;
-  cropRect: { height: 1904; width: 1904; x: 2381; y: 473 };
-  data?: any;
-  duration?: any;
-  exif?: any;
-  filename: string;
-  localIdentifier: string;
-  mime: string;
-  modificationDate?: string;
-  path: string;
-  sourceURL?: string;
-  width: number;
-  height: number;
-  size: number;
-}
 
 export interface ILoginRedirect{
   routeName: string;

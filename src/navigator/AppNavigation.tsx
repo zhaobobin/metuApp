@@ -95,6 +95,7 @@ function getSearchOptions() {
 
 function getPublishScreenOptions() {
   return {
+    // headerShown: false,
     headerTitle: '',
     headerBackImage: ({ tintColor }: { tintColor: string }) => (
       <Icon

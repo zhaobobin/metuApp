@@ -6,7 +6,7 @@ import { View, ViewStyle } from 'react-native';
 import styles from './formStyle';
 
 interface IProps {
-  style?: ViewStyle;
+  style?: ViewStyle | ViewStyle[];
   children: React.ReactNode;
 }
 

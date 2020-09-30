@@ -1,8 +1,6 @@
 import React from 'react';
 import {
   View,
-  Text,
-  Image,
   StyleSheet,
   ScrollView,
   NativeSyntheticEvent,
@@ -19,9 +17,8 @@ import { IResponse } from '@/types/CommonTypes';
 import { IArticlePublishForm } from '@/types/publish/PublishState';
 import { layout } from '@/theme/index';
 
-import { Button, Touchable, Toast } from '@/components/index';
+import { Editor, Toast } from '@/components/index';
 import { FormItem, InputText } from '@/components/Form/index';
-
 
 const validationSchema = Yup.object().shape({
   title: Yup.string()
@@ -29,7 +26,7 @@ const validationSchema = Yup.object().shape({
     .required('请输入标题')
     .min(2, '标题不能小于2位')
     .max(20, '标题不能超过6位'),
-  description: Yup.string().trim().max(100, '描述不能超过100位')
+  content: Yup.string().trim().max(10000, '描述不能超过1万字')
 });
 
 const mapStateToProps = (state: RootState) => ({
@@ -62,9 +59,9 @@ class PublishArticle extends React.Component<IProps> {
     });
   }
 
-  savePublishPhotoForm = (payload: any) => {
+  savePublishArticleForm = (payload: any) => {
     this.props.dispatch({
-      type: 'publish/savePhotoPublishForm',
+      type: 'publish/saveArticleFormValues',
       payload
     });
   };
@@ -72,25 +69,24 @@ class PublishArticle extends React.Component<IProps> {
   onChangeTitle = ({
     nativeEvent
   }: NativeSyntheticEvent<TextInputChangeEventData>) => {
-    this.savePublishPhotoForm({ title: nativeEvent.text });
+    this.savePublishArticleForm({ title: nativeEvent.text });
   };
 
   onChangeDescription = ({
     nativeEvent
   }: NativeSyntheticEvent<TextInputChangeEventData>) => {
-    this.savePublishPhotoForm({ description: nativeEvent.text });
+    this.savePublishArticleForm({ description: nativeEvent.text });
   };
 
   onChangeTags = ({
     nativeEvent
   }: NativeSyntheticEvent<TextInputChangeEventData>) => {
-    this.savePublishPhotoForm({ tags: nativeEvent.text });
+    this.savePublishArticleForm({ tags: nativeEvent.text });
   };
 
-  onChangeContent = ({
-    nativeEvent
-  }: NativeSyntheticEvent<TextInputChangeEventData>) => {
-    this.savePublishPhotoForm({ content: nativeEvent.text });
+  onChangeContent = (html: string) => {
+    console.log(html)
+    this.savePublishArticleForm({ content: html });
   };
 
   onSubmit = (values: IArticlePublishForm) => {
@@ -98,50 +94,54 @@ class PublishArticle extends React.Component<IProps> {
   };
 
   onPublish = () => {
-    const { articleFormValues } = this.props
+    const _this = this;
+    const { articleFormValues } = this.props;
     validationSchema
       .validate(articleFormValues)
-      .then(function (value) {
-        console.log(value);
+      .then(function (values: any) {
+        _this.dispatchPublish(values);
       })
       .catch(function (err) {
         Toast.info(err.errors[0], 2);
       });
-    
   };
 
   dispatchPublish = (values: IArticlePublishForm) => {
     const payload: any = {
       ...values
     };
-    this.props.dispatch({
-      type: 'publish/publishArticle',
-      payload,
-      callback: (res: IResponse) => {
-        if (res.code === 0) {
-          // todo
-        } else {
-          Toast.show(res.message);
-        }
-      }
-    });
-  }
+    console.log(payload);
+    // this.props.dispatch({
+    //   type: 'publish/publishArticle',
+    //   payload,
+    //   callback: (res: IResponse) => {
+    //     if (res.code === 0) {
+    //       Toast.info(res.message);
+    //       this.resetArticleFormValues();
+    //       Navigator.goPage('ArticleScreen', {
+    //         screen: 'ArticleDetail',
+    //         params: { article_id: res.data, modal: true }
+    //       });
+    //     } else {
+    //       Toast.show(res.message);
+    //     }
+    //   }
+    // });
+  };
 
   resetArticleFormValues = () => {
     this.props.dispatch({
       type: 'publish/resetArticleFormValues'
-    })
-  }
+    });
+  };
 
   render() {
-    const { loading, articleFormValues } = this.props;
-    const { title, description, tags, content } = articleFormValues;
+    const { articleFormValues } = this.props;
     const initialValues = {
       ...articleFormValues
     };
-
     return (
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <Formik
           ref="formikRef"
           validationSchema={validationSchema}
@@ -150,7 +150,7 @@ class PublishArticle extends React.Component<IProps> {
           {() => {
             return (
               <View>
-                <FormItem style={styles.formItem}>
+                <FormItem style={[styles.formItem, styles.title]}>
                   <Field
                     name="title"
                     placeholder="标题"
@@ -158,44 +158,19 @@ class PublishArticle extends React.Component<IProps> {
                     onChange={this.onChangeTitle}
                   />
                 </FormItem>
-                <FormItem style={styles.formItem}>
+                <FormItem style={[styles.formItem, styles.content]}>
                   <Field
-                    name="description"
-                    placeholder="描述"
-                    component={InputText}
-                    onChange={this.onChangeDescription}
+                    name="content"
+                    placeholder="内容"
+                    component={Editor}
+                    onChange={this.onChangeContent}
                   />
                 </FormItem>
-                <FormItem style={styles.formItem}>
-                  <Field
-                    name="tags"
-                    placeholder="标签"
-                    component={InputText}
-                    onChange={this.onChangeTags}
-                  />
-                </FormItem>
-                <View style={styles.imageList}>
-                  <FormItem style={styles.formItem}>
-                    <Field
-                      name="content"
-                      placeholder="内容"
-                      component={InputText}
-                    />
-                  </FormItem>
-                </View>
-                {/* <View style={styles.btn}>
-                    <Button
-                      title="发布"
-                      type="primary"
-                      disabled={loading}
-                      onPress={handleSubmit}
-                    />
-                  </View> */}
               </View>
             );
           }}
         </Formik>
-      </ScrollView>
+      </View>
     );
   }
 }
@@ -203,26 +178,25 @@ class PublishArticle extends React.Component<IProps> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 15,
-    paddingVertical: 50,
-    backgroundColor: '#fff'
+    paddingTop: 50,
+    backgroundColor: '#fff',
+    position: 'relative'
   },
   head: {
     alignItems: 'center'
   },
   title: {
-    marginTop: 10,
-    fontSize: 20,
-    color: '#333'
+    paddingHorizontal: 15
+  },
+  content: {
+    paddingHorizontal: 5
   },
   body: {
     ...layout.margin(40, 0, 20, 0)
   },
   formItem: {
     marginBottom: 40
-  },
-  imageList: {},
-  image: {}
+  }
 });
 
 export default connector(PublishArticle);

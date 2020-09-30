@@ -2,6 +2,7 @@ export { default as ActionSheet } from './ActionSheet';
 export { default as Avatar } from './Avatar';
 export { default as Button } from './Button';
 export { default as CityPicker } from './CityPicker';
+export { default as Editor } from './Editor';
 export { default as Empty } from './Empty';
 export { pickAvatarImage, selectAvatar, selectBanner } from './ImagePicker';
 export { default as List } from './List';

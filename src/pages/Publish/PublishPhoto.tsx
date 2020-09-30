@@ -199,8 +199,8 @@ class PublishPhoto extends React.Component<IProps> {
     if (photoFormValues.images.length > 0) {
       validationSchema
         .validate(photoFormValues)
-        .then(function (value: any) {
-          _this.dispatchPublish(value);
+        .then(function (values: any) {
+          _this.dispatchPublish(values);
         })
         .catch(function (err) {
           Toast.info(err.errors[0], 2);

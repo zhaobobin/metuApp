@@ -5,7 +5,10 @@ import { RootState } from '@/models/index';
 import { selectPhotos } from '@/components/ImagePicker';
 import { Touchable } from '@/components/index';
 import { RouteProp } from '@react-navigation/native';
-import { AppStackNavigation, AppStackParamList } from '@/navigator/AppNavigation';
+import {
+  AppStackNavigation,
+  AppStackParamList
+} from '@/navigator/AppNavigation';
 import { IPublishType } from '@/types/publish/PublishState';
 import { Navigator } from '@/utils/index';
 import Icon from '@/assets/iconfont';
@@ -28,7 +31,7 @@ interface IProps extends ModelState {
   route: RouteProp<AppStackParamList, 'PublishScreen'>;
 }
 
-interface IState { }
+interface IState {}
 
 class Publish extends React.Component<IProps, IState> {
   private photoForm: any;
@@ -47,7 +50,7 @@ class Publish extends React.Component<IProps, IState> {
         modalVisible: true,
         publishType: null
       }
-    })
+    });
   }
 
   changePublishType = (publishType: IPublishType) => {
@@ -57,68 +60,72 @@ class Publish extends React.Component<IProps, IState> {
         modalVisible: false,
         publishType
       }
-    })
-  }
+    });
+  };
 
   openAlbum = async () => {
     const res = await selectPhotos();
-    console.log(res)
+    console.log(res);
   };
 
   // 打开图片发布
-  openPhotoPublish = () => {
-
-  }
+  openPhotoPublish = () => {};
 
   // 打开文章发布
-  openArticlePublish = () => {
-
-  }
+  openArticlePublish = () => {};
 
   // 确定发布
   submitPublish = () => {
     const { publishType } = this.props;
     if (publishType === 'photo') {
-      // console.log(this.props.photoPublishForm);
       this.photoForm.onPublish();
-    } else {
-      // this.articleForm.onPublish();
+    } else if (publishType === 'article') {
+      this.articleForm.onPublish();
     }
-  }
+  };
 
   goBack = () => {
     Navigator.goBack();
-  }
+  };
 
   render() {
     const { navigation, modalVisible, publishType } = this.props;
     return (
       <View style={styles.container}>
-        {
-          publishType === 'article' &&
-          <PublishArticle onSubmit={this.submitPublish} onRef={ref => this.articleForm = ref} navigation={navigation} />
-        }
-        {
-          publishType === 'photo' &&
-          <PublishPhoto onSubmit={this.submitPublish} onRef={ref => this.photoForm = ref} navigation={navigation} />
-        }
-        {
-          modalVisible &&
+        {publishType === 'article' && (
+          <PublishArticle
+            onSubmit={this.submitPublish}
+            onRef={ref => (this.articleForm = ref)}
+            navigation={navigation}
+          />
+        )}
+        {publishType === 'photo' && (
+          <PublishPhoto
+            onSubmit={this.submitPublish}
+            onRef={ref => (this.photoForm = ref)}
+            navigation={navigation}
+          />
+        )}
+        {modalVisible && (
           <View style={styles.modal}>
             <View style={styles.head}>
-              <Touchable onPress={() => this.changePublishType('article')} style={styles.cate}>
+              <Touchable
+                onPress={() => this.changePublishType('article')}
+                style={styles.cate}>
                 <Text>文章</Text>
               </Touchable>
-              <Touchable onPress={() => this.changePublishType('photo')} style={styles.cate}>
+              <Touchable
+                onPress={() => this.changePublishType('photo')}
+                style={styles.cate}>
                 <Text>照片</Text>
               </Touchable>
             </View>
           </View>
-        }
+        )}
         <View style={styles.foot}>
-          <Touchable onPress={this.goBack} style={styles.close}>
+          {/* <Touchable onPress={this.goBack} style={styles.close}>
             <Icon name="icon-close" size={30} color="#666" />
-          </Touchable>
+          </Touchable> */}
         </View>
       </View>
     );
@@ -166,7 +173,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f9f9f9'
-  },
-})
+  }
+});
 
 export default connector(Publish);

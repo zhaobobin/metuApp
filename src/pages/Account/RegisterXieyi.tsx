@@ -6,7 +6,7 @@ import htmlContent from '@/pages/Other/ServiceHtml';
 class RegisterXieyi extends React.Component {
   render() {
     return (
-      <ScrollView style={{ flex: 1, paddingVertical: 50 }}>
+      <ScrollView style={styles.container}>
         <HTMLView value={htmlContent} stylesheet={styles} />
       </ScrollView>
     );
@@ -14,6 +14,10 @@ class RegisterXieyi extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingVertical: 50
+  },
   a: {
     fontWeight: '300',
     color: '#FF3366'

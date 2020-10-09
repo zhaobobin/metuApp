@@ -4,6 +4,7 @@ import Icon from '@/assets/iconfont';
 import { Touchable, UserinfoBar } from '@/components/index';
 import { IPhotoDetail } from '@/types/CommonTypes';
 
+const iconColor = '#fff';
 interface IProps {
   photoDetail: IPhotoDetail;
   modal?: boolean;
@@ -18,7 +19,7 @@ const PhotoDetailHead = (props: IProps) => {
       <View style={styles.headBack}>
         {modal && (
           <Touchable onPress={goBack}>
-            <Icon name="icon-close" size={30} color="#fff" />
+            <Icon name="icon-close" size={30} color={iconColor} />
           </Touchable>
         )}
       </View>
@@ -30,7 +31,7 @@ const PhotoDetailHead = (props: IProps) => {
         />
       </View>
       <View style={styles.headRight}>
-        <Icon name="icon-ellipsis" size={30} color="#fff" />
+        <Icon name="icon-ellipsis" size={30} color={iconColor} />
       </View>
     </View>
   );

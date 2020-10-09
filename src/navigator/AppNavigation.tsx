@@ -118,7 +118,15 @@ function getPublishScreenOptions() {
 
 function getArticleDetailOptions() {
   return {
-    headerShown: false,
+    headerTitle: '详情',
+    headerBackImage: ({ tintColor }: { tintColor: string }) => (
+      <Icon
+        name="icon-close"
+        size={30}
+        color={tintColor}
+        style={styles.headerBackImage}
+      />
+    ),
     ...TransitionPresets.ScaleFromCenterAndroid
   };
 }

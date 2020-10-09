@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import Icon from '@/assets/iconfont';
-import { Touchable, UserinfoBar } from '@/components/index';
+import { View, Text, StyleSheet } from 'react-native';
+import moment from 'moment';
+import { Avatar, Button, Touchable } from '@/components/index';
+import { Navigator } from '@/utils/index';
 import { IArticleDetail } from '@/types/CommonTypes';
 
 interface IProps {
@@ -12,25 +13,31 @@ interface IProps {
 }
 
 const ArticleDetailHead = (props: IProps) => {
-  const { articleDetail, modal, goBack, handleFollow } = props;
+  const { articleDetail, handleFollow } = props;
+  const goUserProfile = () => {
+    Navigator.goPage('UserDetail', { id: articleDetail.author._id });
+  };
   return (
     <View style={styles.container}>
-      <View style={styles.headBack}>
-        {modal && (
-          <Touchable onPress={goBack}>
-            <Icon name="icon-close" size={30} color="#fff" />
-          </Touchable>
-        )}
-      </View>
-      <View style={styles.headCenter}>
-        <UserinfoBar
-          userInfo={articleDetail.author}
-          following_state={articleDetail.following_state}
-          handleFollow={handleFollow}
+      <Touchable onPress={goUserProfile} style={styles.avatar}>
+        <Avatar url={articleDetail.author.avatar_url} size={40} />
+        <View style={styles.nickname}>
+          <Text style={styles.nicknameText}>
+            {articleDetail.author.nickname}
+          </Text>
+          <Text style={styles.dateText}>
+            {moment(articleDetail.create_at).format('YYYY-MM-DD')}
+          </Text>
+        </View>
+      </Touchable>
+      <View style={styles.follow}>
+        <Button
+          type={articleDetail.following_state ? 'default' : 'primary'}
+          title={articleDetail.following_state ? '已关注' : '关注'}
+          height={30}
+          fontSize={14}
+          onPress={handleFollow}
         />
-      </View>
-      <View style={styles.headRight}>
-        <Icon name="icon-ellipsis" size={30} color="#fff" />
       </View>
     </View>
   );
@@ -38,18 +45,29 @@ const ArticleDetailHead = (props: IProps) => {
 
 const styles = StyleSheet.create({
   container: {
+    height: 70,
+    paddingHorizontal: 15,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
-  headBack: {
-    // marginHorizontal: Platform.OS === 'android' ? 0 : 8
+  avatar: {
+    flexDirection: 'row',
+    alignItems: 'center'
   },
-  headCenter: {
-    flex: 1,
-    paddingHorizontal: 20
+  nickname: {
+    marginHorizontal: 10
   },
-  headRight: {}
+  nicknameText: {
+    color: '#333'
+  },
+  dateText: {
+    marginTop: 5,
+    color: '#999',
+    fontSize: 12
+  },
+  follow: {},
+  followBtn: {}
 });
 
 export default ArticleDetailHead;

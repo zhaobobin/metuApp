@@ -7,6 +7,7 @@ import { Touchable } from '@/components/index';
 
 export const itemWidth = (screenWidth - 20) / 5;
 export const itemHeight = 50;
+const iconColor = '#fff';
 
 interface IProps {
   photoDetail: IPhotoDetail;
@@ -38,7 +39,7 @@ const PhotoDetailFoot = (props: IProps) => {
                   : 'icon-favorites'
               }
               size={30}
-              color="#fff"
+              color={iconColor}
             />
           </View>
           <View style={styles.textView}>
@@ -49,7 +50,7 @@ const PhotoDetailFoot = (props: IProps) => {
       <View style={styles.item}>
         <Touchable style={styles.itemWrapper} onPress={handleComment}>
           <View style={styles.iconView}>
-            <Icon name="icon-comments" size={30} color="#fff" />
+            <Icon name="icon-comments" size={30} color={iconColor} />
           </View>
           <View style={styles.textView}>
             <Text style={styles.footText}>评论</Text>
@@ -66,7 +67,7 @@ const PhotoDetailFoot = (props: IProps) => {
                   : 'icon-collection'
               }
               size={30}
-              color="#fff"
+              color={iconColor}
             />
           </View>
           <View style={styles.textView}>
@@ -77,7 +78,7 @@ const PhotoDetailFoot = (props: IProps) => {
       <View style={styles.item}>
         <Touchable style={styles.itemWrapper} onPress={handleShare}>
           <View style={styles.iconView}>
-            <Icon name="icon-share" size={30} color="#fff" />
+            <Icon name="icon-share" size={30} color={iconColor} />
           </View>
           <View style={styles.textView}>
             <Text style={styles.footText}>分享</Text>
@@ -87,7 +88,7 @@ const PhotoDetailFoot = (props: IProps) => {
       <View style={styles.item}>
         <Touchable style={styles.itemWrapper} onPress={handleNextPhotos}>
           <View style={styles.iconView}>
-            <Icon name="icon-double-arro-right" size={30} color="#fff" />
+            <Icon name="icon-double-arro-right" size={30} color={iconColor} />
           </View>
           <View style={styles.textView}>
             <Text style={styles.footText}>下一组</Text>
@@ -124,7 +125,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   footText: {
-    color: '#fff',
+    color: iconColor,
     fontSize: 12
   }
 });

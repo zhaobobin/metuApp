@@ -228,6 +228,7 @@ class PublishPhoto extends React.Component<IProps> {
         if (res.code === 0) {
           Toast.info(res.message);
           this.resetPhotoFormValues();
+          Navigator.goBack();
           Navigator.goPage('PhotoDetail', { photo_id: res.data, modal: true });
         } else {
           Toast.info(res.message);

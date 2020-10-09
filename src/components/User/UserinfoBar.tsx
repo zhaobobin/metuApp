@@ -12,10 +12,11 @@ interface IProps {
   following_state?: boolean;
   height?: number;
   handleFollow: () => void;
+  textColor?: string;
 }
 
 const UserinfoBar = (props: IProps) => {
-  const { userInfo, following_state, handleFollow } = props;
+  const { userInfo, following_state, handleFollow, textColor } = props;
   const goUserProfile = () => {
     Navigator.goPage('UserDetail', { id: userInfo._id });
   };
@@ -24,7 +25,7 @@ const UserinfoBar = (props: IProps) => {
       <Touchable onPress={goUserProfile} style={styles.avatar}>
         <Avatar url={userInfo.avatar_url} size={30} />
         <View style={styles.nickname}>
-          <Text style={styles.nicknameText}>{userInfo.nickname}</Text>
+          <Text style={{ color: textColor || '#fff'}}>{userInfo.nickname}</Text>
         </View>
       </Touchable>
       <View style={styles.follow}>
@@ -56,9 +57,6 @@ const styles = StyleSheet.create({
   },
   nickname: {
     marginHorizontal: 10
-  },
-  nicknameText: {
-    color: '#fff'
   },
   follow: {},
   followBtn: {}

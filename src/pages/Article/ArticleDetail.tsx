@@ -1,15 +1,15 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteProp } from '@react-navigation/native';
 import { AppStackParamList } from '@/navigator/AppNavigation';
 import { RootState } from '@/models/index';
 import { IResponse } from '@/types/CommonTypes';
+import { color } from '@/theme/index';
 import {
   Navigator,
   Storage,
   ENV,
-  getStatusBarHeight,
   getBottomSpace,
   screenWidth
 } from '@/utils/index';
@@ -18,7 +18,6 @@ import ArticleDetailHead from './ArticleDetailHead';
 import ArticleContent from './ArticleContent';
 import ArticleDetailFoot from './ArticleDetailFoot';
 
-const statusBarHeight = getStatusBarHeight();
 const bottomSpace = getBottomSpace();
 
 const mapStateToProps = (state: RootState) => ({
@@ -199,20 +198,18 @@ class ArticleDetail extends React.Component<IProps, IState> {
     if (loading) {
       return null;
     }
-    console.log(articleDetail)
+    console.log(articleDetail);
     return (
       <View style={styles.container}>
-        <View style={styles.head}>
+        <ScrollView>
           <ArticleDetailHead
             articleDetail={articleDetail}
             modal={route.params.modal}
             goBack={this.goBack}
             handleFollow={this.handleFollow}
           />
-        </View>
-        <View style={styles.body}>
-          <ArticleContent/>
-        </View>
+          <ArticleContent articleDetail={articleDetail} />
+        </ScrollView>
         <View style={styles.foot}>
           <ArticleDetailFoot
             articleDetail={articleDetail}
@@ -231,20 +228,9 @@ class ArticleDetail extends React.Component<IProps, IState> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
-    position: 'relative'
+    backgroundColor: '#fff'
   },
-  head: {
-    width: screenWidth,
-    height: statusBarHeight + 50,
-    paddingHorizontal: 10,
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    paddingTop: statusBarHeight + 3,
-    zIndex: 99,
-    backgroundColor: 'rgba(0,0,0,.7)'
-  },
+  head: {},
   body: {
     flex: 1
   },
@@ -260,7 +246,9 @@ const styles = StyleSheet.create({
     bottom: 0,
     paddingBottom: bottomSpace,
     zIndex: 99,
-    backgroundColor: 'rgba(0,0,0,.7)'
+    backgroundColor: 'rgba(255,255,255,.7)',
+    borderColor: color.border,
+    borderWidth: StyleSheet.hairlineWidth
   }
 });
 

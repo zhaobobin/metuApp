@@ -84,7 +84,7 @@ class PublishArticle extends React.Component<IProps> {
   };
 
   onChangeContent = (html: string) => {
-    console.log(html)
+    console.log(html);
     this.savePublishArticleForm({ content: html });
   };
 
@@ -117,9 +117,10 @@ class PublishArticle extends React.Component<IProps> {
         if (res.code === 0) {
           Toast.info(res.message);
           this.resetArticleFormValues();
-          Navigator.goPage('ArticleScreen', {
-            screen: 'ArticleDetail',
-            params: { article_id: res.data, modal: true }
+          Navigator.goBack();
+          Navigator.goPage('ArticleDetail', {
+            article_id: res.data,
+            modal: true
           });
         } else {
           Toast.show(res.message);

@@ -14,7 +14,8 @@ import Icon from '@/assets/iconfont';
 import MainScreen from './MainNavigation';
 import Search from '@/pages/Search/index';
 import Publish from '@/pages/Publish/index';
-import PhotoScreen from './PhotoScreen';
+import ArticleDetail from '@/pages/Article/ArticleDetail';
+import PhotoDetail from '@/pages/Photo/PhotoDetail';
 import UserDetail from '@/pages/User/UserDetail';
 import Comment from '@/pages/Comment/index';
 
@@ -23,7 +24,8 @@ export type AppStackParamList = {
   MainScreen: undefined;
   SearchScreen: undefined;
   PublishScreen: { onPress: (values: any) => void };
-  PhotoScreen: undefined;
+  ArticleDetail: { article_id: string; modal?: boolean };
+  PhotoDetail: { photo_id: string; modal?: boolean };
   UserDetail: { id: string };
   CommentScreen: { id: string; type: 'photos' | 'articles' };
 };
@@ -59,9 +61,14 @@ export default function AppScreen() {
         options={getPublishScreenOptions}
       />
       <AppStack.Screen
-        name="PhotoScreen"
-        component={PhotoScreen}
-        options={getPhotoScreenOptions}
+        name="ArticleDetail"
+        component={ArticleDetail}
+        options={getArticleDetailOptions}
+      />
+      <AppStack.Screen
+        name="PhotoDetail"
+        component={PhotoDetail}
+        options={getPhotoDetailOptions}
       />
       <AppStack.Screen
         name="UserDetail"
@@ -109,7 +116,14 @@ function getPublishScreenOptions() {
   };
 }
 
-function getPhotoScreenOptions() {
+function getArticleDetailOptions() {
+  return {
+    headerShown: false,
+    ...TransitionPresets.ScaleFromCenterAndroid
+  };
+}
+
+function getPhotoDetailOptions() {
   return {
     headerShown: false,
     ...TransitionPresets.ScaleFromCenterAndroid

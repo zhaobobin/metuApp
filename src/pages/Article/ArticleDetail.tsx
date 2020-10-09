@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteProp } from '@react-navigation/native';
-import { PhotoStackParamList } from '@/navigator/PhotoScreen';
+import { AppStackParamList } from '@/navigator/AppNavigation';
 import { RootState } from '@/models/index';
 import { IResponse } from '@/types/CommonTypes';
 import {
@@ -14,16 +14,16 @@ import {
   screenWidth
 } from '@/utils/index';
 
-// import PhotoDetailHead from './PhotoDetailHead';
-// import PhotoSwiper from './PhotoSwiper';
-// import PhotoDetailFoot from './PhotoDetailFoot';
+import ArticleDetailHead from './ArticleDetailHead';
+import ArticleContent from './ArticleContent';
+import ArticleDetailFoot from './ArticleDetailFoot';
 
 const statusBarHeight = getStatusBarHeight();
 const bottomSpace = getBottomSpace();
 
 const mapStateToProps = (state: RootState) => ({
-  loading: state.loading.effects['photo/queryPhotoDetail'],
-  photoDetail: state.photo.photoDetail,
+  loading: state.loading.effects['article/queryArticleDetail'],
+  articleDetail: state.article.articleDetail,
   isAuth: state.account.isAuth
 });
 
@@ -32,32 +32,32 @@ const connector = connect(mapStateToProps);
 type ModelState = ConnectedProps<typeof connector>;
 
 interface IProps extends ModelState {
-  route: RouteProp<PhotoStackParamList, 'PhotoDetail'>;
+  route: RouteProp<AppStackParamList, 'ArticleDetail'>;
 }
 
 interface IState {
   isAuth: boolean;
-  photo_id: string;
+  article_id: string;
 }
 
-class PhotoDetail extends React.Component<IProps, IState> {
+class ArticleDetail extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
       isAuth: props.isAuth,
-      photo_id: props.photoDetail._id
+      article_id: props.articleDetail._id
     };
   }
 
   componentDidMount() {
-    const { photo_id } = this.props.route.params;
-    this.getPhotoDetail(photo_id);
+    const { article_id } = this.props.route.params;
+    this.getArticleDetail(article_id);
   }
 
   static getDerivedStateFromProps(nextProps: IProps, prevState: IState) {
-    if (nextProps.route.params.photo_id !== prevState.photo_id) {
+    if (nextProps.route.params.article_id !== prevState.article_id) {
       return {
-        photo_id: nextProps.route.params.photo_id
+        article_id: nextProps.route.params.article_id
       };
     }
     if (nextProps.isAuth !== prevState.isAuth) {
@@ -69,50 +69,50 @@ class PhotoDetail extends React.Component<IProps, IState> {
   }
 
   componentDidUpdate(prevProps: IProps, prevState: IState) {
-    if (this.state.photo_id !== prevState.photo_id) {
-      this.getPhotoDetail(this.state.photo_id);
+    if (this.state.article_id !== prevState.article_id) {
+      this.getArticleDetail(this.state.article_id);
     }
     if (this.state.isAuth !== prevState.isAuth) {
-      this.getPhotoState(this.props.photoDetail._id);
+      this.getArticleState(this.props.articleDetail._id);
     }
   }
 
-  getPhotoDetail = (photo_id: string) => {
+  getArticleDetail = (article_id: string) => {
     this.props.dispatch({
-      type: 'photo/queryPhotoDetail',
+      type: 'article/queryArticleDetail',
       payload: {
-        photo_id
+        article_id
       }
     });
   };
 
-  getPhotoState = (photo_id: string) => {
+  getArticleState = (article_id: string) => {
     this.props.dispatch({
-      type: 'photo/queryPhotoState',
+      type: 'article/queryArticleState',
       payload: {
-        photo_id
+        article_id
       }
     });
   };
 
-  updatePhotoState = (payload: any) => {
+  updateArticleState = (payload: any) => {
     this.props.dispatch({
-      type: 'photo/updatePhotoDetail',
+      type: 'article/updateArticleDetail',
       payload
     });
   };
 
   handleFollow = () => {
     if (this.state.isAuth) {
-      const { photoDetail } = this.props;
+      const { articleDetail } = this.props;
       this.props.dispatch({
         type: 'user/followUser',
         payload: {
-          user_id: photoDetail.author._id,
-          following_state: photoDetail.following_state
+          user_id: articleDetail.author._id,
+          following_state: articleDetail.following_state
         },
         callback: (res: IResponse) => {
-          this.updatePhotoState(res.data);
+          this.updateArticleState(res.data);
         }
       });
     } else {
@@ -122,12 +122,12 @@ class PhotoDetail extends React.Component<IProps, IState> {
 
   handleFavor = async () => {
     if (this.state.isAuth) {
-      const { photoDetail } = this.props;
+      const { articleDetail } = this.props;
       this.props.dispatch({
-        type: 'photo/favorPhoto',
+        type: 'article/favorArticle',
         payload: {
-          photo_id: photoDetail._id,
-          favoring_state: photoDetail.favoring_state
+          article_id: articleDetail._id,
+          favoring_state: articleDetail.favoring_state
         }
       });
     } else {
@@ -137,19 +137,19 @@ class PhotoDetail extends React.Component<IProps, IState> {
 
   handleComment = () => {
     Navigator.goPage('CommentScreen', {
-      id: this.props.photoDetail._id,
-      type: 'photos'
+      id: this.props.articleDetail._id,
+      type: 'articles'
     });
   };
 
   handleCollect = async () => {
     if (this.state.isAuth) {
-      const { photoDetail } = this.props;
+      const { articleDetail } = this.props;
       this.props.dispatch({
-        type: 'photo/collectPhoto',
+        type: 'article/collectArticle',
         payload: {
-          photo_id: photoDetail._id,
-          collecting_state: photoDetail.collecting_state
+          article_id: articleDetail._id,
+          collecting_state: articleDetail.collecting_state
         }
       });
     } else {
@@ -164,22 +164,22 @@ class PhotoDetail extends React.Component<IProps, IState> {
     }
   };
 
-  handleNextPhotos = () => {
-    const { photoDetail } = this.props;
+  handleNextArticle = () => {
+    const { articleDetail } = this.props;
     this.props.dispatch({
-      type: 'photo/nextPhoto',
+      type: 'article/nextArticle',
       payload: {
-        photo_id: photoDetail._id
+        article_id: articleDetail._id
       }
     });
   };
 
   goLoginScreen = async () => {
     const route = {
-      routeName: 'PhotoScreen',
+      routeName: 'ArticleScreen',
       routeParam: {
-        screen: 'PhotoDetail',
-        params: { photo_id: this.props.photoDetail._id, modal: true }
+        screen: 'ArticleDetail',
+        params: { article_id: this.props.articleDetail._id, modal: true }
       }
     };
     await Storage.set(ENV.storage.loginRedirect, JSON.stringify(route));
@@ -195,20 +195,33 @@ class PhotoDetail extends React.Component<IProps, IState> {
   };
 
   render() {
-    const { loading, photoDetail, route } = this.props;
+    const { loading, articleDetail, route } = this.props;
     if (loading) {
       return null;
     }
+    console.log(articleDetail)
     return (
       <View style={styles.container}>
         <View style={styles.head}>
-          
+          <ArticleDetailHead
+            articleDetail={articleDetail}
+            modal={route.params.modal}
+            goBack={this.goBack}
+            handleFollow={this.handleFollow}
+          />
         </View>
         <View style={styles.body}>
-          
+          <ArticleContent/>
         </View>
         <View style={styles.foot}>
-          
+          <ArticleDetailFoot
+            articleDetail={articleDetail}
+            handleFavor={this.handleFavor}
+            handleComment={this.handleComment}
+            handleCollect={this.handleCollect}
+            handleShare={this.handleShare}
+            handleNextArticle={this.handleNextArticle}
+          />
         </View>
       </View>
     );
@@ -251,4 +264,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connector(PhotoDetail);
+export default connector(ArticleDetail);

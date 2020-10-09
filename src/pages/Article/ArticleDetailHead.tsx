@@ -2,17 +2,17 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Icon from '@/assets/iconfont';
 import { Touchable, UserinfoBar } from '@/components/index';
-import { IPhotoDetail } from '@/types/CommonTypes';
+import { IArticleDetail } from '@/types/CommonTypes';
 
 interface IProps {
-  photoDetail: IPhotoDetail;
+  articleDetail: IArticleDetail;
   modal?: boolean;
   goBack: () => void;
   handleFollow: () => void;
 }
 
-const PhotoDetailHead = (props: IProps) => {
-  const { photoDetail, modal, goBack, handleFollow } = props;
+const ArticleDetailHead = (props: IProps) => {
+  const { articleDetail, modal, goBack, handleFollow } = props;
   return (
     <View style={styles.container}>
       <View style={styles.headBack}>
@@ -24,8 +24,8 @@ const PhotoDetailHead = (props: IProps) => {
       </View>
       <View style={styles.headCenter}>
         <UserinfoBar
-          userInfo={photoDetail.author}
-          following_state={photoDetail.following_state}
+          userInfo={articleDetail.author}
+          following_state={articleDetail.following_state}
           handleFollow={handleFollow}
         />
       </View>
@@ -52,4 +52,4 @@ const styles = StyleSheet.create({
   headRight: {}
 });
 
-export default PhotoDetailHead;
+export default ArticleDetailHead;

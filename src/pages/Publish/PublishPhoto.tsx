@@ -214,12 +214,12 @@ class PublishPhoto extends React.Component<IProps> {
     const payload: any = {
       ...values
     };
-    if(!payload.thumb) {
+    if (!payload.thumb) {
       payload.thumb = {
         url: payload.images[0].url,
         width: payload.images[0].width,
-        height: payload.images[0].height,
-      }
+        height: payload.images[0].height
+      };
     }
     this.props.dispatch({
       type: 'publish/publishPhoto',
@@ -228,10 +228,7 @@ class PublishPhoto extends React.Component<IProps> {
         if (res.code === 0) {
           Toast.info(res.message);
           this.resetPhotoFormValues();
-          Navigator.goPage('PhotoScreen', {
-            screen: 'PhotoDetail',
-            params: { photo_id: res.data, modal: true }
-          });
+          Navigator.goPage('PhotoDetail', { photo_id: res.data, modal: true });
         } else {
           Toast.info(res.message);
         }
@@ -242,8 +239,8 @@ class PublishPhoto extends React.Component<IProps> {
   resetPhotoFormValues = () => {
     this.props.dispatch({
       type: 'publish/resetPhotoFormValues'
-    })
-  }
+    });
+  };
 
   render() {
     const { photoFormValues, photoPickerImages } = this.props;

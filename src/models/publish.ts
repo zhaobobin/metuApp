@@ -1,8 +1,6 @@
 import { Model, Effect } from 'dva-core-ts';
 import { Reducer } from 'redux';
 import { articleApi, photoApi } from '@/api/index';
-import { Toast } from '@/components/index';
-import { IPhoto } from '@/types/CommonTypes';
 import { IPublishType, IPhotoPublishForm, IArticlePublishForm, IImageSchema } from '@/types/publish/PublishState';
 
 export interface IPublishState {

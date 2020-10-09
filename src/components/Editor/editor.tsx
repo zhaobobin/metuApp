@@ -4,8 +4,6 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -102,7 +100,6 @@ class Editor extends React.Component<IProps, IState> {
    */
   handleChange = (html: string) => {
     // console.log('editor data:', html);
-    // const content = this.richText.current?.setContentHTML(html)
     this.props.onChange(html);
   };
 
@@ -194,7 +191,7 @@ class Editor extends React.Component<IProps, IState> {
     const { contentStyle, emojiVisible, disabled } = that.state;
     const { backgroundColor, color, placeholderTextColor } = contentStyle;
     const themeBg = { backgroundColor };
-    const initHTML = '<div></div>';
+    // const initHTML = '<div><br/></div>';
     return (
       <View style={[styles.container, themeBg]}>
         <InsertLinkModal

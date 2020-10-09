@@ -69,10 +69,7 @@ class Carsouel extends React.Component<IProps> {
   };
 
   goPhotoDetail = (item: IPhoto) => {
-    Navigator.goPage('PhotoScreen', {
-      screen: 'PhotoDetail',
-      params: { photo_id: item._id, modal: true }
-    });
+    Navigator.goPage('PhotoDetail', { photo_id: item._id, modal: true });
   };
 
   render() {

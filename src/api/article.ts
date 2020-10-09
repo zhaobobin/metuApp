@@ -1,5 +1,5 @@
 import { Request } from '@/utils/index';
-import { IArticleInfo } from '@/types/publish/PublishState';
+import { IArticlePublishForm } from '@/types/publish/PublishState';
 
 export const articleApi = {
   // 用户的文章列表
@@ -22,7 +22,7 @@ export const articleApi = {
     return Request({ url: `/articles/${params.article_id}`, method: 'get' });
   },
 
-  createArticle: (params: IArticleInfo) => {
+  createArticle: (params: IArticlePublishForm) => {
     return Request({
       url: '/articles',
       method: 'post',

@@ -42,10 +42,7 @@ class Popular extends React.Component<IProps> {
   refresh = () => {};
 
   onPressImage = (item: IPhoto) => {
-    Navigator.goPage('PhotoScreen', {
-      screen: 'PhotoDetail',
-      params: { photo_id: item._id, modal: true }
-    });
+    Navigator.goPage('PhotoDetail', { photo_id: item._id, modal: true });
   };
 
   renderItem = ({ item }: ListRenderItemInfo<IPhoto>) => {

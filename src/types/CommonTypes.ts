@@ -86,7 +86,6 @@ export interface IArticle {
   title: string;
   thumb: IThumb;
   author: IAuthor;
-  content: string;
   view_number: number;
   favor_number: number;
   collect_number: number;
@@ -98,6 +97,10 @@ export interface IArticle {
   following_state?: boolean;
   favoring_state?: boolean;
   collecting_state?: boolean;
+}
+
+export interface IArticleDetail extends IArticle {
+  content: string;
 }
 
 // 作者

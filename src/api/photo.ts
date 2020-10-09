@@ -1,5 +1,5 @@
 import { Request } from '@/utils/index';
-import { IPhotoInfo } from '@/types/publish/PublishState';
+import { IPhotoPublishForm } from '@/types/publish/PublishState';
 
 export const photoApi = {
   // 用户的图片列表
@@ -22,7 +22,7 @@ export const photoApi = {
     return Request({ url: `/photos/${params.photo_id}`, method: 'get' });
   },
 
-  createPhoto: (params: IPhotoInfo) => {
+  createPhoto: (params: IPhotoPublishForm) => {
     return Request({
       url: '/photos',
       method: 'post',

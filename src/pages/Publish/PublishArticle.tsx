@@ -2,7 +2,6 @@ import React from 'react';
 import {
   View,
   StyleSheet,
-  ScrollView,
   NativeSyntheticEvent,
   TextInputChangeEventData
 } from 'react-native';
@@ -110,23 +109,23 @@ class PublishArticle extends React.Component<IProps> {
     const payload: any = {
       ...values
     };
-    console.log(payload);
-    // this.props.dispatch({
-    //   type: 'publish/publishArticle',
-    //   payload,
-    //   callback: (res: IResponse) => {
-    //     if (res.code === 0) {
-    //       Toast.info(res.message);
-    //       this.resetArticleFormValues();
-    //       Navigator.goPage('ArticleScreen', {
-    //         screen: 'ArticleDetail',
-    //         params: { article_id: res.data, modal: true }
-    //       });
-    //     } else {
-    //       Toast.show(res.message);
-    //     }
-    //   }
-    // });
+    payload.content = `<div>${payload.content}</div>`;
+    this.props.dispatch({
+      type: 'publish/publishArticle',
+      payload,
+      callback: (res: IResponse) => {
+        if (res.code === 0) {
+          Toast.info(res.message);
+          this.resetArticleFormValues();
+          Navigator.goPage('ArticleScreen', {
+            screen: 'ArticleDetail',
+            params: { article_id: res.data, modal: true }
+          });
+        } else {
+          Toast.show(res.message);
+        }
+      }
+    });
   };
 
   resetArticleFormValues = () => {

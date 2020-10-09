@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteProp } from '@react-navigation/native';
-import { PhotoStackParamList } from '@/navigator/PhotoScreen';
+import { AppStackParamList } from '@/navigator/AppNavigation';
 import { RootState } from '@/models/index';
 import { IResponse } from '@/types/CommonTypes';
 import {
@@ -32,7 +32,7 @@ const connector = connect(mapStateToProps);
 type ModelState = ConnectedProps<typeof connector>;
 
 interface IProps extends ModelState {
-  route: RouteProp<PhotoStackParamList, 'PhotoDetail'>;
+  route: RouteProp<AppStackParamList, 'PhotoDetail'>;
 }
 
 interface IState {
@@ -176,11 +176,8 @@ class PhotoDetail extends React.Component<IProps, IState> {
 
   goLoginScreen = async () => {
     const route = {
-      routeName: 'PhotoScreen',
-      routeParam: {
-        screen: 'PhotoDetail',
-        params: { photo_id: this.props.photoDetail._id, modal: true }
-      }
+      routeName: 'PhotoDetail',
+      routeParam: { photo_id: this.props.photoDetail._id, modal: true }
     };
     await Storage.set(ENV.storage.loginRedirect, JSON.stringify(route));
     Navigator.goPage('LoginScreen');

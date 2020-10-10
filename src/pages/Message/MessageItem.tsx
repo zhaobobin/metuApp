@@ -10,7 +10,7 @@ interface IProps {
 const MessageItem = ({ item, onPress }: IProps) => {
   return (
     <View>
-      <Text>MessageItem</Text>
+      <Text>{item.content}</Text>
     </View>
   );
 };

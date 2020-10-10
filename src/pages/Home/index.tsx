@@ -9,6 +9,7 @@ import {
   MaterialTopTabNavigationProp
 } from '@react-navigation/material-top-tabs';
 import { RootState } from '@/models/index';
+
 import TopTabBarWrapper from '@/pages/Home/TopTabBarWrapper';
 import Following from '@/pages/Home/Following';
 import Editor from '@/pages/Home/Editor';
@@ -55,7 +56,7 @@ class HomeTabs extends React.Component<IProps> {
   };
 
   render() {
-    const tabs = this.renderTabs();
+    const Tabs = this.renderTabs();
     return (
       <Tab.Navigator
         lazy
@@ -77,7 +78,7 @@ class HomeTabs extends React.Component<IProps> {
           activeTintColor: '#1890ff',
           inactiveTintColor: '#fff'
         }}>
-        {tabs.map((item, index) => (
+        {Tabs.map((item, index) => (
           <Tab.Screen key={index} name={item.name} component={item.component} />
         ))}
       </Tab.Navigator>

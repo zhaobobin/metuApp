@@ -87,6 +87,7 @@ export default function AppScreen() {
 // 搜索
 function getSearchOptions() {
   return {
+    headerShown: false,
     headerTitle: '搜索',
     headerBackImage: ({ tintColor }: { tintColor: string }) => (
       <Icon

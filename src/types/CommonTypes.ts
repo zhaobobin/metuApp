@@ -84,7 +84,7 @@ export interface IThumb {
 export interface IArticle {
   _id: string;
   title: string;
-  thumb: IThumb;
+  thumb: string;
   author: IAuthor;
   view_number: number;
   favor_number: number;

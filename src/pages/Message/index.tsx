@@ -48,14 +48,16 @@ class HomeTabs extends React.Component {
           activeTintColor: '#1890ff',
           inactiveTintColor: '#999'
         }}>
-        {tabs.map((item, index) => (
-          <Tab.Screen
-            key={index}
-            name={item.name}
-            component={MessageList}
-            initialParams={{ type: item.type }}
-          />
-        ))}
+        {tabs.map((item, index) => {
+          return (
+            <Tab.Screen
+              key={index}
+              name={item.name}
+              component={MessageList}
+              initialParams={{ type: item.type }}
+            />
+          );
+        })}
       </Tab.Navigator>
     );
   }

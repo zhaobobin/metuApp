@@ -87,12 +87,13 @@ class TopTabBarWrapper extends React.Component<IProps> {
       <View style={styles.container}>
         {navigationState.index === 1 && this.renderGradientColor}
         <View style={styles.searchWrapper}>
-          <Touchable style={styles.input} onPress={this.goSearchPage}>
+          <Touchable style={styles.searchInput} onPress={this.goSearchPage}>
+            <Icon name="icon-search" size={20} color={activeTintColor} style={styles.searchIcon} />
             <Text style={textStyle}>搜索</Text>
           </Touchable>
-          <Touchable style={styles.searchBtn} onPress={this.goSearchPage}>
+          {/* <Touchable style={styles.searchBtn} onPress={this.goSearchPage}>
             <Text style={textStyle}>搜索</Text>
-          </Touchable>
+          </Touchable> */}
         </View>
         <View style={styles.tabBarWrapper}>
           <MaterialTopTabBar
@@ -139,13 +140,17 @@ const styles = StyleSheet.create({
     paddingVertical: 7,
     paddingHorizontal: 15
   },
-  input: {
+  searchInput: {
     flex: 1,
     paddingLeft: 15,
     height: 30,
     borderRadius: 15,
-    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,.1)'
+  },
+  searchIcon: {
+    marginRight: 10
   },
   inputText: {
     opacity: 0.3

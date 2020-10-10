@@ -6,24 +6,30 @@ import {
   ListRenderItemInfo,
   StyleSheet
 } from 'react-native';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import { HPageViewHoc } from 'react-native-head-tab-view';
-import { IPhoto } from '@/types/CommonTypes';
-import Empty from '@/components/Empty';
-import PhotoItem from '@/components/PhotoItem';
-import { photoApi } from '@/api/index';
-import { Navigator } from '@/utils/index';
+import { RootState } from '@/models/index';
+import { Empty, UserinfoBar } from '@/components/index';
+import { IUserInfo, IResponse } from '@/types/CommonTypes';
+import { userApi } from '@/api/index';
+import { Storage, ENV, Navigator } from '@/utils/index';
 
 const HFlatList = HPageViewHoc(FlatList);
 
-const connector = connect();
+const mapStateToProps = (state: RootState) => ({
+  isAuth: state.account.isAuth
+});
 
-interface IProps {
-  userId: string;
+const connector = connect(mapStateToProps);
+
+type ModelState = ConnectedProps<typeof connector>;
+
+interface IProps extends ModelState {
+  user_id: string;
 }
 
 interface IState {
-  list: IPhoto[];
+  list: IUserInfo[];
   count: number;
   hasMore: boolean;
   page: number;
@@ -32,35 +38,38 @@ interface IState {
   refreshing: boolean;
 }
 
-class UserFavoring extends React.Component<IProps, IState> {
-  state = {
-    list: [],
-    count: 0,
-    hasMore: true,
-    page: 1,
-    per_page: 10,
-    loading: false,
-    refreshing: false
-  };
-
-  componentDidMount() {
-    this.queryFavoringPhotos();
+class UserFollowers extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      list: [],
+      count: 0,
+      hasMore: true,
+      page: 1,
+      per_page: 10,
+      loading: false,
+      refreshing: false
+    };
   }
 
-  queryFavoringPhotos = async (loadMore?: boolean) => {
-    const { userId } = this.props;
+  componentDidMount() {
+    this.queryUserFollowers();
+  }
+
+  queryUserFollowers = async (loadMore?: boolean) => {
+    const { user_id } = this.props;
     const { list, per_page } = this.state;
     let page = 1;
     if (loadMore) {
       page += 1;
     }
-    const res = await photoApi.getFavoringPhotos({
-      user_id: userId,
+    const res = await userApi.getUserFollowers({
+      user_id,
       page,
       per_page
     });
     if (res.code === 0) {
-      console.log(res.data)
+      console.log(res.data);
       let newList = res.data.list;
       if (loadMore) {
         newList = list.concat(newList);
@@ -79,7 +88,7 @@ class UserFavoring extends React.Component<IProps, IState> {
     this.setState({
       refreshing: true
     });
-    this.queryFavoringPhotos();
+    this.queryUserFollowers();
   };
 
   loadMore = async () => {
@@ -88,18 +97,38 @@ class UserFavoring extends React.Component<IProps, IState> {
     this.setState({
       loading: true
     });
-    this.queryFavoringPhotos(true);
+    this.queryUserFollowers(true);
   };
 
-  renderItem = ({ item }: ListRenderItemInfo<IPhoto>) => {
-    return <PhotoItem item={item} onPress={this.goPhotoDetail} />;
+  renderItem = ({ item }: ListRenderItemInfo<IUserInfo>) => {
+    return <UserinfoBar userInfo={item} handleFollow={this.handleFollowUser} />;
   };
 
-  goPhotoDetail = (item: IPhoto) => {
-    Navigator.goPage('PhotoDetail', { photo_id: item._id, modal: true });
+  handleFollowUser = () => {
+    if (this.props.isAuth) {
+      const { user_id } = this.props;
+      this.props.dispatch({
+        type: 'user/followUser',
+        payload: {
+          user_id
+        },
+        callback: (res: IResponse) => {}
+      });
+    } else {
+      this.goLoginScreen();
+    }
   };
 
-  _keyExtractor = (item: IPhoto) => item._id;
+  goLoginScreen = async () => {
+    const route = {
+      routeName: 'UserDetail',
+      routeParam: { user_id: this.props.user_id, modal: true }
+    };
+    await Storage.set(ENV.storage.loginRedirect, JSON.stringify(route));
+    Navigator.goPage('LoginScreen');
+  };
+
+  _keyExtractor = (item: IUserInfo) => item._id;
 
   renderFooter = () => {
     const { list, hasMore, loading } = this.state;
@@ -156,4 +185,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connector(UserFavoring);
+export default connector(UserFollowers);

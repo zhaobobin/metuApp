@@ -7,10 +7,10 @@ import { Tabbar, TabView, TabbarInfo } from 'react-native-head-tab-view';
 import { MainStackNavigation } from '@/navigator/MainNavigation';
 import { RootState } from '@/models/index';
 import { Navigator } from '@/utils/index';
+import { Touchable } from '@/components/index';
 
 import UserPhotos from '@/pages/User/UserPhotos';
 import UserArticles from '@/pages/User/UserArticles';
-import UserFollowing from '@/pages/User/UserFollowing';
 import UserFavoring from '@/pages/User/UserFavoring';
 import UserCollecting from '@/pages/User/UserCollecting';
 import UserIntroduction from '@/pages/User/UserIntroduction';
@@ -20,7 +20,6 @@ const HEADER_HEIGHT = 260;
 const Routes = [
   { key: 'photos', title: '图片' },
   { key: 'articles', title: '文章' },
-  { key: 'following', title: '关注' },
   { key: 'favoring', title: '点赞' },
   { key: 'collecting', title: '收藏' },
   { key: 'introduction', title: '简介' }
@@ -77,6 +76,16 @@ class AccountDetail extends React.Component<IProps, IState> {
     });
   };
 
+  goUserFollowingPage = () => {
+    const { currentUser } = this.props;
+    Navigator.goPage('UserFollowingPage', { id: currentUser._id });
+  };
+
+  goUserFollowersPage = () => {
+    const { currentUser } = this.props;
+    Navigator.goPage('UserFollowersPage', { id: currentUser._id });
+  };
+
   // Header
   _renderHeader = () => {
     const { loading, currentUser, headerTopHeight } = this.props;
@@ -111,14 +120,18 @@ class AccountDetail extends React.Component<IProps, IState> {
           </View>
           <View style={styles.info}>
             <View style={styles.infoItem}>
-              <Text style={styles.text}>
-                关注 {currentUser.following_number}
-              </Text>
+              <Touchable onPress={this.goUserFollowingPage}>
+                <Text style={styles.text}>
+                  关注 {currentUser.following_number}
+                </Text>
+              </Touchable>
             </View>
             <View style={styles.infoItem}>
-              <Text style={styles.text}>
-                粉丝 {currentUser.followers_number}
-              </Text>
+              <Touchable onPress={this.goUserFollowersPage}>
+                <Text style={styles.text}>
+                  粉丝 {currentUser.followers_number}
+                </Text>
+              </Touchable>
             </View>
           </View>
           <View style={styles.headline}>
@@ -163,8 +176,6 @@ class AccountDetail extends React.Component<IProps, IState> {
         return <UserPhotos {...sceneProps} userId={userId} />;
       case 'articles':
         return <UserArticles {...sceneProps} userId={userId} />;
-      case 'following':
-        return <UserFollowing {...sceneProps} userId={userId} />;
       case 'favoring':
         return <UserFavoring {...sceneProps} userId={userId} />;
       case 'collecting':

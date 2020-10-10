@@ -16,14 +16,35 @@ interface IProps extends ModelState {
   navigation: MainStackNavigation;
 }
 
-class Tpl extends React.Component<IProps> {
+class Cricle extends React.Component<IProps> {
+
   render() {
     return (
       <View>
-        <Text>tpl</Text>
+        <View>
+          <Text>摄影大赛</Text>
+        </View>
+        <View>
+          <Text>热门圈子</Text>
+        </View>
+        <View>
+          <Text>兴趣圈子</Text>
+        </View>
+        <View>
+          <Text>摄影学习圈子</Text>
+        </View>
+        <View>
+          <Text>校园圈子</Text>
+        </View>
+        <View>
+          <Text>地域圈子</Text>
+        </View>
+        <View>
+          <Text>圈子动态</Text>
+        </View>
       </View>
     );
   }
 }
 
-export default connector(Tpl);
+export default connector(Cricle);

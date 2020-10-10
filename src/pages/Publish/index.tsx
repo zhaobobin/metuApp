@@ -11,7 +11,6 @@ import {
 } from '@/navigator/AppNavigation';
 import { IPublishType } from '@/types/publish/PublishState';
 import { Navigator } from '@/utils/index';
-import Icon from '@/assets/iconfont';
 
 import HeaderRightButton from './HeaderRightButton';
 import PublishArticle from './PublishArticle';

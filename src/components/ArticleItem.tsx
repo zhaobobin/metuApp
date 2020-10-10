@@ -19,12 +19,12 @@ class ArticleItem extends React.PureComponent<IProps> {
     const { item } = this.props;
     return (
       <Touchable style={styles.item} onPress={this.onPressImage}>
-        {item.thumb && (
+        {item.thumb ? (
           <Image
-            source={{ uri: item.thumb.url + '?x-oss-process=style/thumb' }}
+            source={{ uri: item.thumb }}
             style={styles.image}
           />
-        )}
+        ) : null}
         <View style={styles.rightContainer}>
           <Text style={styles.title} numberOfLines={1}>
             {item.title}

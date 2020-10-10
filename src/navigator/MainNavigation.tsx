@@ -3,18 +3,15 @@
  */
 import React from 'react';
 import { Platform, StyleSheet } from 'react-native';
-import { RouteProp } from '@react-navigation/native';
 import {
   createStackNavigator,
   StackNavigationProp,
   HeaderStyleInterpolators,
   CardStyleInterpolators
 } from '@react-navigation/stack';
-import Animated from 'react-native-reanimated';
-
 import BottomTabs from '@/navigator/BottomTabs';
-import PhotoDetail from '@/pages/Photo/PhotoDetail';
-import UserDetail from '@/pages/User/UserDetail';
+import { IPhoto } from '@/types/CommonTypes';
+
 import Category from '@/pages/Category/index';
 import Setting from '@/pages/Setting/index';
 import SettingProfile from '@/pages/Setting/SettingProfile';
@@ -22,7 +19,8 @@ import SettingProfileNickname from '@/pages/Setting/SettingProfileNickname';
 import SettingProfileHeadline from '@/pages/Setting/SettingProfileHeadline';
 import SettingProfileMobile from '@/pages/Setting/SettingProfileMobile';
 import SettingProfilePassword from '@/pages/Setting/SettingProfilePassword';
-import { IPhoto } from '@/types/CommonTypes';
+import UserFollowing from '@/pages/User/UserFollowing';
+import UserFollowers from '@/pages/User/UserFollowers';
 
 export type MainStackParamList = {
   BottomTabs: {
@@ -42,6 +40,8 @@ export type MainStackParamList = {
   SettingProfileHeadline: undefined;
   SettingProfileMobile: undefined;
   SettingProfilePassword: undefined;
+  UserFollowingPage: { user_id: string };
+  UserFollowersPage: { user_id: string };
 };
 
 export type MainStackNavigation = StackNavigationProp<MainStackParamList>;

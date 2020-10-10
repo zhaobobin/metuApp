@@ -2,6 +2,7 @@
  * BottomTabs - 底部导航器
  */
 import React from 'react';
+import { View, Text, Image } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RouteProp, TabNavigationState } from '@react-navigation/native';

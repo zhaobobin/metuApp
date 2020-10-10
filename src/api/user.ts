@@ -100,11 +100,44 @@ export const userApi = {
     });
   },
 
+  // 关注用户
   followUser: (params: { user_id: string, following_state: boolean }) => {
     const method = params.following_state ? 'delete' : 'put';
     return Request({
       url: `/users/following/${params.user_id}`,
       method
     });
-  }
+  },
+
+  // 关注的用户列表
+  getUserFollowing: (params: {
+    user_id: string;
+    page?: number;
+    per_page?: number;
+  }) => {
+    return Request({
+      url: `/users/${params.user_id}/following`,
+      method: 'get',
+      params: {
+        page: params.page,
+        per_page: params.per_page
+      }
+    });
+  },
+
+  // 用户的粉丝列表
+  getUserFollowers: (params: {
+    user_id: string;
+    page?: number;
+    per_page?: number;
+  }) => {
+    return Request({
+      url: `/users/${params.user_id}/followers`,
+      method: 'get',
+      params: {
+        page: params.page,
+        per_page: params.per_page
+      }
+    });
+  },
 };

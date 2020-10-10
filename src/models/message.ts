@@ -5,6 +5,7 @@ import { messageApi } from '@/api/index';
 import { IMessage } from '@/types/message/MessageState';
 
 export interface IMessageState {
+  type: string;
   messageList: IMessage;
 }
 
@@ -23,6 +24,7 @@ const messageModel: MessageModel = {
   namespace: 'message',
 
   state: {
+    type: '',
     messageList: {
       list: [],
       pageInfo: {
@@ -55,7 +57,8 @@ const messageModel: MessageModel = {
       yield put({
         type: 'setState',
         payload: {
-          channel: {
+          type: payload.type,
+          messageList: {
             list: newList,
             pageInfo: {
               page,

@@ -2,7 +2,7 @@ import { Request } from '@/utils/index';
 import { IPhotoPublishForm } from '@/types/publish/PublishState';
 
 export const photoApi = {
-  // 用户的图片列表
+  // 用户发布的图片列表
   getUserPhotos: (params: {
     user_id: string;
     page?: number;
@@ -10,6 +10,38 @@ export const photoApi = {
   }) => {
     return Request({
       url: `/users/${params.user_id}/photos`,
+      method: 'get',
+      params: {
+        page: params.page,
+        per_page: params.per_page
+      }
+    });
+  },
+
+  // 用户点赞的图片列表
+  getFavoringPhotos: (params: {
+    user_id: string;
+    page?: number;
+    per_page?: number;
+  }) => {
+    return Request({
+      url: `/users/${params.user_id}/favoring/photos`,
+      method: 'get',
+      params: {
+        page: params.page,
+        per_page: params.per_page
+      }
+    });
+  },
+
+  // 用户收藏的图片列表
+  getCollectingPhotos: (params: {
+    user_id: string;
+    page?: number;
+    per_page?: number;
+  }) => {
+    return Request({
+      url: `/users/${params.user_id}/collecting/photos`,
       method: 'get',
       params: {
         page: params.page,

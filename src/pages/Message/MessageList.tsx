@@ -21,7 +21,8 @@ import MessageItem from './MessageItem';
 const mapStateToProps = (state: RootState) => ({
   loading: state.loading.effects['message/queryMessageList'],
   list: state.message.messageList.list,
-  hasMore: state.message.messageList.pageInfo.has_more
+  hasMore: state.message.messageList.pageInfo.has_more,
+  currentUser: state.account.currentUser
 });
 
 const connector = connect(mapStateToProps);
@@ -72,6 +73,7 @@ class Following extends React.Component<IProps, IState> {
       type: 'message/queryMessageList',
       payload: {
         type,
+        sent_to: this.props.currentUser._id,
         loadMore
       },
       callback: () => {

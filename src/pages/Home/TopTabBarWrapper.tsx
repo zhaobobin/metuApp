@@ -137,14 +137,15 @@ const styles = StyleSheet.create({
   searchWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 7,
+    paddingTop: 20,
+    paddingBottom: 5,
     paddingHorizontal: 15
   },
   searchInput: {
     flex: 1,
     paddingLeft: 15,
-    height: 30,
-    borderRadius: 15,
+    height: 34,
+    borderRadius: 16,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,.1)'

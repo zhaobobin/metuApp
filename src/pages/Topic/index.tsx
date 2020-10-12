@@ -1,3 +1,6 @@
+/**
+ * TopicIndex
+ */
 import React from 'react';
 import { View, Text, ScrollView, SafeAreaView, StyleSheet } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
@@ -5,7 +8,6 @@ import { Touchable, SearchNavBar } from '@/components/index';
 import { Navigator } from '@/utils/index';
 import { RootState } from '@/models/index';
 import { color } from '@/theme/index';
-import { ISearchCate } from '@/types/search/SearchState';
 
 const mapStateToProps = (state: RootState) => ({});
 
@@ -13,16 +15,9 @@ const connector = connect(mapStateToProps);
 
 type ModelState = ConnectedProps<typeof connector>;
 
-const CateList: ISearchCate[] = [
-  { name: '影集', key: 'photo', route: 'PhotoIndex' },
-  { name: '文章', key: 'article', route: 'ArticleIndex' },
-  { name: '圈子', key: 'circle', route: 'CircleIndex' },
-  { name: '话题', key: 'topic', route: 'TopicIndex' }
-];
-
 interface IProps extends ModelState {}
 
-class Found extends React.Component<IProps> {
+class TopicIndex extends React.Component<IProps> {
   goPage = (routeName: string) => {
     Navigator.goPage(routeName);
   };
@@ -30,17 +25,10 @@ class Found extends React.Component<IProps> {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <SearchNavBar type="photo" />
+        <SearchNavBar type="topic" />
         <ScrollView style={styles.body}>
-          <View style={styles.flex}>
-            {CateList.map((item, index) => (
-              <Touchable
-                key={index}
-                style={styles.flexItem}
-                onPress={() => this.goPage(item.route)}>
-                <Text>{item.name}</Text>
-              </Touchable>
-            ))}
+          <View>
+            <Text>TopicIndex</Text>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -73,4 +61,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connector(Found);
+export default connector(TopicIndex);

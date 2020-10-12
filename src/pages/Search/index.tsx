@@ -8,17 +8,17 @@ import {
   TextInput,
   ScrollView,
   SafeAreaView,
-  StyleSheet,
-  Platform
+  StyleSheet
 } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
-import { Touchable } from '@/components/index';
+import { RouteProp } from '@react-navigation/native';
+import { AppStackParamList } from '@/navigator/AppNavigation';
+import { Touchable, SearchNavBar } from '@/components/index';
 import { RootState } from '@/models/index';
 import { color } from '@/theme/index';
-import { isIphoneX, Navigator } from '@/utils/index';
+import { Navigator } from '@/utils/index';
 import Icon from '@/assets/iconfont';
-
-const is_IphoneX = isIphoneX();
+import { SearchType, ISearchCate } from '@/types/search/SearchState';
 
 const mapStateToProps = (state: RootState) => ({
   loading: state.loading
@@ -28,65 +28,69 @@ const connector = connect(mapStateToProps);
 
 type ModelState = ConnectedProps<typeof connector>;
 
-interface IProps extends ModelState {}
+const CateList: ISearchCate[] = [
+  { name: '影集', key: 'photo', route: 'PhotoIndex' },
+  { name: '文章', key: 'article', route: 'ArticleIndex' },
+  { name: '圈子', key: 'circle', route: 'CircleIndex' },
+  { name: '话题', key: 'topic', route: 'TopicIndex' }
+];
 
-class Search extends React.Component<IProps> {
+interface IProps extends ModelState {
+  route: RouteProp<AppStackParamList, 'SearchScreen'>;
+}
+
+interface IState {
+  type?: SearchType;
+  keyword: string;
+}
+
+class Search extends React.Component<IProps, IState> {
   private inputKey;
   constructor(props: IProps) {
     super(props);
     this.inputKey = '';
+    this.state = {
+      type: props.route.params ? props.route.params.type : 'photo',
+      keyword: ''
+    };
   }
 
   goBack = () => {
     Navigator.goBack();
+  };
+
+  onChangeText = (keyword: string) => {
+    console.log(keyword)
   }
 
-  _renderStatusBar = () => {
-    let statusBar = null;
-    if (Platform.OS === 'ios' && !is_IphoneX) {
-      statusBar = (
-        <View style={styles.statusBar} />
-      );
-    }
-    return statusBar;
-  }
-
-  _renderNavBar = () => {
-    return (
-      <View style={styles.navBar}>
-        <Touchable style={styles.navBarBack} onPress={this.goBack}>
-          <Icon name="icon-close" size={30} color="#666" />
-        </Touchable>
-        <View style={styles.searchWrapper}>
-          <Icon name="icon-search" size={20} color="#666" style={styles.searchIcon} />
-          <TextInput
-            ref="input"
-            placeholder="搜索"
-            onChangeText={text => (this.inputKey = text)}
-            style={styles.textInput}
-          />
-        </View>
-      </View>
-    );
+  onSelectCate = (type: SearchType) => {
+    this.setState({
+      type
+    })
   };
 
   render() {
+    const { type } = this.state;
+    const currentCate = CateList.find(item => item.key === type);
+    console.log(currentCate)
     return (
       <SafeAreaView style={styles.container}>
-        {this._renderStatusBar()}
-        {this._renderNavBar()}
-        <ScrollView style={styles.body}>
-          <Text>Search1</Text>
-          <Text>Search2</Text>
-          <Text>Search3</Text>
-          <Text>Search4</Text>
-          <Text>Search5</Text>
-          <Text>Search6</Text>
-          <Text>Search7</Text>
-          <Text>Search8</Text>
-          <Text>Search9</Text>
-          <Text>Search10</Text>
-        </ScrollView>
+        <SearchNavBar onChangeText={this.onChangeText} placeholder={`搜索${currentCate?.name}`} />
+        <View style={styles.body}>
+          <View style={styles.subTitle}>
+            <Text style={styles.subTitleText}>搜索指定内容</Text>
+          </View>
+          <View style={styles.flex}>
+            {CateList.map((item, index) => (
+              <Touchable
+                key={index}
+                style={[styles.flexItem, type === item.key ? styles.currentCate : null]}
+                onPress={() => this.onSelectCate(item.key)}>
+                <Text style={type === item.key ? styles.currentText : null}>{item.name}</Text>
+              </Touchable>
+            ))}
+          </View>
+        </View>
       </SafeAreaView>
     );
   }
@@ -94,34 +98,32 @@ class Search extends React.Component<IProps> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: '#fff'
   },
   statusBar: {
     height: 20,
-    backgroundColor: '#fff'
-  },
-  centering: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1
+    backgroundColor: 'red'
   },
   navBar: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 7,
-    paddingHorizontal: 10,
+    paddingLeft: 10,
+    paddingRight: 15,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: color.border
+    borderColor: color.border,
+    backgroundColor: '#fff'
   },
   navBarBack: {
-    marginRight: 5,
+    marginRight: 10,
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   searchWrapper: {
     flex: 1,
     paddingLeft: 15,
-    borderRadius: 15,
+    borderRadius: 16,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,.1)'
@@ -132,13 +134,44 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     alignSelf: 'center',
-    height: 30
+    height: 34
   },
   body: {
     paddingVertical: 10,
     paddingHorizontal: 10
   },
-
+  subTitle: {
+    paddingTop: 20,
+    paddingBottom: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  subTitleText: {
+    fontSize: 15,
+    color: '#999'
+  },
+  flex: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingVertical: 10,
+    paddingHorizontal: 10
+  },
+  flexItem: {
+    flex: 1,
+    margin: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 25,
+    borderRadius: 3,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: color.border
+  },
+  currentCate: {
+    backgroundColor: color.blue
+  },
+  currentText: {
+    color: '#fff'
+  }
 });
 
 export default connector(Search);

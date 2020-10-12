@@ -14,7 +14,7 @@ import { IResponse } from '@/types/CommonTypes';
 import Icon from '@/assets/iconfont';
 // tab page
 import HomePage from '@/pages/Home/index';
-// import Found from '@/pages/Found/index';
+import Found from '@/pages/Found/index';
 import Circle from '@/pages/Circle/index';
 import PublishButton from '@/pages/Publish/PublishButton';
 import Message from '@/pages/Message/index';
@@ -68,7 +68,13 @@ class BottomTabs extends React.Component<IProps> {
         headerTitle: '',
         headerRight: undefined
       });
-    } else if (routeName === 'Account') {
+    } 
+    else if (routeName === 'Found') {
+      navigation.setOptions({
+        headerShown: false
+      });
+    }
+    else if (routeName === 'Account') {
       navigation.setOptions({
         headerTransparent: true,
         headerTitle: '',
@@ -170,11 +176,21 @@ class BottomTabs extends React.Component<IProps> {
             )
           }}
         />
-        <Tab.Screen
+        {/* <Tab.Screen
           name="Circle"
           component={Circle}
           options={{
             tabBarLabel: '圈子',
+            tabBarIcon: ({ color, size }) => (
+              <Icon name="icon-search" size={size} color={color} />
+            )
+          }}
+        /> */}
+        <Tab.Screen
+          name="Found"
+          component={Found}
+          options={{
+            tabBarLabel: '发现',
             tabBarIcon: ({ color, size }) => (
               <Icon name="icon-search" size={size} color={color} />
             )

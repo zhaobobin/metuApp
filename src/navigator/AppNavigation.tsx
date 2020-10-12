@@ -10,6 +10,7 @@ import {
 } from '@react-navigation/stack';
 import Animated from 'react-native-reanimated';
 import Icon from '@/assets/iconfont';
+import { SearchType } from '@/types/search/SearchState';
 
 import MainScreen from './MainNavigation';
 import Search from '@/pages/Search/index';
@@ -18,16 +19,24 @@ import ArticleDetail from '@/pages/Article/ArticleDetail';
 import PhotoDetail from '@/pages/Photo/PhotoDetail';
 import UserDetail from '@/pages/User/UserDetail';
 import Comment from '@/pages/Comment/index';
+import PhotoIndex from '@/pages/Photo/index';
+import ArticleIndex from '@/pages/Article/index';
+import Circle from '@/pages/Circle/index';
+import Topic from '@/pages/Topic/index';
 
 // App页面参数声明
 export type AppStackParamList = {
   MainScreen: undefined;
-  SearchScreen: undefined;
+  SearchScreen: { type?: SearchType };
   PublishScreen: { onPress: (values: any) => void };
   ArticleDetail: { article_id: string; modal?: boolean };
   PhotoDetail: { photo_id: string; modal?: boolean };
   UserDetail: { id: string };
   CommentScreen: { id: string; type: 'photos' | 'articles' };
+  PhotoIndex: undefined;
+  ArticleIndex: undefined;
+  CircleIndex: undefined;
+  TopicIndex: undefined;
 };
 
 const AppStack = createStackNavigator<AppStackParamList>();
@@ -79,6 +88,26 @@ export default function AppScreen() {
         name="CommentScreen"
         component={Comment}
         options={getCommentScreenOptions}
+      />
+      <AppStack.Screen
+        name="PhotoIndex"
+        component={PhotoIndex}
+        options={getPhotoIndexOptions}
+      />
+      <AppStack.Screen
+        name="ArticleIndex"
+        component={ArticleIndex}
+        options={getArticleIndexOptions}
+      />
+      <AppStack.Screen
+        name="CircleIndex"
+        component={Circle}
+        options={getCircleIndexOptions}
+      />
+      <AppStack.Screen
+        name="TopicIndex"
+        component={Topic}
+        options={getTopicIndexOptions}
       />
     </AppStack.Navigator>
   );
@@ -159,6 +188,38 @@ function getCommentScreenOptions() {
   return {
     headerShown: false,
     ...TransitionPresets.ModalPresentationIOS
+  };
+}
+
+function getPhotoIndexOptions() {
+  return {
+    headerShown: false,
+    headerTitle: '影集',
+    ...TransitionPresets.DefaultTransition
+  };
+}
+
+function getArticleIndexOptions() {
+  return {
+    headerShown: false,
+    headerTitle: '文章',
+    ...TransitionPresets.DefaultTransition
+  };
+}
+
+function getCircleIndexOptions() {
+  return {
+    headerShown: false,
+    headerTitle: '圈子',
+    ...TransitionPresets.DefaultTransition
+  };
+}
+
+function getTopicIndexOptions() {
+  return {
+    headerShown: false,
+    headerTitle: '话题',
+    ...TransitionPresets.DefaultTransition
   };
 }
 

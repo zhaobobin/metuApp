@@ -1,4 +1,8 @@
-import { IPageInfo } from '@/types/CommonTypes';
+import { IAuthor, IPageInfo, IPhoto, IArticle } from '@/types/CommonTypes';
+import { IComment } from '@/types/comment/CommentState';
+import { ITopic } from '../topic/TopicState';
+import { IQuestion } from '../question/QuestionState';
+import { IAnswer } from '../answer/AnswerState';
 
 export interface IMessage {
   list: IMessageItem[];
@@ -12,18 +16,14 @@ export interface IMessageItem {
   _id: string;
   type: string;
   content: string;
-  send_from: {
-    _id: string;
-    type: string;
-    level: number;
-    point: number;
-    status: number;
-    nickname: string;
-    username: string;
-    create_at: string;
-    update_at: string;
-  };
-  send_to: string;
+  send_from: IAuthor;
+  send_to: IAuthor;
   create_at: string;
   update_at: string;
+  article?: IArticle;
+  photo?: IPhoto;
+  comment?: IComment;
+  topic?: ITopic;
+  question?: IQuestion;
+  answer?: IAnswer;
 }

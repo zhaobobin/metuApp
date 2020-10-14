@@ -30,7 +30,7 @@ class Found extends React.Component<IProps> {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <SearchNavBar type="photo" />
+        <SearchNavBar hideBack />
         <ScrollView style={styles.body}>
           <View style={styles.flex}>
             {CateList.map((item, index) => (

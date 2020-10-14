@@ -11,12 +11,13 @@ import { SearchType } from '@/types/search/SearchState';
 
 interface IProps {
   type?: SearchType;
+  hideBack?: boolean;
   placeholder?: string;
   onChangeText?: (keyword: string) => void;
 }
 
 const SearchNavBar: React.FC<IProps> = props => {
-  const { type, placeholder, onChangeText } = props;
+  const { type, hideBack, placeholder, onChangeText } = props;
   const goBack = () => {
     Navigator.goBack();
   };
@@ -25,13 +26,15 @@ const SearchNavBar: React.FC<IProps> = props => {
   };
   return (
     <View style={styles.navBar}>
-      <Touchable style={styles.navBarBack} onPress={goBack}>
-        <Icon
-          name={type ? 'icon-arrow-lift' : 'icon-close'}
-          size={30}
-          color="#666"
-        />
-      </Touchable>
+      {hideBack ? null : (
+        <Touchable style={styles.navBarBack} onPress={goBack}>
+          <Icon
+            name={type ? 'icon-arrow-lift' : 'icon-close'}
+            size={30}
+            color="#666"
+          />
+        </Touchable>
+      )}
       <View style={styles.searchWrapper}>
         <Icon
           name="icon-search"
@@ -58,14 +61,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 7,
-    paddingLeft: 10,
-    paddingRight: 15,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: color.border,
     backgroundColor: '#fff'
   },
   navBarBack: {
-    marginRight: 10,
+    marginLeft: 10,
     flexDirection: 'row',
     alignItems: 'center'
   },
@@ -75,6 +76,7 @@ const styles = StyleSheet.create({
   },
   searchWrapper: {
     flex: 1,
+    marginHorizontal: 15,
     paddingLeft: 15,
     borderRadius: 16,
     flexDirection: 'row',

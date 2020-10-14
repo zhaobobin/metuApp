@@ -161,6 +161,7 @@ class Commont extends React.Component<IProps, IState> {
       },
       callback: () => {
         this.onRefresh();
+        this.commentModalRef.hide();
       }
     });
   };
@@ -189,6 +190,7 @@ class Commont extends React.Component<IProps, IState> {
       },
       callback: () => {
         this.onRefresh();
+        this.commentModalRef.hide();
       }
     });
   };

@@ -23,6 +23,7 @@ import PhotoIndex from '@/pages/Photo/index';
 import ArticleIndex from '@/pages/Article/index';
 import Circle from '@/pages/Circle/index';
 import Topic from '@/pages/Topic/index';
+import MessageList from '@/pages/Message/MessageList';
 
 // App页面参数声明
 export type AppStackParamList = {
@@ -37,6 +38,7 @@ export type AppStackParamList = {
   ArticleIndex: undefined;
   CircleIndex: undefined;
   TopicIndex: undefined;
+  MessageList: { name: string, type: string }
 };
 
 const AppStack = createStackNavigator<AppStackParamList>();
@@ -108,6 +110,11 @@ export default function AppScreen() {
         name="TopicIndex"
         component={Topic}
         options={getTopicIndexOptions}
+      />
+      <AppStack.Screen
+        name="MessageList"
+        component={MessageList}
+        options={getMessageListOptions}
       />
     </AppStack.Navigator>
   );
@@ -221,6 +228,12 @@ function getTopicIndexOptions() {
     headerTitle: '话题',
     ...TransitionPresets.DefaultTransition
   };
+}
+function getMessageListOptions(props: any) {
+  return {
+    headerTitle: props.route.params.name,
+    ...TransitionPresets.DefaultTransition
+  }
 }
 
 const styles = StyleSheet.create({

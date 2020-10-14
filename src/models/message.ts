@@ -47,6 +47,7 @@ const messageModel: MessageModel = {
       }
       const res = yield call(messageApi.getMessageList, {
         type: payload.type,
+        sent_to: payload.sent_to,
         page,
         per_page: pageInfo.per_page
       });

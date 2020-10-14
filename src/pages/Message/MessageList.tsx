@@ -11,11 +11,10 @@ import {
 } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteProp } from '@react-navigation/native';
-import { MainStackNavigation } from '@/navigator/MainNavigation';
+import { AppStackNavigation, AppStackParamList } from '@/navigator/AppNavigation';
 import { RootState } from '@/models/index';
 import { IMessageItem } from '@/types/message/MessageState';
 import { Empty } from '@/components/index';
-import { MessageTabParamList } from './index';
 import MessageItem from './MessageItem';
 
 const mapStateToProps = (state: RootState) => ({
@@ -30,8 +29,8 @@ const connector = connect(mapStateToProps);
 type ModelState = ConnectedProps<typeof connector>;
 
 interface IProps extends ModelState {
-  route: RouteProp<MessageTabParamList, 'MessageList'>;
-  navigation: MainStackNavigation;
+  route: RouteProp<AppStackParamList, 'MessageList'>;
+  navigation: AppStackNavigation;
 }
 
 interface IState {
@@ -39,7 +38,7 @@ interface IState {
   refreshing: boolean;
 }
 
-class Following extends React.Component<IProps, IState> {
+class MessageList extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -113,11 +112,7 @@ class Following extends React.Component<IProps, IState> {
   renderFooter = () => {
     const { list, hasMore, loading } = this.props;
     if (!hasMore && list.length > 0) {
-      return (
-        <View style={styles.end}>
-          <Text>已经没有了</Text>
-        </View>
-      );
+      return null;
     }
     if (loading && hasMore && list.length > 0) {
       return (
@@ -138,6 +133,7 @@ class Following extends React.Component<IProps, IState> {
     const { refreshing } = this.state;
     return (
       <FlatList
+        style={styles.container}
         data={list}
         renderItem={this.renderItem}
         keyExtractor={this._keyExtractor}
@@ -153,6 +149,9 @@ class Following extends React.Component<IProps, IState> {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#fff'
+  },
   end: {
     alignItems: 'center',
     paddingVertical: 10
@@ -167,4 +166,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connector(Following);
+export default connector(MessageList);

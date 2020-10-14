@@ -2,10 +2,10 @@
  * BottomTabs - 底部导航器
  */
 import React from 'react';
-import { View, Text, Image } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RouteProp, TabNavigationState } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { MainStackNavigation, MainStackParamList } from './MainNavigation';
 import { ENV, Storage, Navigator } from '@/utils/index';
@@ -48,6 +48,8 @@ interface IProps extends ModelState {
 
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
+export type BottomStackNavigation = StackNavigationProp<BottomTabParamList>;
+
 class BottomTabs extends React.Component<IProps> {
   componentDidMount() {
     this.setOptions();
@@ -68,14 +70,13 @@ class BottomTabs extends React.Component<IProps> {
         headerTitle: '',
         headerRight: undefined
       });
-    } 
-    else if (routeName === 'Found') {
+    } else if (routeName === 'Found') {
       navigation.setOptions({
         headerShown: false
       });
-    }
-    else if (routeName === 'Account') {
+    } else if (routeName === 'Account') {
       navigation.setOptions({
+        headerShown: true,
         headerTransparent: true,
         headerTitle: '',
         headerRight: () => (
@@ -95,6 +96,7 @@ class BottomTabs extends React.Component<IProps> {
       });
     } else {
       navigation.setOptions({
+        headerShown: true,
         headerTransparent: false,
         headerTitle: this.getHeaderTitle(routeName),
         headerRight: undefined

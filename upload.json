@@ -10,8 +10,8 @@
     "ios_export_plist": "./ios-export/ad-hoc.plist"
   },
   "app_store": {
-    "user_name": "",
-    "user_password": "",
+    "user_name": "B3LXBJ5QT8",
+    "user_password": "behc-kiqu-qzcc-ryzr",
 
     "api_key": "",
     "api_issuer": "",

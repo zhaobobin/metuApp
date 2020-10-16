@@ -3,10 +3,9 @@
  */
 import { Dimensions, Platform } from "react-native";
 import { isIphoneX, getStatusBarHeight, getBottomSpace } from 'react-native-iphone-x-helper';
+import { color } from './color';
 
-const BACKGROUND_COLOR = '#f3f3f4';
-
-const { height: screenWidth, width: screenHeight } = Dimensions.get('window');
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const is_IphoneX = isIphoneX();
 
@@ -26,23 +25,14 @@ function heightPercent(percentage: number) {
 }
 
 export const GlobalStyles = {
-  line: {
-    height: 0.5,
-    opacity: 0.5,
-    backgroundColor: 'darkgray',
-  },
-  root_container: {
-    flex: 1,
-    backgroundColor: BACKGROUND_COLOR
-  },
+  color,
   nav_bar_height_ios: 44,
   nav_bar_height_android: 50,
-  backgroundColor: BACKGROUND_COLOR,
-  screenWidth: screenWidth,
-  screenHeight: screenHeight,
-  widthPercent: widthPercent,
-  heightPercent: heightPercent,
-  is_IphoneX: is_IphoneX,
+  screenWidth,
+  screenHeight,
+  widthPercent,
+  heightPercent,
+  is_IphoneX,
   statusBarHeight: Platform.OS === 'ios' ? statusBarHeight + 5 : statusBarHeight,
-  bottomSpace: bottomSpace
+  bottomSpace
 }

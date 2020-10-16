@@ -16,7 +16,7 @@ import { RootState } from '@/models/index';
 import { ENV, Storage, Navigator } from '@/utils/index';
 import { IResponse, IImageFile } from '@/types/CommonTypes';
 import { IPhotoPublishForm, IImageSchema } from '@/types/publish/PublishState';
-import { layout, color, GlobalStyles } from '@/theme/index';
+import { layout, GlobalStyles } from '@/theme/index';
 
 import { Toast } from '@/components/index';
 import { FormItem, InputText } from '@/components/Form/index';
@@ -334,7 +334,7 @@ const styles = StyleSheet.create({
   },
   imageWrapper: {
     margin: 2,
-    borderColor: color.border,
+    borderColor: GlobalStyles.color.border,
     borderWidth: StyleSheet.hairlineWidth,
     borderRadius: 2,
     overflow: 'hidden'

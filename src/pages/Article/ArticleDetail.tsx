@@ -6,7 +6,7 @@ import { AppStackParamList } from '@/navigator/AppNavigation';
 import { Navigator, Storage, ENV } from '@/utils/index';
 import { RootState } from '@/models/index';
 import { IResponse } from '@/types/CommonTypes';
-import { color, GlobalStyles } from '@/theme/index';
+import { GlobalStyles } from '@/theme/index';
 
 import ArticleDetailHead from './ArticleDetailHead';
 import ArticleContent from './ArticleContent';
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     paddingBottom: GlobalStyles.bottomSpace,
     zIndex: 99,
     backgroundColor: 'rgba(255,255,255,.7)',
-    borderColor: color.border,
+    borderColor: GlobalStyles.color.border,
     borderWidth: StyleSheet.hairlineWidth
   }
 });

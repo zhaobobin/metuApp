@@ -3,7 +3,7 @@ import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { Touchable } from '@/components/index';
 import { Navigator } from '@/utils/index';
 import Icon from '@/assets/iconfont';
-import { color } from '@/theme/index';
+import { GlobalStyles } from '@/theme/index';
 
 interface IMenu {
   name: string;
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     height: 40,
     marginRight: 20,
     borderRadius: 20,
-    backgroundColor: color.blue,
+    backgroundColor: GlobalStyles.color.blue,
     justifyContent: 'center',
     alignItems: 'center'
   },

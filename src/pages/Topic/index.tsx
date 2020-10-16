@@ -4,10 +4,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
-import { Touchable, SearchNavBar } from '@/components/index';
+import { SearchNavBar } from '@/components/index';
 import { Navigator } from '@/utils/index';
 import { RootState } from '@/models/index';
-import { color } from '@/theme/index';
+import { GlobalStyles } from '@/theme/index';
 
 const mapStateToProps = (state: RootState) => ({});
 
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 25,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: color.border
+    borderColor: GlobalStyles.color.border
   }
 });
 

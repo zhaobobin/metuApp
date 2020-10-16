@@ -2,12 +2,9 @@
  * CommontListFoot
  */
 import React from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
-import Icon from '@/assets/iconfont';
-import { getBottomSpace } from '@/utils/index';
+import { View, Text, StyleSheet } from 'react-native';
+import { GlobalStyles } from '@/theme/index';
 import { Button } from '@/components/index';
-
-const bottomSpace = getBottomSpace();
 
 interface IProps {
   showCommentModal: () => void;
@@ -25,7 +22,7 @@ const CommontListFoot = (props: IProps) => {
 
 const styles = StyleSheet.create({
   foot: {
-    height: bottomSpace + 50,
+    height: GlobalStyles.bottomSpace + 50,
     flexDirection: 'row',
     borderTopColor: '#efefef',
     borderTopWidth: StyleSheet.hairlineWidth

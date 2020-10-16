@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { color, layout } from '@/theme/index';
+import { GlobalStyles, layout } from '@/theme/index';
 
 const styles = StyleSheet.create({
   formItem: {
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     height: 44,
     fontSize: 16,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: color.border
+    borderBottomColor: GlobalStyles.color.border
   },
   close: {
     position: 'absolute',
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     height: 20
   },
   errorText: {
-    color: color.red
+    color: GlobalStyles.color.red
   },
   clear: {},
 

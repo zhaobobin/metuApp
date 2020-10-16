@@ -11,7 +11,7 @@ import { RootState } from '@/models/index';
 import { IComment, ICommentModalResult } from '@/types/comment/CommentState';
 import { Modal, Button } from '@/components/index';
 import { FormItem, InputTextarea } from '@/components/Form/index';
-import { color } from '@/theme/index';
+import { GlobalStyles } from '@/theme/index';
 
 interface FormValues {
   content: string;
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   },
   formItem: {
     width: '100%',
-    // borderColor: color.border,
+    // borderColor: GlobalStyles.color.border,
     // borderLeftWidth: StyleSheet.hairlineWidth,
     // borderTopWidth: StyleSheet.hairlineWidth,
     // borderRightWidth: StyleSheet.hairlineWidth

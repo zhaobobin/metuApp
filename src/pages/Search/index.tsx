@@ -8,7 +8,7 @@ import { RouteProp } from '@react-navigation/native';
 import { AppStackParamList } from '@/navigator/AppNavigation';
 import { Touchable, SearchNavBar } from '@/components/index';
 import { RootState } from '@/models/index';
-import { color } from '@/theme/index';
+import { GlobalStyles } from '@/theme/index';
 import { Navigator } from '@/utils/index';
 import Icon from '@/assets/iconfont';
 import { SearchType, ISearchCate } from '@/types/search/SearchState';
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 15,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: color.border,
+    borderColor: GlobalStyles.color.border,
     backgroundColor: '#fff'
   },
   navBarBack: {
@@ -164,10 +164,10 @@ const styles = StyleSheet.create({
     paddingVertical: 25,
     borderRadius: 3,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: color.border
+    borderColor: GlobalStyles.color.border
   },
   currentCate: {
-    backgroundColor: color.blue
+    backgroundColor: GlobalStyles.color.blue
   },
   currentText: {
     color: '#fff'

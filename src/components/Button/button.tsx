@@ -7,7 +7,7 @@ import {
   ViewStyle
 } from 'react-native';
 import _ from 'lodash';
-import { color } from '@/theme/index';
+import { GlobalStyles } from '@/theme/index';
 
 export type ButtonSize = 'small' | 'middle' | 'large' | undefined;
 export type ButtonType = 'primary' | 'default' | 'danger' | 'link' | undefined;
@@ -63,33 +63,33 @@ const Button: React.FC<ButtonProps> = React.memo(props => {
     switch (type) {
       case 'primary':
         return {
-          borderColor: ghost ? 'transparent' : color.blue,
-          backgroundColor: ghost ? 'transparent' : color.blue,
-          color: ghost ? color.blue : color.white
+          borderColor: ghost ? 'transparent' : GlobalStyles.color.blue,
+          backgroundColor: ghost ? 'transparent' : GlobalStyles.color.blue,
+          color: ghost ? GlobalStyles.color.blue : GlobalStyles.color.white
         };
       case 'danger':
         return {
-          borderColor: ghost ? 'transparent' : color.red,
-          backgroundColor: ghost ? 'transparent' : color.red,
-          color: ghost ? color.red : color.white
+          borderColor: ghost ? 'transparent' : GlobalStyles.color.red,
+          backgroundColor: ghost ? 'transparent' : GlobalStyles.color.red,
+          color: ghost ? GlobalStyles.color.red : GlobalStyles.color.white
         };
       case 'link':
         return {
           borderColor: 'transparent',
           backgroundColor: 'transparent',
-          color: color.blue
+          color: GlobalStyles.color.blue
         };
       case 'default':
         return {
-          borderColor: ghost ? 'transparent' : color.gray,
-          backgroundColor: ghost ? 'transparent' : color.white,
-          color: color.c333
+          borderColor: ghost ? 'transparent' : GlobalStyles.color.gray,
+          backgroundColor: ghost ? 'transparent' : GlobalStyles.color.white,
+          color: GlobalStyles.color.c333
         };
       default:
         return {
-          borderColor: ghost ? 'transparent' : color.gray,
-          backgroundColor: ghost ? 'transparent' : color.white,
-          color: color.c333
+          borderColor: ghost ? 'transparent' : GlobalStyles.color.gray,
+          backgroundColor: ghost ? 'transparent' : GlobalStyles.color.white,
+          color: GlobalStyles.color.c333
         };
     }
   };
@@ -97,9 +97,9 @@ const Button: React.FC<ButtonProps> = React.memo(props => {
   let theme = renderBtnTheme(type);
   if (disabled) {
     theme = {
-      borderColor: color.border,
-      backgroundColor: color.background,
-      color: color.gray
+      borderColor: GlobalStyles.color.border,
+      backgroundColor: GlobalStyles.color.background,
+      color: GlobalStyles.color.gray
     };
   }
   // 防双击

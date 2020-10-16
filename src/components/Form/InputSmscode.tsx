@@ -15,7 +15,7 @@ import { FieldInputProps, FormikProps, ErrorMessage } from 'formik';
 import { RootState } from '@/models/index';
 import { Validator } from '@/utils/index';
 import { filterTel } from '@/utils/utils';
-import { color, layout } from '@/theme/index';
+import { GlobalStyles, layout } from '@/theme/index';
 import { IResponse } from '@/types/CommonTypes';
 import Toast from '@/components/Toast';
 import Touchable from '../Touchable';
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     height: 44,
     fontSize: 16,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: color.border
+    borderBottomColor: GlobalStyles.color.border
   },
   close: {
     position: 'absolute',
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     height: 20
   },
   errorText: {
-    color: color.red
+    color: GlobalStyles.color.red
   },
   btn: {
     paddingHorizontal: 5,
@@ -206,13 +206,13 @@ const styles = StyleSheet.create({
   },
   // btnStyle
   actived: {
-    color: color.blue
+    color: GlobalStyles.color.blue
   },
   disabled: {
-    color: color.gray
+    color: GlobalStyles.color.gray
   },
   null: {
-    color: color.gray
+    color: GlobalStyles.color.gray
   }
 });
 

@@ -2,10 +2,10 @@
  * SearchNavBar
  */
 import React from 'react';
-import { View, TextInput, StyleSheet, StatusBar, Platform } from 'react-native';
+import { View, TextInput, StyleSheet, Platform } from 'react-native';
 import { Navigator } from '@/utils/index';
 import { Touchable } from '@/components/index';
-import { color, GlobalStyles } from '@/theme/index';
+import { GlobalStyles } from '@/theme/index';
 import Icon from '@/assets/iconfont';
 import { SearchType } from '@/types/search/SearchState';
 
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 7,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: color.border
+    borderColor: GlobalStyles.color.border
   },
   statusBar: {
     height: STATUS_BAR_HEIGHT

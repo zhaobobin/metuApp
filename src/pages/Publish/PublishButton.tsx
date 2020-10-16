@@ -5,7 +5,7 @@ import { RootState } from '@/models/index';
 import { Touchable } from '@/components/index';
 import { ENV, Navigator, Storage } from '@/utils/index';
 import { IResponse } from '@/types/CommonTypes';
-import { color } from '@/theme/color';
+import { GlobalStyles } from '@/theme/color';
 import Icon from '@/assets/iconfont';
 
 const mapStateToProps = (state: RootState) => ({
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     borderRadius: 27,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: color.blue
+    backgroundColor: GlobalStyles.color.blue
   },
   text: {
     color: '#666'

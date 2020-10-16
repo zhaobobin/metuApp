@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { color, GlobalStyles } from '@/theme/index';
+import { GlobalStyles } from '@/theme/index';
 import { ICategory } from '@/models/category';
 import Icon from '@/assets/iconfont';
 
@@ -52,14 +52,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 4,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: color.border,
+    borderColor: GlobalStyles.color.border,
     position: 'relative'
   },
   disabled: {
-    color: color.gray
+    color: GlobalStyles.color.gray
   },
   itemText: {
-    color: color.c333
+    color: GlobalStyles.color.c333
   },
   icon: {
     width: 20,
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     top: -8,
     backgroundColor: '#fff',
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: color.border,
+    borderColor: GlobalStyles.color.border,
     borderRadius: 10
   }
 });

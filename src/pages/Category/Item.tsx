@@ -1,11 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { screenWidth } from '@/utils/index';
-import { color } from '@/theme/index';
+import { color, GlobalStyles } from '@/theme/index';
 import { ICategory } from '@/models/category';
 import Icon from '@/assets/iconfont';
 
-export const parentWidth = screenWidth - 20;
+export const parentWidth = GlobalStyles.screenWidth - 20;
 export const itemWidth = parentWidth / 4;
 export const itemHeight = 50;
 

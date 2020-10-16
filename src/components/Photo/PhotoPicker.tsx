@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, View, ViewStyle, TouchableOpacity } from 'react-native';
 import { selectPhotos } from '@/components/ImagePicker';
-import { screenWidth } from '@/utils/index';
+import { GlobalStyles } from '@/theme/index';
 import Icon from '@/assets/iconfont';
 
-export const parentWidth = screenWidth - 20;
+export const parentWidth = GlobalStyles.screenWidth - 20;
 export const itemWidth = parentWidth / 3;
 export const itemHeight = itemWidth;
 

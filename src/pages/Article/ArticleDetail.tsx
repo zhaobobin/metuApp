@@ -3,22 +3,14 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteProp } from '@react-navigation/native';
 import { AppStackParamList } from '@/navigator/AppNavigation';
+import { Navigator, Storage, ENV } from '@/utils/index';
 import { RootState } from '@/models/index';
 import { IResponse } from '@/types/CommonTypes';
-import { color } from '@/theme/index';
-import {
-  Navigator,
-  Storage,
-  ENV,
-  getBottomSpace,
-  screenWidth
-} from '@/utils/index';
+import { color, GlobalStyles } from '@/theme/index';
 
 import ArticleDetailHead from './ArticleDetailHead';
 import ArticleContent from './ArticleContent';
 import ArticleDetailFoot from './ArticleDetailFoot';
-
-const bottomSpace = getBottomSpace();
 
 const mapStateToProps = (state: RootState) => ({
   loading: state.loading.effects['article/queryArticleDetail'],
@@ -239,12 +231,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#111'
   },
   foot: {
-    width: screenWidth,
-    height: bottomSpace + 50,
+    width: GlobalStyles.screenWidth,
+    height: GlobalStyles.bottomSpace + 50,
     position: 'absolute',
     left: 0,
     bottom: 0,
-    paddingBottom: bottomSpace,
+    paddingBottom: GlobalStyles.bottomSpace,
     zIndex: 99,
     backgroundColor: 'rgba(255,255,255,.7)',
     borderColor: color.border,

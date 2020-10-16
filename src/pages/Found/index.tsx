@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView, SafeAreaView, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { Touchable, SearchNavBar } from '@/components/index';
 import { Navigator } from '@/utils/index';
@@ -29,7 +29,7 @@ class Found extends React.Component<IProps> {
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <SearchNavBar hideBack />
         <ScrollView style={styles.body}>
           <View style={styles.flex}>
@@ -43,7 +43,7 @@ class Found extends React.Component<IProps> {
             ))}
           </View>
         </ScrollView>
-      </SafeAreaView>
+      </View>
     );
   }
 }

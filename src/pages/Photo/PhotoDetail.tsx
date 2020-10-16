@@ -3,23 +3,14 @@ import { View, StyleSheet } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteProp } from '@react-navigation/native';
 import { AppStackParamList } from '@/navigator/AppNavigation';
+import { Navigator, Storage, ENV } from '@/utils/index';
 import { RootState } from '@/models/index';
+import { GlobalStyles } from '@/theme/index';
 import { IResponse } from '@/types/CommonTypes';
-import {
-  Navigator,
-  Storage,
-  ENV,
-  getStatusBarHeight,
-  getBottomSpace,
-  screenWidth
-} from '@/utils/index';
 
 import PhotoDetailHead from './PhotoDetailHead';
 import PhotoSwiper from './PhotoSwiper';
 import PhotoDetailFoot from './PhotoDetailFoot';
-
-const statusBarHeight = getStatusBarHeight();
-const bottomSpace = getBottomSpace();
 
 const mapStateToProps = (state: RootState) => ({
   loading: state.loading.effects['photo/queryPhotoDetail'],
@@ -236,15 +227,16 @@ const styles = StyleSheet.create({
     position: 'relative'
   },
   head: {
-    width: screenWidth,
-    height: statusBarHeight + 50,
+    width: GlobalStyles.screenWidth,
+    height: GlobalStyles.statusBarHeight + 50,
     paddingHorizontal: 10,
     position: 'absolute',
     left: 0,
     top: 0,
-    paddingTop: statusBarHeight + 3,
+    paddingTop: GlobalStyles.statusBarHeight,
     zIndex: 99,
-    backgroundColor: 'rgba(0,0,0,.7)'
+    backgroundColor: 'rgba(0,0,0,.7)',
+    justifyContent: 'center'
   },
   body: {
     flex: 1
@@ -254,12 +246,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#111'
   },
   foot: {
-    width: screenWidth,
-    height: bottomSpace + 50,
+    width: GlobalStyles.screenWidth,
+    height: GlobalStyles.bottomSpace + 50,
     position: 'absolute',
     left: 0,
     bottom: 0,
-    paddingBottom: bottomSpace,
+    paddingBottom: GlobalStyles.bottomSpace,
     zIndex: 99,
     backgroundColor: 'rgba(0,0,0,.7)'
   }

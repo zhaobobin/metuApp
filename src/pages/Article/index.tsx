@@ -2,7 +2,7 @@
  * ArticleIndex
  */
 import React from 'react';
-import { View, Text, ScrollView, SafeAreaView, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { Touchable, SearchNavBar } from '@/components/index';
 import { Navigator } from '@/utils/index';
@@ -24,14 +24,14 @@ class ArticleIndex extends React.Component<IProps> {
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <SearchNavBar type="article" />
         <ScrollView style={styles.body}>
           <View>
             <Text>ArticleIndex</Text>
           </View>
         </ScrollView>
-      </SafeAreaView>
+      </View>
     );
   }
 }

@@ -13,17 +13,16 @@ import * as Yup from 'yup';
 
 import { AppStackNavigation } from '@/navigator/AppNavigation';
 import { RootState } from '@/models/index';
-import { ENV, Storage, Navigator, screenWidth } from '@/utils/index';
-import { IResponse } from '@/types/CommonTypes';
+import { ENV, Storage, Navigator } from '@/utils/index';
+import { IResponse, IImageFile } from '@/types/CommonTypes';
 import { IPhotoPublishForm, IImageSchema } from '@/types/publish/PublishState';
-import { IImageFile } from '@/types/CommonTypes';
-import { layout, color } from '@/theme/index';
+import { layout, color, GlobalStyles } from '@/theme/index';
 
 import { Toast } from '@/components/index';
 import { FormItem, InputText } from '@/components/Form/index';
 import PhotoPicker from '@/components/Photo/PhotoPicker';
 
-export const parentWidth = screenWidth - 30;
+export const parentWidth = GlobalStyles.screenWidth - 30;
 export const itemWidth = parentWidth / 3 - 4;
 export const itemHeight = itemWidth;
 

@@ -4,14 +4,14 @@ import SnapCarsouel, {
   AdditionalParallaxProps,
   Pagination
 } from 'react-native-snap-carousel';
-import { screenWidth, wp, hp, getBottomSpace } from '@/utils/index';
 import { IImage } from '@/types/CommonTypes';
+import { GlobalStyles } from '@/theme/index';
 import PhotoSwiperItem from './PhotoSwiperItem';
 
-const sliderWidth = screenWidth;
-const itemWidth = wp(100);
-export const sliderHeight = hp(70);
-const bottomSpace = getBottomSpace();
+const sliderWidth = GlobalStyles.screenWidth;
+const itemWidth = GlobalStyles.widthPercent(100);
+export const sliderHeight = GlobalStyles.heightPercent(70);
+const bottomSpace = GlobalStyles.bottomSpace;
 
 interface IProps {
   images: IImage[];

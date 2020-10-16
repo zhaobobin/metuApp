@@ -7,14 +7,14 @@ import SnapCarsouel, {
 } from 'react-native-snap-carousel';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '@/models/index';
-import { screenWidth, wp, hp } from '@/utils/index';
 import { IPhoto } from '@/types/CommonTypes';
 import { Navigator } from '@/utils/index';
 import { Touchable } from '@/components/index';
+import { GlobalStyles } from '@/theme/index';
 
-const sliderWidth = screenWidth;
-const itemWidth = wp(90) + wp(2) * 2;
-export const sliderHeight = hp(26);
+const sliderWidth = GlobalStyles.screenWidth;
+const itemWidth = GlobalStyles.widthPercent(90) + GlobalStyles.widthPercent(2) * 2;
+export const sliderHeight = GlobalStyles.heightPercent(26);
 
 const mapStateToProps = (state: RootState) => ({
   carsouel: state.home.carsouel,

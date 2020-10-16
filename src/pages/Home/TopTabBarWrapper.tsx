@@ -2,7 +2,7 @@
  * 首页TabBar容器
  */
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '@/models/index';
 import {
@@ -10,7 +10,8 @@ import {
   MaterialTopTabBarProps
 } from '@react-navigation/material-top-tabs';
 import LinearAnimatedGradientTransition from 'react-native-linear-animated-gradient-transition';
-import { Navigator, getStatusBarHeight } from '@/utils/index';
+import { Navigator } from '@/utils/index';
+import { GlobalStyles } from '@/theme/index';
 import { Touchable } from '@/components/index';
 import Icon from '@/assets/iconfont';
 
@@ -113,7 +114,7 @@ class TopTabBarWrapper extends React.Component<IProps> {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: getStatusBarHeight(),
+    paddingTop: GlobalStyles.statusBarHeight,
     backgroundColor: '#fff'
   },
   gradient: {
@@ -137,7 +138,7 @@ const styles = StyleSheet.create({
   searchWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 20,
+    paddingTop: 7,
     paddingBottom: 5,
     paddingHorizontal: 15
   },

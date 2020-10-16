@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView, SafeAreaView, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { MainStackNavigation } from '@/navigator/MainNavigation';
 import { RootState } from '@/models/index';
@@ -18,7 +18,7 @@ interface IProps extends ModelState {
 class Cricle extends React.Component<IProps> {
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <SearchNavBar type="circle" placeholder="搜索圈子" />
         <ScrollView style={styles.body}>
           <View>
@@ -43,7 +43,7 @@ class Cricle extends React.Component<IProps> {
             <Text>圈子动态</Text>
           </View>
         </ScrollView>
-      </SafeAreaView>
+      </View>
     );
   }
 }

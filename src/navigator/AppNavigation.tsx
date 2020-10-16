@@ -187,7 +187,7 @@ function getUserDetailOptions() {
     headerBackground: () => {
       return <Animated.View style={styles.userDetailBg} />;
     },
-    ...TransitionPresets.DefaultTransition
+    ...TransitionPresets.SlideFromRightIOS
   };
 }
 
@@ -202,7 +202,7 @@ function getPhotoIndexOptions() {
   return {
     headerShown: false,
     headerTitle: '影集',
-    ...TransitionPresets.DefaultTransition
+    ...TransitionPresets.SlideFromRightIOS
   };
 }
 
@@ -210,7 +210,7 @@ function getArticleIndexOptions() {
   return {
     headerShown: false,
     headerTitle: '文章',
-    ...TransitionPresets.DefaultTransition
+    ...TransitionPresets.SlideFromRightIOS
   };
 }
 
@@ -218,7 +218,7 @@ function getCircleIndexOptions() {
   return {
     headerShown: false,
     headerTitle: '圈子',
-    ...TransitionPresets.DefaultTransition
+    ...TransitionPresets.SlideFromRightIOS
   };
 }
 
@@ -226,13 +226,14 @@ function getTopicIndexOptions() {
   return {
     headerShown: false,
     headerTitle: '话题',
-    ...TransitionPresets.DefaultTransition
+    ...TransitionPresets.SlideFromRightIOS
   };
 }
+
 function getMessageListOptions(props: any) {
   return {
     headerTitle: props.route.params.name,
-    ...TransitionPresets.DefaultTransition
+    ...TransitionPresets.SlideFromRightIOS
   }
 }
 

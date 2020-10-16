@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { screenWidth } from '@/utils/index';
 import Icon from '@/assets/iconfont';
 import { IPhotoDetail } from '@/types/CommonTypes';
 import { Touchable } from '@/components/index';
+import { GlobalStyles } from '@/theme/index';
 
-export const itemWidth = (screenWidth - 20) / 5;
+export const itemWidth = (GlobalStyles.screenWidth - 20) / 5;
 export const itemHeight = 50;
 const iconColor = '#fff';
 

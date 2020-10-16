@@ -1,11 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, Image, ViewStyle } from 'react-native';
-import SnapCarsouel, {
+import { StyleSheet, Image, ViewStyle } from 'react-native';
+import {
   ParallaxImage,
   AdditionalParallaxProps
 } from 'react-native-snap-carousel';
-import { screenWidth, screenHeight } from '@/utils/index';
 import { IImage } from '@/types/CommonTypes';
+import { GlobalStyles } from '@/theme/index';
 
 interface IProps {
   item: IImage;
@@ -31,7 +31,9 @@ class PhotoSwiperItem extends React.Component<IProps, IState> {
     Image.getSize(
       imgUrl,
       (width: number, height: number) => {
-        const itemHeight = Math.floor((screenWidth * height) / width);
+        const itemHeight = Math.floor(
+          (GlobalStyles.screenWidth * height) / width
+        );
         this.setState({
           itemHeight
         });
@@ -48,9 +50,9 @@ class PhotoSwiperItem extends React.Component<IProps, IState> {
     const { item, parallaxProps } = this.props;
     const imgUrl = item.url + '?x-oss-process=style/thumb';
     const containerStyle = {
-      width: screenWidth,
+      width: GlobalStyles.screenWidth,
       height: itemHeight,
-      marginTop: (screenHeight - itemHeight) / 2
+      marginTop: (GlobalStyles.screenHeight - itemHeight) / 2
     };
     return (
       <ParallaxImage

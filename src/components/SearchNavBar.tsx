@@ -2,12 +2,14 @@
  * SearchNavBar
  */
 import React from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet, StatusBar, Platform } from 'react-native';
 import { Navigator } from '@/utils/index';
 import { Touchable } from '@/components/index';
-import { color } from '@/theme/index';
+import { color, GlobalStyles } from '@/theme/index';
 import Icon from '@/assets/iconfont';
 import { SearchType } from '@/types/search/SearchState';
+
+const STATUS_BAR_HEIGHT = Platform.OS === 'ios' ? 0 : 20;
 
 interface IProps {
   type?: SearchType;
@@ -25,29 +27,31 @@ const SearchNavBar: React.FC<IProps> = props => {
     Navigator.goPage('SearchScreen', { type });
   };
   return (
-    <View style={styles.navBar}>
-      {hideBack ? null : (
-        <Touchable style={styles.navBarBack} onPress={goBack}>
+    <View style={styles.container}>
+      <View style={styles.navBar}>
+        {hideBack ? null : (
+          <Touchable style={styles.navBarBack} onPress={goBack}>
+            <Icon
+              name={type ? 'icon-arrow-lift' : 'icon-close'}
+              size={30}
+              color="#666"
+            />
+          </Touchable>
+        )}
+        <View style={styles.searchWrapper}>
           <Icon
-            name={type ? 'icon-arrow-lift' : 'icon-close'}
-            size={30}
+            name="icon-search"
+            size={20}
             color="#666"
+            style={styles.searchIcon}
           />
-        </Touchable>
-      )}
-      <View style={styles.searchWrapper}>
-        <Icon
-          name="icon-search"
-          size={20}
-          color="#666"
-          style={styles.searchIcon}
-        />
-        <TextInput
-          placeholder={placeholder || '搜索'}
-          style={styles.textInput}
-          onChangeText={onChangeText}
-        />
-        {type && <Touchable style={styles.mask} onPress={goSearchPage} />}
+          <TextInput
+            placeholder={placeholder || '搜索'}
+            style={styles.textInput}
+            onChangeText={onChangeText}
+          />
+          {type && <Touchable style={styles.mask} onPress={goSearchPage} />}
+        </View>
       </View>
     </View>
   );
@@ -55,24 +59,23 @@ const SearchNavBar: React.FC<IProps> = props => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    paddingTop: GlobalStyles.statusBarHeight,
+    backgroundColor: '#fff'
   },
   navBar: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 7,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: color.border,
-    backgroundColor: '#fff'
+    borderColor: color.border
+  },
+  statusBar: {
+    height: STATUS_BAR_HEIGHT
   },
   navBarBack: {
     marginLeft: 10,
     flexDirection: 'row',
     alignItems: 'center'
-  },
-  statusBar: {
-    height: 20,
-    backgroundColor: '#fff'
   },
   searchWrapper: {
     flex: 1,
@@ -89,7 +92,6 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
-    alignSelf: 'center',
     height: 34
   },
   mask: {

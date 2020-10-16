@@ -2,14 +2,7 @@
  * Search - 搜索
  */
 import React from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  ScrollView,
-  SafeAreaView,
-  StyleSheet
-} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteProp } from '@react-navigation/native';
 import { AppStackParamList } from '@/navigator/AppNavigation';
@@ -60,22 +53,25 @@ class Search extends React.Component<IProps, IState> {
   };
 
   onChangeText = (keyword: string) => {
-    console.log(keyword)
-  }
+    console.log(keyword);
+  };
 
   onSelectCate = (type: SearchType) => {
     this.setState({
       type
-    })
+    });
   };
 
   render() {
     const { type } = this.state;
     const currentCate = CateList.find(item => item.key === type);
-    console.log(currentCate)
+    console.log(currentCate);
     return (
-      <SafeAreaView style={styles.container}>
-        <SearchNavBar onChangeText={this.onChangeText} placeholder={`搜索${currentCate?.name}`} />
+      <View style={styles.container}>
+        <SearchNavBar
+          onChangeText={this.onChangeText}
+          placeholder={`搜索${currentCate?.name}`}
+        />
         <View style={styles.body}>
           <View style={styles.subTitle}>
             <Text style={styles.subTitleText}>搜索指定内容</Text>
@@ -84,14 +80,19 @@ class Search extends React.Component<IProps, IState> {
             {CateList.map((item, index) => (
               <Touchable
                 key={index}
-                style={[styles.flexItem, type === item.key ? styles.currentCate : null]}
+                style={[
+                  styles.flexItem,
+                  type === item.key ? styles.currentCate : null
+                ]}
                 onPress={() => this.onSelectCate(item.key)}>
-                <Text style={type === item.key ? styles.currentText : null}>{item.name}</Text>
+                <Text style={type === item.key ? styles.currentText : null}>
+                  {item.name}
+                </Text>
               </Touchable>
             ))}
           </View>
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 }
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 10,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   subTitleText: {
     fontSize: 15,

@@ -1,11 +1,29 @@
 /**
  * 全局样式
  */
-import { Dimensions } from "react-native";
+import { Dimensions, Platform } from "react-native";
+import { isIphoneX, getStatusBarHeight, getBottomSpace } from 'react-native-iphone-x-helper';
 
 const BACKGROUND_COLOR = '#f3f3f4';
 
-const { height, width } = Dimensions.get('window');
+const { height: screenWidth, width: screenHeight } = Dimensions.get('window');
+
+const is_IphoneX = isIphoneX();
+
+const statusBarHeight = getStatusBarHeight();
+
+const bottomSpace = getBottomSpace();
+
+function widthPercent(percentage: number) {
+  const value = (percentage * screenWidth) / 100;
+  return Math.round(value);
+}
+
+// 根据百分比获取高度
+function heightPercent(percentage: number) {
+  const value = (percentage * screenHeight) / 100;
+  return Math.round(value);
+}
 
 export const GlobalStyles = {
   line: {
@@ -20,6 +38,11 @@ export const GlobalStyles = {
   nav_bar_height_ios: 44,
   nav_bar_height_android: 50,
   backgroundColor: BACKGROUND_COLOR,
-  window_width: width,
-  window_height: height
+  screenWidth: screenWidth,
+  screenHeight: screenHeight,
+  widthPercent: widthPercent,
+  heightPercent: heightPercent,
+  is_IphoneX: is_IphoneX,
+  statusBarHeight: Platform.OS === 'ios' ? statusBarHeight + 5 : statusBarHeight,
+  bottomSpace: bottomSpace
 }

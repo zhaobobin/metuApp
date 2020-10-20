@@ -53,25 +53,34 @@ react-native run-ios
 
 ### 发布
 
-#### 签名
+#### 安卓签名
+cd android/app
 ```
 keytool -genkeypair -v -keystore my-release-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
 ```
 
-#### 打包
+#### 安卓打包
 ```
+// 添加依赖
 yarn add react-native-upload -D
 
+// 初始化
 npx upload-init
 
+// 打包
 npx upload-build --no-ios
 
+// 打包并上传
 npx upload-pgy --no-ios -apk=v7a
 ```
 or
 
 ```
 yarn build
+
+yarn build:android
+
+yarn build:ios
 ```
 
 #### react-navigation TransitionPresets 动画
@@ -81,3 +90,42 @@ yarn build
 2、CommentList: ModalPresentationIOS
 
 3、Login: ModalSlideFromBottomIOS
+
+
+### 常见问题
+
+##### [aliyun-oss-react-native] android打包时报 `verifyReleaseResources`
+
+解决方案如下:
+
+1.首先在 node_modules 中找到报错的包里面的build.gradle，比如我这个就是 \node_modules\aliyun-oss-react-native\android\build.gradle
+2.修改这个 build.gradle，使其与 android/build.gradle 里面的SDK版本保持一致
+3.将 build.gradle 里的 compile 改为 implementation，因为 compile 已过时
+
+修改结果为:
+```
+android {
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
+
+    // ...
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.facebook.react:react-native:+'
+}
+```
+
+##### Xcode升级12后，ReactNative ios14看不见图片(静态图片和网络图片)
+
+修改node_modules中react-native/Libraries/Image/RCTUIImageViewAnimates.m文件
+
+```
+if (_currentFrame) { // line 275
+    layer.contentsScale = self.animatedImageScale;
+    layer.contents = (__bridge id)_currentFrame.CGImage;
+} else { // add
+    [super displayLayer:layer]
+}
+```

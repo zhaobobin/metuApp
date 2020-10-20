@@ -5,6 +5,7 @@ import React from 'react';
 import { View, TextInput, StyleSheet, Platform } from 'react-native';
 import { Navigator } from '@/utils/index';
 import { Touchable } from '@/components/index';
+import { InputText } from '@/components/Form';
 import { GlobalStyles } from '@/theme/index';
 import Icon from '@/assets/iconfont';
 import { SearchType } from '@/types/search/SearchState';
@@ -92,7 +93,8 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
-    height: 34
+    height: 34,
+    padding: 0
   },
   mask: {
     position: 'absolute',

@@ -9,8 +9,10 @@
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "build": "export ENVFILE=.env.production && npx upload-pgy --apk=v7a",
-    "build:ios": "export ENVFILE=.env.production && npx upload-pgy --no-android --apk=v7a",
-    "build:android": "set ENVFILE=.env.production && npx upload-pgy --no-ios --apk=v7a",
+    "build:android": "set ENVFILE=.env.production && npx upload-build --no-ios --apk=v7a",
+    "build:ios": "export ENVFILE=.env.production && npx upload-build --no-android --apk=v7a",
+    "upload:android": "set ENVFILE=.env.production && npx upload-pgy --no-ios --apk=v7a",
+    "upload:ios": "export ENVFILE=.env.production && npx upload-pgy --no-android --apk=v7a",
     "appstore": "export ENVFILE=.env.production && npx upload-appstore"
   },
   "dependencies": {

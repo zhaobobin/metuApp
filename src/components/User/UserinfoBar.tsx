@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   nickname: {
+    minWidth: 30,
     marginHorizontal: 10
   },
   follow: {},

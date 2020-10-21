@@ -16,7 +16,6 @@ import {
   InputPassword,
   CheckBox
 } from '@/components/Form/index';
-import { truncate } from 'lodash';
 
 interface FormValues {
   mobile: string;

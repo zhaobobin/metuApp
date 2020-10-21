@@ -7,6 +7,7 @@ import { Navigator, Storage, ENV } from '@/utils/index';
 import { RootState } from '@/models/index';
 import { GlobalStyles } from '@/theme/index';
 import { IResponse } from '@/types/CommonTypes';
+import { Loading } from '@/components/index';
 
 import PhotoDetailHead from './PhotoDetailHead';
 import PhotoSwiper from './PhotoSwiper';
@@ -43,6 +44,12 @@ class PhotoDetail extends React.Component<IProps, IState> {
   componentDidMount() {
     const { photo_id } = this.props.route.params;
     this.getPhotoDetail(photo_id);
+  }
+
+  componentWillUnmount() {
+    this.props.dispatch({
+      type: 'photo/clearPhotoDetail'
+    });
   }
 
   static getDerivedStateFromProps(nextProps: IProps, prevState: IState) {
@@ -183,10 +190,7 @@ class PhotoDetail extends React.Component<IProps, IState> {
   };
 
   render() {
-    const { loading, photoDetail, route } = this.props;
-    if (loading) {
-      return null;
-    }
+    const { photoDetail, route } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.head}>
@@ -215,6 +219,7 @@ class PhotoDetail extends React.Component<IProps, IState> {
             handleNextPhotos={this.handleNextPhotos}
           />
         </View>
+        {!photoDetail._id && <Loading theme="black" />}
       </View>
     );
   }

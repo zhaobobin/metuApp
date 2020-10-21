@@ -2,7 +2,7 @@
  * MainNavigation - 主导航
  */
 import React from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform } from 'react-native';
 import {
   createStackNavigator,
   StackNavigationProp,
@@ -10,7 +10,6 @@ import {
   CardStyleInterpolators
 } from '@react-navigation/stack';
 import BottomTabs from '@/navigator/BottomTabs';
-import { IPhoto } from '@/types/CommonTypes';
 
 import Category from '@/pages/Category/index';
 import Setting from '@/pages/Setting/index';
@@ -19,20 +18,11 @@ import SettingProfileNickname from '@/pages/Setting/SettingProfileNickname';
 import SettingProfileHeadline from '@/pages/Setting/SettingProfileHeadline';
 import SettingProfileMobile from '@/pages/Setting/SettingProfileMobile';
 import SettingProfilePassword from '@/pages/Setting/SettingProfilePassword';
-import UserFollowing from '@/pages/User/UserFollowing';
-import UserFollowers from '@/pages/User/UserFollowers';
+// import UserFollowing from '@/pages/User/UserFollowing';
+// import UserFollowers from '@/pages/User/UserFollowers';
 
 export type MainStackParamList = {
-  BottomTabs: {
-    screen?: string;
-  };
-  PhotoDetail: {
-    item: IPhoto;
-    modal?: boolean;
-  };
-  UserDetail: {
-    id: string;
-  };
+  BottomTabs: { screen?: string };
   Category: undefined;
   Setting: undefined;
   SettingProfile: undefined;
@@ -125,11 +115,3 @@ function getCategoryOptions() {
     headerTitle: '分类管理'
   };
 }
-
-const styles = StyleSheet.create({
-  userDetailBg: {
-    flex: 1,
-    backgroundColor: '#fff',
-    opacity: 0
-  }
-});

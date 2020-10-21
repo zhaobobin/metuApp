@@ -21,6 +21,7 @@ interface PhotoModel extends Model {
   reducers: {
     setState: Reducer<IPhotoState>;
     updatePhotoDetail: Reducer<IPhotoState>;
+    clearPhotoDetail: Reducer<IPhotoState>;
   };
 }
 
@@ -139,6 +140,12 @@ const photoModel: PhotoModel = {
           ...state.photoDetail,
           ...payload
         }
+      };
+    },
+    clearPhotoDetail(state = initialState, _) {
+      return {
+        ...state,
+        photoDetail: initialState.photoDetail
       };
     }
   }

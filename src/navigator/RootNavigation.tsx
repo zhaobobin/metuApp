@@ -26,7 +26,6 @@ export type AppStackNavigation = StackNavigationProp<RootStackParamList>;
 export default function RootScreen() {
   return (
     <RootStack.Navigator
-      mode="modal"
       headerMode="screen"
       screenOptions={{
         headerTitleAlign: 'center',

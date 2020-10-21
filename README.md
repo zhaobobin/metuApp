@@ -119,7 +119,7 @@ dependencies {
 
 ##### Xcode升级12后，ReactNative ios14看不见图片(静态图片和网络图片)
 
-修改node_modules中react-native/Libraries/Image/RCTUIImageViewAnimates.m文件
+方法一、修改node_modules中react-native/Libraries/Image/RCTUIImageViewAnimates.m文件
 
 ```
 if (_currentFrame) { // line 275
@@ -129,3 +129,7 @@ if (_currentFrame) { // line 275
     [super displayLayer:layer]
 }
 ```
+
+方法二、升级reactNative版本,大于或者等于0.63版本
+
+    此方法不建议采用，可能会影响项目中其他第三方库

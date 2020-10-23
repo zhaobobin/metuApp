@@ -42,7 +42,9 @@ const connector = connect(mapStateToProps);
 
 type ModelState = ConnectedProps<typeof connector>;
 
-interface IProps extends ModelState {}
+interface IProps extends ModelState {
+
+}
 
 interface IState {
   initial: boolean;
@@ -71,7 +73,7 @@ class Login extends React.Component<IProps, IState> {
       initial: true,
       lastTel: remenber ? lastTel : '',
       checked: remenber
-    })
+    });
   }
 
   onSubmit = (values: FormValues) => {
@@ -133,6 +135,10 @@ class Login extends React.Component<IProps, IState> {
     Navigator.goBack();
   };
 
+  goHome = () => {
+    Navigator.goPage('AppScreen');
+  };
+
   render() {
     const { loading } = this.props;
     const { initial, title, checked, lastTel } = this.state;
@@ -146,7 +152,9 @@ class Login extends React.Component<IProps, IState> {
     return (
       <ScrollView keyboardShouldPersistTaps="handled" style={styles.container}>
         <View style={styles.head}>
-          <Image source={require('@/assets/com/logo.png')} />
+          <Touchable onPress={this.goHome}>
+            <Image source={require('@/assets/com/logo.png')} />
+          </Touchable>
           <Text style={styles.title}>{title}</Text>
         </View>
 

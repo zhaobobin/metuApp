@@ -126,10 +126,21 @@ if (_currentFrame) { // line 275
     layer.contentsScale = self.animatedImageScale;
     layer.contents = (__bridge id)_currentFrame.CGImage;
 } else { // add
-    [super displayLayer:layer]
+    [super displayLayer:layer];
 }
 ```
 
 方法二、升级reactNative版本,大于或者等于0.63版本
 
     此方法不建议采用，可能会影响项目中其他第三方库
+
+
+## 图标
+
+1.head图标
+    size: 30
+    color: #666 | #fff
+
+2.foot图标
+    size: 30
+    color: #666 | #fff

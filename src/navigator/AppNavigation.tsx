@@ -13,6 +13,7 @@ import Icon from '@/assets/iconfont';
 import { SearchType } from '@/types/search/SearchState';
 
 import MainScreen from './MainNavigation';
+import LoginScreen from './LoginNavigation';
 import Search from '@/pages/Search/index';
 import Publish from '@/pages/Publish/index';
 import ArticleDetail from '@/pages/Article/ArticleDetail';
@@ -28,6 +29,7 @@ import MessageList from '@/pages/Message/MessageList';
 // App页面参数声明
 export type AppStackParamList = {
   MainScreen: undefined;
+  LoginScreen: undefined;
   SearchScreen: { type?: SearchType };
   PublishScreen: { onPress: (values: any) => void };
   ArticleDetail: { article_id: string; modal?: boolean };
@@ -54,12 +56,21 @@ export default function AppScreen() {
         headerTitleAlign: 'center',
         headerTintColor: '#666',
         headerBackTitleVisible: false,
+        headerBackImage: () => <Icon name="icon-arrow-lift" size={30} color="#666" style={{ marginLeft: 5 }} />,
         gestureEnabled: true
       }}>
       <AppStack.Screen
         name="MainScreen"
         component={MainScreen}
         options={{ headerShown: false, animationEnabled: false }}
+      />
+      <AppStack.Screen
+        name="LoginScreen"
+        component={LoginScreen}
+        options={{
+          headerShown: false,
+          ...TransitionPresets.ModalSlideFromBottomIOS
+        }}
       />
       <AppStack.Screen
         name="SearchScreen"

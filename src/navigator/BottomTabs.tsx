@@ -15,7 +15,7 @@ import Icon from '@/assets/iconfont';
 // tab page
 import HomePage from '@/pages/Home/index';
 import Found from '@/pages/Found/index';
-import Circle from '@/pages/Circle/index';
+// import Circle from '@/pages/Circle/index';
 import PublishButton from '@/pages/Publish/PublishButton';
 import Message from '@/pages/Message/index';
 import Account from '@/pages/Account/Account';

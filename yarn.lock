@@ -1185,10 +1185,10 @@
   dependencies:
     nanoid "^3.1.5"
 
-"@react-navigation/stack@^5.4.1":
-  version "5.4.1"
-  resolved "https://registry.npm.taobao.org/@react-navigation/stack/download/@react-navigation/stack-5.4.1.tgz#3b4ebec52649dca77571050bb00db9ea02df61a8"
-  integrity sha1-O06+xSZJ3Kd1cQULsA256gLfYag=
+"@react-navigation/stack@^5.9.3":
+  version "5.9.3"
+  resolved "https://registry.npm.taobao.org/@react-navigation/stack/download/@react-navigation/stack-5.9.3.tgz#c12cbd7cc8436e3995aa291d7617c5b8f7a950ea"
+  integrity sha1-wSy9fMhDbjmVqikddhfFuPepUOo=
   dependencies:
     color "^3.1.2"
     react-native-iphone-x-helper "^1.2.1"

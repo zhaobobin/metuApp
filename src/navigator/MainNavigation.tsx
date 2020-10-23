@@ -10,6 +10,7 @@ import {
   CardStyleInterpolators
 } from '@react-navigation/stack';
 import BottomTabs from '@/navigator/BottomTabs';
+import Icon from '@/assets/iconfont';
 
 import Category from '@/pages/Category/index';
 import Setting from '@/pages/Setting/index';
@@ -46,6 +47,7 @@ export default function MainScreen() {
         headerTitleAlign: 'center',
         headerTintColor: '#666',
         headerBackTitleVisible: false,
+        headerBackImage: () => <Icon name="icon-arrow-lift" size={30} color="#666" style={{ marginLeft: 5 }} />,
         headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         gestureEnabled: true,
@@ -98,6 +100,7 @@ export default function MainScreen() {
         component={SettingProfilePassword}
         options={{ headerTitle: '修改密码' }}
       />
+      
     </MainStack.Navigator>
   );
 }

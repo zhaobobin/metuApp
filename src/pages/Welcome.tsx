@@ -6,17 +6,13 @@ import { Button } from '@/components/index';
 import { ENV, Storage, Navigator } from '@/utils/index';
 import { RootState } from '@/models/index';
 
-const mapStateToProps = (state: RootState) => ({
-  isAuth: state.account.isAuth
-});
+const mapStateToProps = (state: RootState) => ({});
 
 const connector = connect(mapStateToProps);
 
 type ModelState = ConnectedProps<typeof connector>;
 
-interface IProps extends ModelState {
-  
-}
+interface IProps extends ModelState {}
 
 class WelcomePage extends React.Component<IProps> {
   private timer: any;
@@ -28,8 +24,8 @@ class WelcomePage extends React.Component<IProps> {
 
   componentDidMount() {
     this.timer = setTimeout(async () => {
-      SplashScreen.hide();
       await this.authToken();
+      SplashScreen.hide();
       this.initWelcome();
     }, 200);
   }
@@ -49,7 +45,7 @@ class WelcomePage extends React.Component<IProps> {
         callback: () => {}
       });
     }
-  }
+  };
 
   initWelcome = () => {
     let { num } = this.state;

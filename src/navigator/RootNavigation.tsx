@@ -4,13 +4,11 @@
 import React from 'react';
 import {
   createStackNavigator,
-  StackNavigationProp,
-  TransitionPresets
+  StackNavigationProp
 } from '@react-navigation/stack';
 
 import WelcomePage from '@/pages/Welcome';
 import AppScreen from './AppNavigation';
-import LoginScreen from './LoginNavigation';
 
 // App页面参数声明
 export type RootStackParamList = {
@@ -21,7 +19,7 @@ export type RootStackParamList = {
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
-export type AppStackNavigation = StackNavigationProp<RootStackParamList>;
+export type RootStackNavigation = StackNavigationProp<RootStackParamList>;
 
 export default function RootScreen() {
   return (
@@ -39,18 +37,11 @@ export default function RootScreen() {
         options={{ headerShown: false }}
       />
       <RootStack.Screen
-        name="LoginScreen"
-        component={LoginScreen}
-        options={{
-          headerShown: false,
-          ...TransitionPresets.ModalSlideFromBottomIOS
-        }}
-      />
-      <RootStack.Screen
         name="AppScreen"
         component={AppScreen}
         options={{ headerShown: false, animationEnabled: false }}
       />
+      
     </RootStack.Navigator>
   );
 }

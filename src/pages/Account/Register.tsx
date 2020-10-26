@@ -227,7 +227,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 15,
-    paddingVertical: 100
+    paddingTop: 100,
+    paddingBottom: 350,
   },
   head: {
     alignItems: 'center'

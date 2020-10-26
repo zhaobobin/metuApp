@@ -2,7 +2,7 @@
  * CommontModal
  */
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet, Keyboard } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
@@ -11,7 +11,6 @@ import { RootState } from '@/models/index';
 import { IComment, ICommentModalResult } from '@/types/comment/CommentState';
 import { Modal, Button } from '@/components/index';
 import { FormItem, InputTextarea } from '@/components/Form/index';
-import { GlobalStyles } from '@/theme/index';
 
 interface FormValues {
   content: string;
@@ -36,22 +35,26 @@ type ModelState = ConnectedProps<typeof connector>;
 interface IProps extends ModelState {
   defaultValue?: string;
   onRef?: (ref: any) => void;
-  callback: (res: ICommentModalResult) => void
+  callback: (res: ICommentModalResult) => void;
 }
 
 interface IState {
   visible: boolean;
   root_comment?: IComment;
   content: string;
+  keyboardHeight: number;
 }
 
 export class CommentModalComponent extends React.Component<IProps, IState> {
+  private keyboardDidShow: any;
+  private keyboardDidHide: any;
   constructor(props: IProps) {
     super(props);
     this.state = {
       visible: false,
       root_comment: undefined,
-      content: props.defaultValue || ''
+      content: props.defaultValue || '',
+      keyboardHeight: 0
     };
   }
 
@@ -59,6 +62,30 @@ export class CommentModalComponent extends React.Component<IProps, IState> {
     if (this.props.onRef) {
       this.props.onRef(this);
     }
+    Keyboard.addListener(
+      'keyboardDidShow',
+      this.keyboardShow
+    );
+    Keyboard.addListener(
+      'keyboardDidHide',
+      this.keyboardHide
+    );
+  }
+
+  componentWillUnmount() {
+    Keyboard.removeListener('keyboardDidShow', this.keyboardShow);
+    Keyboard.removeListener('keyboardDidHide', this.keyboardHide);
+  }
+
+  keyboardShow = (e: any) => {
+    this.setState({
+      keyboardHeight: e.endCoordinates.height
+    });
+  }
+  keyboardHide = () => {
+    this.setState({
+      keyboardHeight: 0
+    });
   }
 
   show = (item: IComment) => {
@@ -78,8 +105,8 @@ export class CommentModalComponent extends React.Component<IProps, IState> {
   onChange = (val: string) => {
     this.setState({
       content: val
-    })
-  }
+    });
+  };
 
   onSubmit = (values: FormValues) => {
     const { callback } = this.props;
@@ -94,10 +121,11 @@ export class CommentModalComponent extends React.Component<IProps, IState> {
   };
 
   render() {
-    const { visible, root_comment, content } = this.state;
+    const { visible, root_comment, content, keyboardHeight } = this.state;
     const initialValues = {
       content
     };
+    console.log(keyboardHeight)
     return (
       <Modal
         popup
@@ -121,7 +149,12 @@ export class CommentModalComponent extends React.Component<IProps, IState> {
                         rows={4}
                         count={100}
                         value={content}
-                        placeholder={root_comment ? `回复: ${root_comment.author.nickname}` : '发布评论'}
+                        autoFocus={true}
+                        placeholder={
+                          root_comment
+                            ? `回复: ${root_comment.author.nickname}`
+                            : '发布评论'
+                        }
                         onChange={this.onChange}
                         component={InputTextarea}
                       />
@@ -138,9 +171,7 @@ export class CommentModalComponent extends React.Component<IProps, IState> {
               }}
             </Formik>
           </View>
-          <View style={styles.foot}>
-
-          </View>
+          <View style={{ height: keyboardHeight }}></View>
         </View>
       </Modal>
     );
@@ -155,22 +186,18 @@ const styles = StyleSheet.create({
   head: {
     height: 50
   },
-  body: {
-
-  },
+  body: {},
   formItem: {
-    width: '100%',
+    width: '100%'
     // borderColor: GlobalStyles.color.border,
     // borderLeftWidth: StyleSheet.hairlineWidth,
     // borderTopWidth: StyleSheet.hairlineWidth,
     // borderRightWidth: StyleSheet.hairlineWidth
   },
   btn: {
-    marginTop: 20,
+    marginTop: 20
   },
-  foot: {
-
-  }
+  foot: {}
 });
 
 export default connector(CommentModalComponent);

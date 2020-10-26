@@ -196,12 +196,14 @@ class Commont extends React.Component<IProps, IState> {
   };
 
   publishComment = (payload: ICommentModalResult) => {
-    if (payload.root_comment) { // 回复
+    if (payload.root_comment) {
+      // 回复
       this.submitReplyComment(payload);
-    } else { // 创建
+    } else {
+      // 创建
       this.submitCreateComment(payload);
     }
-  }
+  };
 
   handleFavor = (item: IComment) => {
     if (this.state.isAuth) {
@@ -240,7 +242,7 @@ class Commont extends React.Component<IProps, IState> {
   render() {
     const { loading, list, count } = this.props;
     const { refreshing } = this.state;
-    
+
     return (
       <View style={styles.container}>
         <CommentListHead count={count} goBack={this.goBack} />
@@ -256,7 +258,10 @@ class Commont extends React.Component<IProps, IState> {
           refreshing={refreshing}
         />
         <CommentListFoot showCommentModal={this.handleCreateComment} />
-        <CommentModal onRef={ref => this.commentModalRef = ref} callback={this.publishComment} />
+        <CommentModal
+          onRef={ref => (this.commentModalRef = ref)}
+          callback={this.publishComment}
+        />
       </View>
     );
   }

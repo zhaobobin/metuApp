@@ -28,6 +28,7 @@ type ModelState = ConnectedProps<typeof connector>;
 
 type IProps = TextInputProps &
   ModelState & {
+    autoFocus?: boolean;
     field: FieldInputProps<any>;
     form: FormikProps<any>;
     placeholder: string;
@@ -143,11 +144,12 @@ class InputSmscode extends React.PureComponent<IProps, IState> {
   }
 
   render() {
-    const { field, form, placeholder, ...rest } = this.props;
+    const { autoFocus, field, form, placeholder, ...rest } = this.props;
     const { btnText, btnStyle } = this.state;
     return (
       <View style={styles.inputView}>
         <TextInput
+          autoFocus={autoFocus}
           maxLength={6}
           keyboardType="phone-pad"
           clearButtonMode="while-editing"

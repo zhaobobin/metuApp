@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
     height: GlobalStyles.bottomSpace + 50,
     flexDirection: 'row',
     borderTopColor: '#efefef',
-    borderTopWidth: StyleSheet.hairlineWidth
+    borderTopWidth: StyleSheet.hairlineWidth,
+    backgroundColor: '#fff'
   },
   footView: {
     flex: 1,

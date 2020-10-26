@@ -7,6 +7,7 @@ import { FieldInputProps, FormikProps, ErrorMessage } from 'formik';
 import styles from './formStyle';
 
 interface IProps extends TextInputProps {
+  autoFocus?: boolean;
   field: FieldInputProps<any>;
   form: FormikProps<any>;
   placeholder: string;
@@ -14,12 +15,13 @@ interface IProps extends TextInputProps {
 
 export default class InputTextarea extends React.PureComponent<IProps> {
   render() {
-    const { field, form, placeholder, ...rest } = this.props;
+    const { autoFocus, field, form, placeholder, ...rest } = this.props;
 
     return (
       <View style={styles.inputView}>
         <TextInput
           multiline
+          autoFocus={autoFocus}
           textAlignVertical="top"
           clearButtonMode="while-editing"
           style={styles.input}

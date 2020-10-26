@@ -7,7 +7,7 @@ import { IPhotoDetail } from '@/types/CommonTypes';
 const iconColor = '#fff';
 interface IProps {
   photoDetail: IPhotoDetail;
-  modal?: boolean;
+  modal?: boolean; // controll goBack Icon display
   goBack: () => void;
   handleFollow: () => void;
 }

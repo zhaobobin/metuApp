@@ -15,7 +15,6 @@ import Icon from '@/assets/iconfont';
 // tab page
 import HomePage from '@/pages/Home/index';
 import Found from '@/pages/Found/index';
-// import Circle from '@/pages/Circle/index';
 import PublishButton from '@/pages/Publish/PublishButton';
 import Message from '@/pages/Message/index';
 import Account from '@/pages/Account/Account';
@@ -31,7 +30,6 @@ type ModelState = ConnectedProps<typeof connector>;
 export type BottomTabParamList = {
   HomePage: undefined;
   Found: undefined;
-  Circle: undefined;
   PublishButton: undefined;
   Message: undefined;
   Account: undefined;
@@ -178,16 +176,6 @@ class BottomTabs extends React.Component<IProps> {
             )
           }}
         />
-        {/* <Tab.Screen
-          name="Circle"
-          component={Circle}
-          options={{
-            tabBarLabel: '圈子',
-            tabBarIcon: ({ color, size }) => (
-              <Icon name="icon-search" size={size} color={color} />
-            )
-          }}
-        /> */}
         <Tab.Screen
           name="Found"
           component={Found}

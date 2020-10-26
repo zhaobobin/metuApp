@@ -10,7 +10,8 @@ import {
   View
 } from 'react-native';
 import { RichEditor, RichToolbar } from 'react-native-pell-rich-editor';
-import { Navigator, screenHeight } from '@/utils/index';
+import { Navigator } from '@/utils/index';
+import { GlobalStyles } from '@/theme/index';
 import InsertLinkModal from './insert-link';
 import EmojiView from './emoji';
 import { actions } from './const';
@@ -257,7 +258,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF'
   },
   richView: {
-    height: screenHeight - 320
+    height: GlobalStyles.screenHeight - 320
   },
   richBar: {
     height: 50,

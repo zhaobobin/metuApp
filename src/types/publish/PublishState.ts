@@ -1,4 +1,4 @@
-export type IPublishType = 'article' | 'photo' | null;
+export type PublishType = 'article' | 'photo' | null;
 
 export interface IImageSchema {
   title: string;

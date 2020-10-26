@@ -6,8 +6,8 @@ import { Toast } from '@/components/index';
 // 1、创建dva实例
 const app = create({
   onError(err) {
-    console.log(err);
-    Toast.show('网络异常');
+    console.log('网络异常', err);
+    // Toast.show('网络异常');
   }
 });
 // 2、装载models对象

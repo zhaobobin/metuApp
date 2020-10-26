@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   title: {
-    marginTop: 10,
+    marginTop: 20,
     fontSize: 20,
     color: '#333'
   },
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     ...layout.margin(40, 0, 20, 0)
   },
   formItem: {
-    marginBottom: 40
+    marginBottom: 20
   },
   xieyi: {
     flex: 1,

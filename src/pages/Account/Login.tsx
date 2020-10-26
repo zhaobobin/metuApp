@@ -13,8 +13,7 @@ import { Button, Touchable, Toast } from '@/components/index';
 import {
   FormItem,
   InputMobile,
-  InputPassword,
-  CheckBox
+  InputPassword
 } from '@/components/Form/index';
 
 interface FormValues {
@@ -42,9 +41,7 @@ const connector = connect(mapStateToProps);
 
 type ModelState = ConnectedProps<typeof connector>;
 
-interface IProps extends ModelState {
-
-}
+interface IProps extends ModelState {}
 
 interface IState {
   initial: boolean;
@@ -68,11 +65,9 @@ class Login extends React.Component<IProps, IState> {
 
   async componentDidMount() {
     const lastTel = await Storage.get(ENV.storage.lastTel);
-    const remenber = await Storage.get(ENV.storage.remenber);
     this.setState({
       initial: true,
-      lastTel: remenber ? lastTel : '',
-      checked: remenber
+      lastTel
     });
   }
 
@@ -96,6 +91,7 @@ class Login extends React.Component<IProps, IState> {
       payload.smscode = Encrypt(payload.mobile, payload.smscode);
     }
     payload.loginType = this.state.loginType;
+    payload.remenber = true;
     this.props.dispatch({
       type: 'account/login',
       payload,
@@ -104,7 +100,7 @@ class Login extends React.Component<IProps, IState> {
           const loginRedirect = await Storage.get(ENV.storage.loginRedirect);
           if (loginRedirect) {
             const route: ILoginRedirect = JSON.parse(loginRedirect);
-            Navigator.goPage(route.routeName);
+            Navigator.goPage(route.routeName, route.routeParam);
           } else {
             Navigator.goBack();
           }
@@ -112,14 +108,6 @@ class Login extends React.Component<IProps, IState> {
           Toast.show(res.message);
         }
       }
-    });
-  };
-
-  toggleRemeber = () => {
-    const checked = !this.state.checked;
-    Storage.set(ENV.storage.remenber, checked);
-    this.setState({
-      checked
     });
   };
 
@@ -141,7 +129,7 @@ class Login extends React.Component<IProps, IState> {
 
   render() {
     const { loading } = this.props;
-    const { initial, title, checked, lastTel } = this.state;
+    const { initial, title, lastTel } = this.state;
     if (!initial) {
       return null;
     }
@@ -180,22 +168,6 @@ class Login extends React.Component<IProps, IState> {
                       component={InputPassword}
                     />
                   </FormItem>
-                  <FormItem>
-                    <View style={styles.remeber}>
-                      <View style={styles.check}>
-                        <CheckBox
-                          label="记住帐号"
-                          checked={checked}
-                          onClick={this.toggleRemeber}
-                        />
-                      </View>
-                      <View style={styles.desc}>
-                        <Text style={styles.link} onPress={this.toReset}>
-                          忘记密码
-                        </Text>
-                      </View>
-                    </View>
-                  </FormItem>
                   <View style={styles.btn}>
                     <Button
                       title="登录"
@@ -211,11 +183,11 @@ class Login extends React.Component<IProps, IState> {
         </View>
 
         <View style={styles.foot}>
+          <Touchable onPress={this.toReset}>
+            <Text style={styles.link}>忘记密码</Text>
+          </Touchable>
           <Touchable onPress={this.goRegister}>
             <Text style={styles.link}>注册新帐号</Text>
-          </Touchable>
-          <Touchable onPress={this.goBack}>
-            <Text style={styles.link}>返回</Text>
           </Touchable>
         </View>
       </ScrollView>
@@ -233,7 +205,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   title: {
-    marginTop: 10,
+    marginTop: 20,
     fontSize: 20,
     color: '#333'
   },
@@ -241,7 +213,7 @@ const styles = StyleSheet.create({
     ...layout.margin(40, 0, 20, 0)
   },
   formItem: {
-    marginBottom: 40
+    marginBottom: 20
   },
   remeber: {
     flex: 1,

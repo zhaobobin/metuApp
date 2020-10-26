@@ -9,14 +9,16 @@ import {
   AppStackNavigation,
   AppStackParamList
 } from '@/navigator/AppNavigation';
-import { IPublishType } from '@/types/publish/PublishState';
-import { Navigator } from '@/utils/index';
+import { IResponse } from '@/types/CommonTypes';
+import { PublishType } from '@/types/publish/PublishState';
+import { ENV, Storage, Navigator } from '@/utils/index';
 
 import HeaderRightButton from './HeaderRightButton';
 import PublishArticle from './PublishArticle';
 import PublishPhoto from './PublishPhoto';
 
 const mapStateToProps = (state: RootState) => ({
+  isAuth: state.account.isAuth,
   modalVisible: state.publish.modalVisible,
   publishType: state.publish.publishType
 });
@@ -52,7 +54,40 @@ class Publish extends React.Component<IProps, IState> {
     });
   }
 
-  changePublishType = (publishType: IPublishType) => {
+  changePublishType = async (publishType: PublishType) => {
+    const { isAuth } = this.props;
+    if (isAuth) {
+      this.showPublishView(publishType);
+    } else {
+      await Storage.set(
+        ENV.storage.loginRedirect,
+        JSON.stringify({
+          routeName: 'PublishScreen',
+          routeParam: { publishType }
+        })
+      );
+      const token = await Storage.get(ENV.storage.token);
+      if (token) {
+        this.props.dispatch({
+          type: 'account/token',
+          payload: {
+            token
+          },
+          callback: (res: IResponse) => {
+            if (res.code === 0) {
+              this.showPublishView(publishType);
+            } else {
+              Navigator.goPage('LoginScreen');
+            }
+          }
+        });
+      } else {
+        Navigator.goPage('LoginScreen');
+      }
+    }
+  };
+
+  showPublishView = (publishType: PublishType) => {
     this.props.dispatch({
       type: 'publish/setState',
       payload: {
@@ -60,7 +95,7 @@ class Publish extends React.Component<IProps, IState> {
         publishType
       }
     });
-  };
+  }
 
   openAlbum = async () => {
     const res = await selectPhotos();
@@ -88,7 +123,7 @@ class Publish extends React.Component<IProps, IState> {
   };
 
   render() {
-    const { navigation, modalVisible, publishType } = this.props;
+    const { navigation, modalVisible, publishType, route } = this.props;
     return (
       <View style={styles.container}>
         {publishType === 'article' && (

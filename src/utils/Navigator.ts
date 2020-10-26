@@ -12,6 +12,16 @@ export default class Navigator {
     navigationRef.current?.navigate(name, params);
   }
 
+  static resetPage(name: string, params?: any) {
+    navigationRef.current?.reset({
+      index: 1,
+      routes: [
+        { name },
+        params
+      ],
+    });
+  }
+
   // 返回
   static goBack() {
     navigationRef.current?.goBack();

@@ -3,8 +3,7 @@ import { StyleSheet } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '@/models/index';
 import { Touchable } from '@/components/index';
-import { ENV, Navigator, Storage } from '@/utils/index';
-import { IResponse } from '@/types/CommonTypes';
+import { Navigator } from '@/utils/index';
 import { GlobalStyles } from '@/theme/index';
 import Icon from '@/assets/iconfont';
 
@@ -21,35 +20,7 @@ interface IProps extends ModelState {}
 
 class PublishButton extends React.Component<IProps> {
   goPublish = async () => {
-    const { isAuth } = this.props;
-    if (isAuth) {
-      Navigator.goPage('PublishScreen');
-    } else {
-      const token = await Storage.get(ENV.storage.token);
-      await Storage.set(
-        ENV.storage.loginRedirect,
-        JSON.stringify({
-          routeName: 'PublishScreen'
-        })
-      );
-      if (token) {
-        this.props.dispatch({
-          type: 'account/token',
-          payload: {
-            token
-          },
-          callback: (res: IResponse) => {
-            if (res.code === 0) {
-              Navigator.goPage('Publish');
-            } else {
-              Navigator.goPage('LoginScreen');
-            }
-          }
-        });
-      } else {
-        Navigator.goPage('LoginScreen');
-      }
-    }
+    Navigator.goPage('PublishScreen');
   };
 
   render() {

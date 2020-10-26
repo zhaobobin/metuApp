@@ -1,11 +1,11 @@
 import { Model, Effect } from 'dva-core-ts';
 import { Reducer } from 'redux';
 import { articleApi, photoApi } from '@/api/index';
-import { IPublishType, IPhotoPublishForm, IArticlePublishForm, IImageSchema } from '@/types/publish/PublishState';
+import { PublishType, IPhotoPublishForm, IArticlePublishForm, IImageSchema } from '@/types/publish/PublishState';
 
 export interface IPublishState {
   modalVisible: boolean;
-  publishType: IPublishType;
+  publishType: PublishType;
   photoFormValues: IPhotoPublishForm;
   photoPickerImages: IImageSchema[]; // 选择相册图片 暂存
   articleFormValues: IArticlePublishForm;

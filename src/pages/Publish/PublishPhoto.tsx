@@ -15,7 +15,7 @@ import { AppStackNavigation } from '@/navigator/AppNavigation';
 import { RootState } from '@/models/index';
 import { ENV, Storage, Navigator } from '@/utils/index';
 import { IResponse, IImageFile } from '@/types/CommonTypes';
-import { IPhotoPublishForm, IImageSchema } from '@/types/publish/PublishState';
+import { IPhotoPublishForm, IImageSchema } from '@/types/PublishTypes';
 import { layout, GlobalStyles } from '@/theme/index';
 
 import { Toast } from '@/components/index';

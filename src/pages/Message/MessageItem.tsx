@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import moment from 'moment';
-import { IMessageItem } from '@/types/message/MessageState';
+import { IMessageItem } from '@/types/MessageTypes';
 import { Avatar, Touchable } from '@/components/index';
 import { Navigator } from '@/utils/index';
 

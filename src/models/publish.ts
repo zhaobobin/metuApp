@@ -1,7 +1,7 @@
 import { Model, Effect } from 'dva-core-ts';
 import { Reducer } from 'redux';
 import { articleApi, photoApi } from '@/api/index';
-import { PublishType, IPhotoPublishForm, IArticlePublishForm, IImageSchema } from '@/types/publish/PublishState';
+import { PublishType, IPhotoPublishForm, IArticlePublishForm, IImageSchema } from '@/types/PublishTypes';
 
 export interface IPublishState {
   modalVisible: boolean;

@@ -2,7 +2,7 @@ import { Model, Effect } from 'dva-core-ts';
 import { Reducer } from 'redux';
 import { RootState } from './index';
 import { messageApi } from '@/api/index';
-import { IMessage } from '@/types/message/MessageState';
+import { IMessage } from '@/types/MessageTypes';
 
 export interface IMessageState {
   type: string;

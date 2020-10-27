@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { IComment } from '@/types/comment/CommentState';
+import { IComment } from '@/types/CommentTypes';
 import { Avatar, Touchable, IconView } from '@/components/index';
 import moment from 'moment';
 

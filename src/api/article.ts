@@ -1,5 +1,5 @@
 import { Request } from '@/utils/index';
-import { IArticlePublishForm } from '@/types/publish/PublishState';
+import { IArticlePublishForm } from '@/types/PublishTypes';
 
 export const articleApi = {
   // 用户的文章列表

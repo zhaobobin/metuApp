@@ -11,7 +11,7 @@ import { RootState } from '@/models/index';
 import { GlobalStyles } from '@/theme/index';
 import { Navigator } from '@/utils/index';
 import Icon from '@/assets/iconfont';
-import { SearchType, ISearchCate } from '@/types/search/SearchState';
+import { SearchType, ISearchCate } from '@/types/SearchTypes';
 
 const mapStateToProps = (state: RootState) => ({
   loading: state.loading

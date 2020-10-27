@@ -1,5 +1,5 @@
 import { Request } from '@/utils/index';
-import { IPhotoPublishForm } from '@/types/publish/PublishState';
+import { IPhotoPublishForm } from '@/types/PublishTypes';
 
 export const photoApi = {
   // 用户发布的图片列表

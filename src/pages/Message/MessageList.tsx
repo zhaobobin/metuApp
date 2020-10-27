@@ -13,7 +13,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { RouteProp } from '@react-navigation/native';
 import { AppStackNavigation, AppStackParamList } from '@/navigator/AppNavigation';
 import { RootState } from '@/models/index';
-import { IMessageItem } from '@/types/message/MessageState';
+import { IMessageItem } from '@/types/MessageTypes';
 import { Empty } from '@/components/index';
 import MessageItem from './MessageItem';
 

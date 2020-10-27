@@ -8,7 +8,7 @@ import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 
 import { RootState } from '@/models/index';
-import { IComment, ICommentModalResult } from '@/types/comment/CommentState';
+import { IComment, ICommentModalResult } from '@/types/CommentTypes';
 import { Modal, Button } from '@/components/index';
 import { FormItem, InputTextarea } from '@/components/Form/index';
 

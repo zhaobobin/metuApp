@@ -1,8 +1,8 @@
 import { IAuthor, IPageInfo, IPhoto, IArticle } from '@/types/CommonTypes';
-import { IComment } from '@/types/comment/CommentState';
-import { ITopic } from '../topic/TopicState';
-import { IQuestion } from '../question/QuestionState';
-import { IAnswer } from '../answer/AnswerState';
+import { IComment } from '@/types/CommentTypes';
+import { ITopic } from '@/types/TopicTypes';
+import { IQuestion } from '@/types/QuestionTypes';
+import { IAnswer } from '@/types/AnswerTypes';
 
 export interface IMessage {
   list: IMessageItem[];

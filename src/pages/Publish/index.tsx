@@ -10,7 +10,7 @@ import {
   AppStackParamList
 } from '@/navigator/AppNavigation';
 import { IResponse } from '@/types/CommonTypes';
-import { PublishType } from '@/types/publish/PublishState';
+import { PublishType } from '@/types/PublishTypes';
 import { ENV, Storage, Navigator } from '@/utils/index';
 
 import HeaderRightButton from './HeaderRightButton';

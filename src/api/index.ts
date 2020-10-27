@@ -2,6 +2,8 @@ export * from './home';
 
 export * from './category';
 
+export * from './circle';
+
 export * from './comment';
 
 export * from './article';

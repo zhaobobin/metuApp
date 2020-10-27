@@ -1,5 +1,4 @@
-import { IAuthor } from '@/types/CommonTypes';
-import { IPageInfo } from '@/types/CommonTypes';
+import { IAuthor, IPageInfo } from '@/types/CommonTypes';
 
 export interface ICommentlist {
   list: IComment[];

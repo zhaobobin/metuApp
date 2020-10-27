@@ -13,7 +13,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { RouteProp } from '@react-navigation/native';
 import { RootState } from '@/models/index';
 import { AppStackParamList } from '@/navigator/AppNavigation';
-import { IComment, ICommentModalResult } from '@/types/comment/CommentState';
+import { IComment, ICommentModalResult } from '@/types/CommentTypes';
 import { Storage, ENV, Navigator } from '@/utils/index';
 import { Empty } from '@/components/index';
 

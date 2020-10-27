@@ -2,7 +2,7 @@ import { Model, Effect } from 'dva-core-ts';
 import { Reducer } from 'redux';
 import { homeApi } from '@/api/index';
 import { IPhoto } from '@/types/CommonTypes';
-import { IChannel } from '@/types/home/HomeState';
+import { IChannel } from '@/types/HomeTypes';
 import { RootState } from './index';
 
 export interface IHomeState {

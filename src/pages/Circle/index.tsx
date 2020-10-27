@@ -15,15 +15,12 @@ interface IProps extends ModelState {
   navigation: MainStackNavigation;
 }
 
-class Cricle extends React.Component<IProps> {
+class Circle extends React.Component<IProps> {
   render() {
     return (
       <View style={styles.container}>
         <SearchNavBar type="circle" placeholder="搜索圈子" />
         <ScrollView style={styles.body}>
-          <View>
-            <Text>摄影大赛</Text>
-          </View>
           <View>
             <Text>热门圈子</Text>
           </View>
@@ -59,4 +56,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connector(Cricle);
+export default connector(Circle);

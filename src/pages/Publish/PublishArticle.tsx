@@ -13,7 +13,7 @@ import { AppStackNavigation } from '@/navigator/AppNavigation';
 import { RootState } from '@/models/index';
 import { Navigator } from '@/utils/index';
 import { IResponse } from '@/types/CommonTypes';
-import { IArticlePublishForm } from '@/types/publish/PublishState';
+import { IArticlePublishForm } from '@/types/PublishTypes';
 import { layout } from '@/theme/index';
 
 import { Editor, Toast } from '@/components/index';

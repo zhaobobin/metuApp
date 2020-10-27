@@ -2,7 +2,7 @@ import { Model, Effect } from 'dva-core-ts';
 import { Reducer } from 'redux';
 import { commentApi } from '@/api/index';
 import { Toast } from '@/components/index';
-import { ICommentlist } from '@/types/comment/CommentState';
+import { ICommentlist } from '@/types/CommentTypes';
 import { RootState } from './index';
 
 export interface ICommentState {

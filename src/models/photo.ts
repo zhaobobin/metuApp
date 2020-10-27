@@ -142,7 +142,7 @@ const photoModel: PhotoModel = {
         }
       };
     },
-    clearPhotoDetail(state = initialState, _) {
+    clearPhotoDetail(state = initialState) {
       return {
         ...state,
         photoDetail: initialState.photoDetail

@@ -2,7 +2,7 @@
  * CommontModal
  */
 import React from 'react';
-import { View, StyleSheet, Keyboard } from 'react-native';
+import { View, StyleSheet, Keyboard, KeyboardEvent } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
@@ -58,35 +58,33 @@ export class CommentModalComponent extends React.Component<IProps, IState> {
     };
   }
 
+  componentWillMount() {
+    this.keyboardDidShow = Keyboard.addListener('keyboardDidShow', this.keyboardShow);
+    this.keyboardDidHide = Keyboard.addListener('keyboardDidHide', this.keyboardHide);
+  }
+
   componentDidMount() {
     if (this.props.onRef) {
       this.props.onRef(this);
     }
-    Keyboard.addListener(
-      'keyboardDidShow',
-      this.keyboardShow
-    );
-    Keyboard.addListener(
-      'keyboardDidHide',
-      this.keyboardHide
-    );
   }
 
   componentWillUnmount() {
-    Keyboard.removeListener('keyboardDidShow', this.keyboardShow);
-    Keyboard.removeListener('keyboardDidHide', this.keyboardHide);
+    this.keyboardDidShow.remove();
+    this.keyboardDidHide.remove();
   }
 
-  keyboardShow = (e: any) => {
+  keyboardShow = (e: KeyboardEvent) => {
     this.setState({
       keyboardHeight: e.endCoordinates.height
     });
-  }
+  };
+
   keyboardHide = () => {
     this.setState({
       keyboardHeight: 0
     });
-  }
+  };
 
   show = (item: IComment) => {
     this.setState({
@@ -125,7 +123,6 @@ export class CommentModalComponent extends React.Component<IProps, IState> {
     const initialValues = {
       content
     };
-    console.log(keyboardHeight)
     return (
       <Modal
         popup

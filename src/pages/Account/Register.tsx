@@ -1,5 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  Keyboard,
+  KeyboardEvent
+} from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
@@ -7,7 +15,7 @@ import * as Yup from 'yup';
 import { RootState } from '@/models/index';
 import { Navigator, Encrypt } from '@/utils/index';
 import { IResponse } from '@/types/CommonTypes';
-import { layout } from '@/theme/index';
+import { layout, GlobalStyles } from '@/theme/index';
 
 import { Button, Touchable, Toast } from '@/components/index';
 import {
@@ -69,16 +77,51 @@ interface IProps extends ModelState {}
 interface IState {
   title: string;
   checked: boolean;
+  keyboardHeight: number;
 }
 
 class Register extends React.Component<IProps, IState> {
+  private keyboardDidShow: any;
+  private keyboardDidHide: any;
+
   constructor(props: IProps) {
     super(props);
     this.state = {
       title: '用户注册',
-      checked: true
+      checked: true,
+      keyboardHeight: 0
     };
   }
+
+  componentWillMount() {
+    this.keyboardDidShow = Keyboard.addListener(
+      'keyboardDidShow',
+      this.keyboardShow
+    );
+    this.keyboardDidHide = Keyboard.addListener(
+      'keyboardDidHide',
+      this.keyboardHide
+    );
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShow.remove();
+    this.keyboardDidHide.remove();
+  }
+
+  keyboardShow = (e: KeyboardEvent) => {
+    this.setState({
+      keyboardHeight: GlobalStyles.is_IphoneX
+        ? e.endCoordinates.height + 180
+        : e.endCoordinates.height + 100
+    });
+  };
+
+  keyboardHide = () => {
+    this.setState({
+      keyboardHeight: 0
+    });
+  };
 
   onSubmit = (values: FormValues) => {
     this.onRegister(values);
@@ -128,7 +171,7 @@ class Register extends React.Component<IProps, IState> {
 
   render() {
     const { loading } = this.props;
-    const { title, checked } = this.state;
+    const { title, checked, keyboardHeight } = this.state;
     return (
       <ScrollView style={styles.container}>
         <View style={styles.head}>
@@ -178,7 +221,6 @@ class Register extends React.Component<IProps, IState> {
                       )}
                     />
                   </FormItem>
-
                   <FormItem>
                     <View style={styles.xieyi}>
                       <View style={styles.check}>
@@ -197,7 +239,6 @@ class Register extends React.Component<IProps, IState> {
                       </View>
                     </View>
                   </FormItem>
-
                   <View style={styles.btn}>
                     <Button
                       title="注册"
@@ -212,7 +253,7 @@ class Register extends React.Component<IProps, IState> {
           </Formik>
         </View>
 
-        <View style={styles.foot}>
+        <View style={[styles.foot, { paddingBottom: keyboardHeight }]}>
           <Text style={styles.footText}>已有账号？返回</Text>
           <Touchable onPress={this.goBack}>
             <Text style={styles.link}>登录</Text>
@@ -225,10 +266,8 @@ class Register extends React.Component<IProps, IState> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     paddingHorizontal: 15,
-    paddingTop: 100,
-    paddingBottom: 350,
+    paddingTop: 100
   },
   head: {
     alignItems: 'center'
@@ -263,7 +302,6 @@ const styles = StyleSheet.create({
     ...layout.margin(20, 0, 0, 0)
   },
   foot: {
-    height: 200,
     flexDirection: 'row'
   },
   footText: {

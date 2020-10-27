@@ -45,6 +45,12 @@ class ArticleDetail extends React.Component<IProps, IState> {
     this.getArticleDetail(article_id);
   }
 
+  componentWillUnmount() {
+    this.props.dispatch({
+      type: 'article/clearArticleDetail'
+    });
+  }
+
   static getDerivedStateFromProps(nextProps: IProps, prevState: IState) {
     if (nextProps.route.params.article_id !== prevState.article_id) {
       return {

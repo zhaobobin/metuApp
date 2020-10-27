@@ -20,22 +20,27 @@ interface CommentModel extends Model {
   };
   reducers: {
     setState: Reducer<ICommentState>;
+    clearCommentList: Reducer<ICommentState>;
   };
+}
+
+const initialState = {
+  commentList: {
+    list: [],
+    pageInfo: {
+      page: 1,
+      per_page: 10,
+      count: 0,
+      has_more: true
+    }
+  }
 }
 
 const commentModel: CommentModel = {
   namespace: 'comment',
 
   state: {
-    commentList: {
-      list: [],
-      pageInfo: {
-        page: 1,
-        per_page: 10,
-        count: 0,
-        has_more: true
-      }
-    }
+    commentList: initialState.commentList
   },
 
   effects: {
@@ -97,7 +102,7 @@ const commentModel: CommentModel = {
       );
       const res = yield call(commentApi.favorComment, payload);
       if (res.code === 0) {
-        for(const item of list) {
+        for (const item of list) {
           if (item._id === payload.comment_id) {
             item.favor_number = res.data.favor_number;
             item.favoring_state = res.data.favoring_state;
@@ -124,7 +129,13 @@ const commentModel: CommentModel = {
         ...state,
         ...payload
       };
-    }
+    },
+    clearCommentList(state = initialState) {
+      return {
+        ...state,
+        commentList: initialState.commentList
+      };
+    },
   }
 };
 

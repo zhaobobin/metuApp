@@ -1,5 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  Keyboard,
+  KeyboardEvent
+} from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
@@ -7,14 +15,10 @@ import * as Yup from 'yup';
 import { RootState } from '@/models/index';
 import { ENV, Storage, Navigator, Encrypt } from '@/utils/index';
 import { IResponse, ILoginRedirect } from '@/types/CommonTypes';
-import { layout } from '@/theme/index';
+import { layout, GlobalStyles } from '@/theme/index';
 
 import { Button, Touchable, Toast } from '@/components/index';
-import {
-  FormItem,
-  InputMobile,
-  InputPassword
-} from '@/components/Form/index';
+import { FormItem, InputMobile, InputPassword } from '@/components/Form/index';
 
 interface FormValues {
   mobile: string;
@@ -49,9 +53,13 @@ interface IState {
   loginType: 'psd' | 'sms';
   checked: boolean;
   lastTel: string;
+  keyboardHeight: number;
 }
 
 class Login extends React.Component<IProps, IState> {
+  private keyboardDidShow: any;
+  private keyboardDidHide: any;
+
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -59,7 +67,8 @@ class Login extends React.Component<IProps, IState> {
       title: '密码登录',
       loginType: 'psd',
       checked: false,
-      lastTel: ''
+      lastTel: '',
+      keyboardHeight: 0
     };
   }
 
@@ -70,6 +79,37 @@ class Login extends React.Component<IProps, IState> {
       lastTel
     });
   }
+
+  componentWillMount() {
+    this.keyboardDidShow = Keyboard.addListener(
+      'keyboardDidShow',
+      this.keyboardShow
+    );
+    this.keyboardDidHide = Keyboard.addListener(
+      'keyboardDidHide',
+      this.keyboardHide
+    );
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShow.remove();
+    this.keyboardDidHide.remove();
+  }
+
+  keyboardShow = (e: KeyboardEvent) => {
+    console.log(e.endCoordinates.height);
+    this.setState({
+      keyboardHeight: GlobalStyles.is_IphoneX
+        ? e.endCoordinates.height + 180
+        : e.endCoordinates.height + 100
+    });
+  };
+
+  keyboardHide = () => {
+    this.setState({
+      keyboardHeight: 0
+    });
+  };
 
   onSubmit = (values: FormValues) => {
     this.onLogin(values);
@@ -129,7 +169,7 @@ class Login extends React.Component<IProps, IState> {
 
   render() {
     const { loading } = this.props;
-    const { initial, title, lastTel } = this.state;
+    const { initial, title, lastTel, keyboardHeight } = this.state;
     if (!initial) {
       return null;
     }
@@ -138,7 +178,9 @@ class Login extends React.Component<IProps, IState> {
       password: ''
     };
     return (
-      <ScrollView keyboardShouldPersistTaps="handled" style={styles.container}>
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        style={styles.container}>
         <View style={styles.head}>
           <Touchable onPress={this.goHome}>
             <Image source={require('@/assets/com/logo.png')} />
@@ -182,7 +224,7 @@ class Login extends React.Component<IProps, IState> {
           </Formik>
         </View>
 
-        <View style={styles.foot}>
+        <View style={[styles.foot, { paddingBottom: keyboardHeight }]}>
           <Touchable onPress={this.toReset}>
             <Text style={styles.link}>忘记密码</Text>
           </Touchable>
@@ -197,9 +239,8 @@ class Login extends React.Component<IProps, IState> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     paddingHorizontal: 15,
-    paddingVertical: 100
+    paddingTop: 100
   },
   head: {
     alignItems: 'center'
@@ -235,7 +276,6 @@ const styles = StyleSheet.create({
     ...layout.margin(20, 0, 0, 0)
   },
   foot: {
-    height: 200,
     flexDirection: 'row',
     justifyContent: 'space-between',
     ...layout.margin(20, 0, 0, 0)

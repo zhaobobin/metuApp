@@ -1,5 +1,5 @@
 /**
- * Commont
+ * CommontList
  */
 import React from 'react';
 import {
@@ -57,6 +57,12 @@ class Commont extends React.Component<IProps, IState> {
 
   componentDidMount() {
     this.queryCommentList();
+  }
+
+  componentWillUnmount() {
+    this.props.dispatch({
+      type: 'comment/clearCommentList'
+    });
   }
 
   static getDerivedStateFromProps(nextProps: IProps, prevState: IState) {

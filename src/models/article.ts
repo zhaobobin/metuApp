@@ -21,6 +21,7 @@ interface ArticleModel extends Model {
   reducers: {
     setState: Reducer<IArticleState>;
     updateArticleDetail: Reducer<IArticleState>;
+    clearArticleDetail: Reducer<IArticleState>;
   };
 }
 
@@ -28,11 +29,7 @@ const initialState: IArticleState = {
   articleDetail: {
     _id: '',
     title: '',
-    thumb: {
-      url: '',
-      width: 0,
-      height: 0
-    },
+    thumb: '',
     author: {
       _id: '',
       type: '',
@@ -139,6 +136,12 @@ const articleModel: ArticleModel = {
           ...state.articleDetail,
           ...payload
         }
+      };
+    },
+    clearArticleDetail(state = initialState) {
+      return {
+        ...state,
+        articleDetail: initialState.articleDetail
       };
     }
   }

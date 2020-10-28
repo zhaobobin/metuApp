@@ -16,14 +16,14 @@ interface IProps extends ModelState {
   navigation: MainStackNavigation;
 }
 
-class Tpl extends React.Component<IProps> {
+class CircleList extends React.Component<IProps> {
   render() {
     return (
       <View>
-        <Text>tpl</Text>
+        <Text>CircleList</Text>
       </View>
     );
   }
 }
 
-export default connector(Tpl);
+export default connector(CircleList);

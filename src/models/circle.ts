@@ -44,7 +44,7 @@ const circleModel: CircleModel = {
         yield put({
           type: 'setState',
           payload: {
-            circleList: res.data
+            circleList: res.data.list
           }
         });
       } else {

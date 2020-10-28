@@ -10,7 +10,7 @@ import {
 } from '@react-navigation/stack';
 import Animated from 'react-native-reanimated';
 import Icon from '@/assets/iconfont';
-import { SearchType } from '@/types/search/SearchState';
+import { SearchType } from '@/types/SearchTypes';
 
 import MainScreen from './MainNavigation';
 import LoginScreen from './LoginNavigation';
@@ -23,6 +23,8 @@ import Comment from '@/pages/Comment/index';
 import PhotoIndex from '@/pages/Photo/index';
 import ArticleIndex from '@/pages/Article/index';
 import Circle from '@/pages/Circle/index';
+import CircleList from '@/pages/Circle/CircleList';
+import CircleDetail from '@/pages/Circle/CircleDetail';
 import Topic from '@/pages/Topic/index';
 import MessageList from '@/pages/Message/MessageList';
 
@@ -39,6 +41,8 @@ export type AppStackParamList = {
   PhotoIndex: undefined;
   ArticleIndex: undefined;
   CircleIndex: undefined;
+  CircleList: { type?: string };
+  CircleDetail: { circle_id: string };
   TopicIndex: undefined;
   MessageList: { name: string, type: string }
 };
@@ -116,6 +120,16 @@ export default function AppScreen() {
         name="CircleIndex"
         component={Circle}
         options={getCircleIndexOptions}
+      />
+      <AppStack.Screen
+        name="CircleList"
+        component={CircleList}
+        options={getCircleListOptions}
+      />
+      <AppStack.Screen
+        name="CircleDetail"
+        component={CircleDetail}
+        options={getCircleDetailOptions}
       />
       <AppStack.Screen
         name="TopicIndex"
@@ -229,6 +243,20 @@ function getCircleIndexOptions() {
   return {
     headerShown: false,
     headerTitle: '圈子',
+    ...TransitionPresets.SlideFromRightIOS
+  };
+}
+
+function getCircleListOptions() {
+  return {
+    headerTitle: '圈子列表',
+    ...TransitionPresets.SlideFromRightIOS
+  };
+}
+
+function getCircleDetailOptions() {
+  return {
+    headerTitle: '圈子详情',
     ...TransitionPresets.SlideFromRightIOS
   };
 }

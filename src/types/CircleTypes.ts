@@ -1,17 +1,23 @@
+import { IUserInfo } from "./CommonTypes";
+
+export type ICircleType = 'popular' | 'interest' | 'study' | 'region';
+
 export interface ICircleState {
 
 }
 
 export interface ICircleItem {
-  member_number: number;
-  activity_number: number;
-  photo_number: number;
-  status: number;
   _id: string;
   name: string;
   description: string;
+  admin?: IUserInfo;
+  avatar_url?: string;
+  member_number: number;
+  activity_number: number;
+  photo_number: number;
   create_at: string;
   update_at: string;
+  status: number;
 }
 
 export interface ICircleList {

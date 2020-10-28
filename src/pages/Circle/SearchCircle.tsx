@@ -16,14 +16,14 @@ interface IProps extends ModelState {
   navigation: MainStackNavigation;
 }
 
-class Tpl extends React.Component<IProps> {
+class SearchCircle extends React.Component<IProps> {
   render() {
     return (
       <View>
-        <Text>tpl</Text>
+        <Text>SearchCircle</Text>
       </View>
     );
   }
 }
 
-export default connector(Tpl);
+export default connector(SearchCircle);

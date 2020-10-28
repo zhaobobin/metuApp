@@ -8,7 +8,7 @@ import { Touchable } from '@/components/index';
 import { InputText } from '@/components/Form';
 import { GlobalStyles } from '@/theme/index';
 import Icon from '@/assets/iconfont';
-import { SearchType } from '@/types/search/SearchState';
+import { SearchType } from '@/types/SearchTypes';
 
 const STATUS_BAR_HEIGHT = Platform.OS === 'ios' ? 0 : 20;
 

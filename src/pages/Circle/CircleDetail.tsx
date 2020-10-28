@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
-import { MainStackNavigation } from '@/navigator/MainNavigation';
+import { RouteProp } from '@react-navigation/native';
+import { AppStackParamList } from '@/navigator/AppNavigation';
 import { RootState } from '@/models/index';
 
 const mapStateToProps = (state: RootState) => ({
@@ -13,17 +14,18 @@ const connector = connect(mapStateToProps);
 type ModelState = ConnectedProps<typeof connector>;
 
 interface IProps extends ModelState {
-  navigation: MainStackNavigation;
+  route: RouteProp<AppStackParamList, 'CircleDetail'>;
 }
 
-class Tpl extends React.Component<IProps> {
+class CircleDetail extends React.Component<IProps> {
   render() {
+    const { route } = this.props;
     return (
       <View>
-        <Text>tpl</Text>
+        <Text>{route.params.circle_id}</Text>
       </View>
     );
   }
 }
 
-export default connector(Tpl);
+export default connector(CircleDetail);

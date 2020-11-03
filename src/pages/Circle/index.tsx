@@ -76,31 +76,52 @@ class Circle extends React.Component<IProps> {
             />
           </View>
 
-          <View>
+          <View style={styles.section}>
             <View style={styles.subTitle}>
               <Text style={styles.subTitleText}>兴趣圈子</Text>
               <Touchable onPress={() => this.goCircleList('interest')}>
                 <Text style={styles.moreText}>查看更多</Text>
               </Touchable>
             </View>
+            <FlatList
+              data={circleList}
+              keyExtractor={this._keyExtractor}
+              renderItem={this.renderItem}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            />
           </View>
 
-          <View>
+          <View style={styles.section}>
             <View style={styles.subTitle}>
               <Text style={styles.subTitleText}>学习圈子</Text>
               <Touchable onPress={() => this.goCircleList('study')}>
                 <Text style={styles.moreText}>查看更多</Text>
               </Touchable>
             </View>
+            <FlatList
+              data={circleList}
+              keyExtractor={this._keyExtractor}
+              renderItem={this.renderItem}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            />
           </View>
 
-          <View>
+          <View style={styles.section}>
             <View style={styles.subTitle}>
               <Text style={styles.subTitleText}>地域圈子</Text>
               <Touchable onPress={() => this.goCircleList('region')}>
                 <Text style={styles.moreText}>查看更多</Text>
               </Touchable>
             </View>
+            <FlatList
+              data={circleList}
+              keyExtractor={this._keyExtractor}
+              renderItem={this.renderItem}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            />
           </View>
 
           <View>
@@ -122,7 +143,7 @@ const styles = StyleSheet.create({
   },
   body: {
     paddingVertical: 10,
-    paddingHorizontal: 10
+    paddingHorizontal: 5
   },
   section: {
     marginBottom: 20

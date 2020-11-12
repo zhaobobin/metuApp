@@ -15,10 +15,12 @@ interface UserModel extends Model {
   namespace: string;
   state: IAccountState;
   effects: {
+    checkMobile: Effect;
     register: Effect;
     login: Effect;
     token: Effect;
     smscode: Effect;
+    checkSmscode: Effect;
     logout: Effect;
     queryAccountDetail: Effect;
     updateAvatar: Effect;
@@ -56,6 +58,12 @@ const userModel: UserModel = {
   },
 
   effects: {
+
+    *checkMobile({ payload, callback }, { call, put }) {
+      const res = yield call(userApi.checkMobile, payload);
+      yield callback(res);
+    },
+
     *register({ payload, callback }, { call, put }) {
       const res = yield call(userApi.register, payload);
       if (res.code === 0) {
@@ -114,6 +122,11 @@ const userModel: UserModel = {
 
     *smscode({ payload, callback }, { call }) {
       const res = yield call(userApi.smscode, payload);
+      yield callback(res);
+    },
+
+    *checkSmscode({ payload, callback }, { call }) {
+      const res = yield call(userApi.checkSmscode, payload);
       yield callback(res);
     },
 
@@ -208,19 +221,11 @@ const userModel: UserModel = {
 
     *changePsd({ payload, callback }, { call }) {
       const res = yield call(userApi.changePsd, payload);
-      if (res.code === 0) {
-      } else {
-        Toast.show(res.messge);
-      }
       callback(res);
     },
 
     *resetPsd({ payload, callback }, { call }) {
-      const res = yield call(userApi.changePsd, payload);
-      if (res.code === 0) {
-      } else {
-        Toast.show(res.messge);
-      }
+      const res = yield call(userApi.resetPsd, payload);
       callback(res);
     }
   },

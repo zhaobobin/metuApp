@@ -26,13 +26,15 @@ const connector = connect(mapStateToProps);
 
 type ModelState = ConnectedProps<typeof connector>;
 
+type SmscodeType = 'register' | 'reset' | 'change';
+
 type IProps = TextInputProps &
   ModelState & {
     autoFocus?: boolean;
     field: FieldInputProps<any>;
     form: FormikProps<any>;
     placeholder: string;
-    type: string;
+    type: SmscodeType;
     mobile: string;
     auto?: string;
   };
@@ -182,6 +184,7 @@ const styles = StyleSheet.create({
   },
   input: {
     ...layout.padding(0),
+    marginRight: 100,
     height: 44,
     fontSize: 16,
     borderBottomWidth: StyleSheet.hairlineWidth,

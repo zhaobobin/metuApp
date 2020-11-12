@@ -13,13 +13,17 @@ import Icon from '@/assets/iconfont';
 
 import Login from '@/pages/Account/Login';
 import Register from '@/pages/Account/Register';
-import ResetPassword from '@/pages/Account/ResetPassword';
+import ResetPasswordStep1 from '@/pages/Account/ResetPasswordStep1';
+import ResetPasswordStep2 from '@/pages/Account/ResetPasswordStep2';
+import ResetPasswordStep3 from '@/pages/Account/ResetPasswordStep3';
 import RegisterXieyi from '@/pages/Account/RegisterXieyi';
 
 export type LoginStackParamList = {
   Login: undefined;
   Register: undefined;
   ResetPassword: undefined;
+  ResetPasswordStep2: { mobile: string };
+  ResetPasswordStep3: { mobile: string, smscode: string };
   RegisterXieyi: undefined;
 };
 
@@ -60,7 +64,17 @@ export default function LoginScreen() {
       />
       <LoginStack.Screen
         name="ResetPassword"
-        component={ResetPassword}
+        component={ResetPasswordStep1}
+        options={getResetOptions}
+      />
+      <LoginStack.Screen
+        name="ResetPasswordStep2"
+        component={ResetPasswordStep2}
+        options={getResetOptions}
+      />
+      <LoginStack.Screen
+        name="ResetPasswordStep3"
+        component={ResetPasswordStep3}
         options={getResetOptions}
       />
       <LoginStack.Screen

@@ -1,6 +1,15 @@
 import { Request } from '@/utils/index';
 
 export const userApi = {
+
+  checkMobile: (params: { mobile: string }) => {
+    return Request({
+      url: '/user/checkMobile',
+      method: 'post',
+      params
+    });
+  },
+
   register: (params: {
     mobile: string;
     nickname: string;
@@ -33,6 +42,14 @@ export const userApi = {
   smscode: (params: { type: string; mobile: string }) => {
     return Request({
       url: '/user/smscode',
+      method: 'post',
+      params
+    });
+  },
+
+  checkSmscode: (params: { mobile: string; smscode: string }) => {
+    return Request({
+      url: '/user/checkSmscode',
       method: 'post',
       params
     });
@@ -92,7 +109,7 @@ export const userApi = {
     });
   },
 
-  resetPsd: (params: { mobile: string; password: string; smscode: string }) => {
+  resetPsd: (params: { mobile: string; smscode: string; password: string }) => {
     return Request({
       url: '/user/resetPsd',
       method: 'post',

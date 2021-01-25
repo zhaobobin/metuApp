@@ -63,13 +63,13 @@ const Button: React.FC<ButtonProps> = React.memo(props => {
     switch (type) {
       case 'primary':
         return {
-          borderColor: ghost ? 'transparent' : GlobalStyles.color.blue,
+          borderColor: GlobalStyles.color.blue,
           backgroundColor: ghost ? 'transparent' : GlobalStyles.color.blue,
           color: ghost ? GlobalStyles.color.blue : GlobalStyles.color.white
         };
       case 'danger':
         return {
-          borderColor: ghost ? 'transparent' : GlobalStyles.color.red,
+          borderColor: GlobalStyles.color.red,
           backgroundColor: ghost ? 'transparent' : GlobalStyles.color.red,
           color: ghost ? GlobalStyles.color.red : GlobalStyles.color.white
         };
@@ -81,15 +81,15 @@ const Button: React.FC<ButtonProps> = React.memo(props => {
         };
       case 'default':
         return {
-          borderColor: ghost ? 'transparent' : GlobalStyles.color.gray,
+          borderColor: GlobalStyles.color.gray,
           backgroundColor: ghost ? 'transparent' : GlobalStyles.color.white,
-          color: GlobalStyles.color.c333
+          color: ghost ? GlobalStyles.color.white : GlobalStyles.color.c333
         };
       default:
         return {
-          borderColor: ghost ? 'transparent' : GlobalStyles.color.gray,
+          borderColor: GlobalStyles.color.gray,
           backgroundColor: ghost ? 'transparent' : GlobalStyles.color.white,
-          color: GlobalStyles.color.c333
+          color: ghost ? GlobalStyles.color.white : GlobalStyles.color.c333
         };
     }
   };

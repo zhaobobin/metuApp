@@ -53,7 +53,7 @@ class Search extends React.Component<IProps, IState> {
   };
 
   onChangeText = (keyword: string) => {
-    console.log(keyword);
+    // console.log(keyword);
   };
 
   onSelectCate = (type: SearchType) => {
@@ -65,7 +65,6 @@ class Search extends React.Component<IProps, IState> {
   render() {
     const { type } = this.state;
     const currentCate = CateList.find(item => item.key === type);
-    console.log(currentCate);
     return (
       <View style={styles.container}>
         <SearchNavBar

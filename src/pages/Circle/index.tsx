@@ -49,7 +49,6 @@ class Circle extends React.Component<IProps> {
   }
 
   goCircleDetail = (circle_id: string) => {
-    console.log(circle_id)
     Navigator.goPage('CircleDetail', { circle_id });
   }
 
@@ -124,11 +123,11 @@ class Circle extends React.Component<IProps> {
             />
           </View>
 
-          <View>
+          {/* <View>
             <View style={styles.subTitle}>
               <Text style={styles.subTitleText}>圈子动态</Text>
             </View>
-          </View>
+          </View> */}
 
         </ScrollView>
       </View>

@@ -69,7 +69,6 @@ class UserFollowers extends React.Component<IProps, IState> {
       per_page
     });
     if (res.code === 0) {
-      console.log(res.data);
       let newList = res.data.list;
       if (loadMore) {
         newList = list.concat(newList);

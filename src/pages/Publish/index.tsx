@@ -99,7 +99,6 @@ class Publish extends React.Component<IProps, IState> {
 
   openAlbum = async () => {
     const res = await selectPhotos();
-    console.log(res);
   };
 
   // 打开图片发布

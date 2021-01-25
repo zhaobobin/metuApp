@@ -14,7 +14,7 @@ const CommontListFoot = (props: IProps) => {
   return (
     <View style={styles.foot}>
       <View style={styles.footView}>
-        <Button title="发表评论" onPress={props.showCommentModal} type="primary" ghost />
+        <Button title="发表评论" onPress={props.showCommentModal} type="link" ghost />
       </View>
     </View>
   );

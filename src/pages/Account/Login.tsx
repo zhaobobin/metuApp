@@ -97,7 +97,6 @@ class Login extends React.Component<IProps, IState> {
   }
 
   keyboardShow = (e: KeyboardEvent) => {
-    console.log(e.endCoordinates.height);
     this.setState({
       keyboardHeight: GlobalStyles.is_IphoneX
         ? e.endCoordinates.height + 180

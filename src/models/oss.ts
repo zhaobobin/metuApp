@@ -82,7 +82,7 @@ const photoModel: PhotoModel = {
           })
           .catch((error: any) => {
             Toast.show('上传失败！');
-            console.log(error);
+            // console.log(error);
             reject(error);
           });
       })

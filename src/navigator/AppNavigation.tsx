@@ -256,6 +256,7 @@ function getCircleListOptions() {
 
 function getCircleDetailOptions() {
   return {
+    // headerShown: false,
     headerTitle: '圈子详情',
     ...TransitionPresets.SlideFromRightIOS
   };

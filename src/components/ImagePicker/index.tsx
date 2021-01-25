@@ -24,7 +24,7 @@ export function pickAvatarImage(callback: pickCallback) {
               callback(image);
             })
             .catch(err => {
-              console.log(err);
+              // console.log(err);
             });
           break;
         case 2:
@@ -33,7 +33,7 @@ export function pickAvatarImage(callback: pickCallback) {
               callback(image);
             })
             .catch(err => {
-              console.log(err);
+              // console.log(err);
             });
           break;
         default:

@@ -196,7 +196,6 @@ class ArticleDetail extends React.Component<IProps, IState> {
     if (loading) {
       return null;
     }
-    console.log(articleDetail);
     return (
       <View style={styles.container}>
         <ScrollView>

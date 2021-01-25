@@ -23,6 +23,7 @@ interface CircleModel extends Model {
   };
   reducers: {
     setState: Reducer<ICircleState>;
+    clearCircleDetail: Reducer<ICircleState>;
   };
 }
 
@@ -53,6 +54,7 @@ const circleModel: CircleModel = {
     },
     *queryCircleDetail({ payload }, { call, put }) {
       const res = yield call(circleApi.getCircleDetail, payload);
+      console.log('CircleDetail', res)
       if (res.code === 0) {
         yield put({
           type: 'setState',
@@ -79,7 +81,7 @@ const circleModel: CircleModel = {
     },
     *joinCircle({ payload }, { call, put }) {
       const res = yield call(circleApi.joinCircle, payload);
-      console.log(res)
+      console.log('joinCircle', res)
       if (res.code === 0) {
 
       } else {
@@ -88,7 +90,7 @@ const circleModel: CircleModel = {
     },
     *exitCircle({ payload }, { call, put }) {
       const res = yield call(circleApi.exitCircle, payload);
-      console.log(res)
+      console.log('exitCircle', res)
       if (res.code === 0) {
 
       } else {
@@ -102,6 +104,12 @@ const circleModel: CircleModel = {
       return {
         ...state,
         ...payload
+      };
+    },
+    clearCircleDetail(state = initialState, _) {
+      return {
+        ...state,
+        circleDetail: initialState.circleDetail
       };
     }
   }

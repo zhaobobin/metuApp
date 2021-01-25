@@ -86,7 +86,6 @@ const articleModel: ArticleModel = {
     },
     *favorArticle({ payload }, { call, put }) {
       const res = yield call(articleApi.favorArticle, payload);
-      console.log(res)
       if (res.code === 0) {
         yield put({
           type: 'updateArticleDetail',

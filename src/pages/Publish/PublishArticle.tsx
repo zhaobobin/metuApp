@@ -50,7 +50,6 @@ class PublishArticle extends React.Component<IProps> {
     if (this.props.onRef) {
       this.props.onRef(this);
     }
-    // console.log('PublishPhoto ---->', this.props.navigation)
     this.props.navigation.setParams({
       onPress: (values: IArticlePublishForm) => {
         this.onSubmit(values);
@@ -84,7 +83,6 @@ class PublishArticle extends React.Component<IProps> {
   };
 
   onChangeContent = (html: string) => {
-    console.log(html);
     this.savePublishArticleForm({ content: html });
   };
 

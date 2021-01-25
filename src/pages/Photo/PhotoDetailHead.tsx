@@ -31,7 +31,7 @@ const PhotoDetailHead = (props: IProps) => {
         />
       </View>
       <View style={styles.headRight}>
-        <Icon name="icon-ellipsis" size={30} color={iconColor} />
+        {/* <Icon name="icon-ellipsis" size={30} color={iconColor} /> */}
       </View>
     </View>
   );

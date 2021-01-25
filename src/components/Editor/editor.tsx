@@ -109,7 +109,7 @@ class Editor extends React.Component<IProps, IState> {
    * @param {number} height
    */
   handleHeightChange = (height: number) => {
-    console.log('editor height change:', height);
+    // console.log('editor height change:', height);
   };
 
   insertEmoji = (emoji: string) => {

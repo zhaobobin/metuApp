@@ -19,12 +19,12 @@ export const circleApi = {
 
   // 圈子详情
   getCircleDetail: (params: { circle_id: string }) => {
-    return Request({ url: `/circle/${params.circle_id}`, method: 'get' });
+    return Request({ url: `/circles/${params.circle_id}`, method: 'get' });
   },
 
   // 圈子成员
   getCircleMembers: (params: { circle_id: string }) => {
-    return Request({ url: `/circle/${params.circle_id}/members`, method: 'get' });
+    return Request({ url: `/circles/${params.circle_id}/members`, method: 'get' });
   },
 
   // 创建圈子

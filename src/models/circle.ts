@@ -54,7 +54,7 @@ const circleModel: CircleModel = {
     },
     *queryCircleDetail({ payload }, { call, put }) {
       const res = yield call(circleApi.getCircleDetail, payload);
-      console.log('CircleDetail', res)
+      // console.log('CircleDetail', res)
       if (res.code === 0) {
         yield put({
           type: 'setState',

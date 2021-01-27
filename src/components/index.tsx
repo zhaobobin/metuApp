@@ -7,6 +7,7 @@ export { default as Empty } from './Empty';
 export { default as Icon } from './Icon';
 export { default as IconView } from './IconView';
 export { pickAvatarImage, selectAvatar, selectBanner } from './ImagePicker';
+export { default as LeftBackButton } from './LeftBackButton';
 export { default as List } from './List';
 export { ListItem } from './List';
 export { default as Loading } from './Loading';

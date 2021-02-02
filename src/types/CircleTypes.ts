@@ -18,6 +18,7 @@ export interface ICircleItem {
   create_at: string;
   update_at: string;
   status: number;
+  following_state?: boolean;
 }
 
 export interface ICircleList {

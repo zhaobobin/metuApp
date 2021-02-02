@@ -5,7 +5,7 @@ import { Tabbar, TabView, TabbarInfo } from 'react-native-head-tab-view';
 import { useHeaderHeight } from '@react-navigation/stack';
 import { BlurView } from '@react-native-community/blur';
 import { RouteProp } from '@react-navigation/native';
-import { MainStackParamList } from '@/navigator/MainNavigation';
+import { AppStackParamList } from '@/navigator/AppNavigation';
 import { RootState } from '@/models/index';
 import { Navigator } from '@/utils/index';
 import { Touchable } from '@/components/index';
@@ -41,7 +41,7 @@ const connector = connect(mapStateToProps);
 type ModelState = ConnectedProps<typeof connector>;
 
 interface IProps extends ModelState {
-  route: RouteProp<MainStackParamList, 'UserDetail'>;
+  route: RouteProp<AppStackParamList, 'UserDetail'>;
   headerTopHeight: number;
 }
 

@@ -24,6 +24,7 @@ interface CircleModel extends Model {
   reducers: {
     setState: Reducer<ICircleState>;
     clearCircleDetail: Reducer<ICircleState>;
+    updateCircleDetail: Reducer<ICircleState>;
   };
 }
 
@@ -54,7 +55,6 @@ const circleModel: CircleModel = {
     },
     *queryCircleDetail({ payload }, { call, put }) {
       const res = yield call(circleApi.getCircleDetail, payload);
-      // console.log('CircleDetail', res)
       if (res.code === 0) {
         yield put({
           type: 'setState',
@@ -81,18 +81,22 @@ const circleModel: CircleModel = {
     },
     *joinCircle({ payload }, { call, put }) {
       const res = yield call(circleApi.joinCircle, payload);
-      console.log('joinCircle', res)
       if (res.code === 0) {
-
+        yield put({
+          type: 'updateCircleDetail',
+          payload: res.data
+        });
       } else {
         Toast.info(res.message, 2);
       }
     },
     *exitCircle({ payload }, { call, put }) {
       const res = yield call(circleApi.exitCircle, payload);
-      console.log('exitCircle', res)
       if (res.code === 0) {
-
+        yield put({
+          type: 'updateCircleDetail',
+          payload: res.data
+        });
       } else {
         Toast.info(res.message, 2);
       }
@@ -111,7 +115,16 @@ const circleModel: CircleModel = {
         ...state,
         circleDetail: initialState.circleDetail
       };
-    }
+    },
+    updateCircleDetail(state = initialState, { payload }) {
+      return {
+        ...state,
+        circleDetail: {
+          ...state.circleDetail,
+          ...payload
+        }
+      };
+    },
   }
 };
 

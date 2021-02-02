@@ -2,15 +2,41 @@ import React from 'react';
 import { View, Text, StyleSheet, Platform, Image } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
+import { Tabbar, TabView, TabbarInfo } from 'react-native-head-tab-view';
 import { RouteProp } from '@react-navigation/native';
 import { AppStackParamList } from '@/navigator/AppNavigation';
 import { RootState } from '@/models/index';
 import { LeftBackButton, Button } from '@/components/index';
 import { GlobalStyles } from '@/theme/index';
+import { ENV, Storage, Navigator } from '@/utils/index';
+import { IResponse } from '@/types/CommonTypes';
 import { ICircleItem } from '@/types/CircleTypes';
+
+import CircleDetailPopular from '@/pages/Circle/CircleDetailPopular';
+import CircleDetailNew from '@/pages/Circle/CircleDetailNew';
+import CircleDetailSelect from '@/pages/Circle/CircleDetailSelect';
+import CircleDetailMember from '@/pages/Circle/CircleDetailMember';
+
+const Routes = [
+  { key: 'popular', title: '热门' },
+  { key: 'new', title: '最新' },
+  { key: 'select', title: '精选' },
+  { key: 'member', title: '成员' }
+];
+
+let Tabs: string[] = [];
+for (const i in Routes) {
+  Tabs.push(Routes[i].key);
+}
+
+interface IRoute {
+  key: string;
+  title: string;
+}
 
 const mapStateToProps = (state: RootState) => ({
   loading: state.loading.effects['circle/queryCircleDetail'],
+  isAuth: state.account.isAuth,
   circleDetail: state.circle.circleDetail
 });
 
@@ -23,6 +49,7 @@ interface IProps extends ModelState {
 }
 
 interface IState {
+  routes: IRoute[];
   headerIconColor: string;
 }
 
@@ -30,7 +57,8 @@ class CircleDetail extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      headerIconColor: '#fff'
+      headerIconColor: '#fff',
+      routes: Routes
     };
   }
 
@@ -54,8 +82,50 @@ class CircleDetail extends React.Component<IProps, IState> {
     });
   };
 
-  // join circle
-  handleClickCircleJoinBtn = () => {};
+  // 加入圈子
+  handleClickCircleJoinBtn = async () => {
+    const { isAuth, route } = this.props;
+    const circleId = route.params.circle_id;
+    if (isAuth) {
+      this.joinCircle(circleId);
+    } else {
+      await Storage.set(
+        ENV.storage.loginRedirect,
+        JSON.stringify({
+          routeName: 'CircleDetail',
+          routeParam: { circle_id: circleId }
+        })
+      );
+      const token = await Storage.get(ENV.storage.token);
+      if (token) {
+        this.props.dispatch({
+          type: 'account/token',
+          payload: {
+            token
+          },
+          callback: (res: IResponse) => {
+            if (res.code === 0) {
+              this.joinCircle(circleId);
+            } else {
+              Navigator.goPage('LoginScreen');
+            }
+          }
+        });
+      } else {
+        Navigator.goPage('LoginScreen');
+      }
+    }
+  };
+
+  joinCircle = (circleId: string) => {
+    const { circleDetail } = this.props;
+    this.props.dispatch({
+      type: circleDetail?.following_state ? 'circle/exitCircle' : 'circle/joinCircle',
+      payload: {
+        circle_id: circleId
+      }
+    })
+  }
 
   getParallaxRenderConfig = () => {
     const { circleDetail } = this.props;
@@ -84,17 +154,15 @@ class CircleDetail extends React.Component<IProps, IState> {
       renderForeground: () => (
         <View key="parallax-header" style={styles.parallaxHeader}>
           <View style={styles.circleName}>
-            <Text style={styles.whiteText}>#{circleDetail?.name}</Text>
+            <Text style={styles.circleNameText}>#{circleDetail?.name}</Text>
           </View>
           <View style={styles.circleDesc}>
-            <Text style={styles.whiteText}>
-              description {circleDetail?.description}
-            </Text>
+            <Text style={styles.whiteText}>{circleDetail?.description}</Text>
           </View>
           <View style={styles.circleInfo}></View>
           <View style={styles.circleJoinBtn}>
             <Button
-              title="加入"
+              title={circleDetail?.following_state ? '已加入' : '立即加入'}
               ghost
               onPress={this.handleClickCircleJoinBtn}
             />
@@ -125,11 +193,58 @@ class CircleDetail extends React.Component<IProps, IState> {
     }
   };
 
+  // 渲染tabs标题
+  _tabNameConvert = (key: string) => {
+    const { routes } = this.state;
+    let title = '';
+    for (const i in routes) {
+      if (key === routes[i].key) {
+        title = routes[i].title;
+      }
+    }
+    return title;
+  };
+
+  _renderTabBar = (props: TabbarInfo<IRoute>) => {
+    return (
+      <Tabbar
+        {...props}
+        tabs={Tabs}
+        tabNameConvert={this._tabNameConvert}
+        tabItemStyle={styles.tabItemStyle}
+        lineStyle={styles.lineStyle}
+      />
+    );
+  };
+
+  // Scene
+  _renderScene = (sceneProps: { item: string; index: number }) => {
+    const circleId = this.props.route.params.circle_id;
+    switch (sceneProps.item) {
+      case 'popular':
+        return <CircleDetailPopular {...sceneProps} circleId={circleId} />;
+      case 'new':
+        return <CircleDetailNew {...sceneProps} circleId={circleId} />;
+      case 'select':
+        return <CircleDetailSelect {...sceneProps} circleId={circleId} />;
+      case 'member':
+        return <CircleDetailMember {...sceneProps} circleId={circleId} />;
+      default:
+        break;
+    }
+  };
+
   renderContentView = () => {
     return (
-      <View style={{ height: 500 }}>
-        <Text>Scroll me</Text>
-      </View>
+      <TabView
+        tabs={Tabs}
+        averageTab={false}
+        renderScene={this._renderScene}
+        renderTabBar={this._renderTabBar}
+        makeHeaderHeight={() => {
+          return 0;
+        }}
+      />
     );
   };
 
@@ -224,8 +339,22 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   circleJoinBtn: {},
+  circleNameText: {
+    fontSize: 18,
+    color: '#fff'
+  },
   whiteText: {
     color: '#fff'
+  },
+  // TabBar
+  tabItemStyle: {
+    width: 90
+  },
+  lineStyle: {
+    width: 20,
+    height: 4,
+    borderRadius: 4,
+    backgroundColor: '#1890ff'
   }
 });
 

@@ -47,7 +47,7 @@ export const circleApi = {
   // 退出圈子
   exitCircle: (params: { circle_id: string }) => {
     return Request({
-      url: `/circles/join/${params.circle_id}`,
+      url: `/circles/exit/${params.circle_id}`,
       method: 'delete'
     });
   },

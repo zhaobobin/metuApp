@@ -19,12 +19,22 @@ export const circleApi = {
 
   // 圈子详情
   getCircleDetail: (params: { circle_id: string }) => {
-    return Request({ url: `/circles/${params.circle_id}`, method: 'get' });
+    return Request({
+      url: `/circles/${params.circle_id}`,
+      method: 'get'
+    });
   },
 
   // 圈子成员
-  getCircleMembers: (params: { circle_id: string }) => {
-    return Request({ url: `/circles/${params.circle_id}/members`, method: 'get' });
+  getCircleMembers: (params: { circle_id: string, page?: number; per_page?: number }) => {
+    return Request({
+      url: `/circles/${params.circle_id}/members`,
+      method: 'get',
+      params: {
+        page: params.page,
+        per_page: params.per_page
+      }
+    });
   },
 
   // 创建圈子
@@ -33,6 +43,14 @@ export const circleApi = {
       url: '/circles',
       method: 'post',
       params
+    });
+  },
+
+  // 检查加入状态
+  checkJoinStatus: (params: { circle_id: string, user_id: string }) => {
+    return Request({
+      url: `/circles/${params.circle_id}/checkJoinStatus/${params.user_id}`,
+      method: 'get'
     });
   },
 

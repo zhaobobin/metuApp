@@ -187,10 +187,6 @@ class AccountDetail extends React.Component<IProps, IState> {
     }
   };
 
-  goSettingPage = () => {
-    Navigator.goPage('SettingScreen');
-  };
-
   render() {
     const { headerTopHeight } = this.props;
     return (

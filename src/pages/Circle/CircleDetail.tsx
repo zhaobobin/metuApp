@@ -10,7 +10,6 @@ import { LeftBackButton, Button } from '@/components/index';
 import { GlobalStyles } from '@/theme/index';
 import { ENV, Storage, Navigator } from '@/utils/index';
 import { IResponse } from '@/types/CommonTypes';
-import { ICircleItem } from '@/types/CircleTypes';
 
 import CircleDetailPopular from '@/pages/Circle/CircleDetailPopular';
 import CircleDetailNew from '@/pages/Circle/CircleDetailNew';
@@ -37,6 +36,7 @@ interface IRoute {
 const mapStateToProps = (state: RootState) => ({
   loading: state.loading.effects['circle/queryCircleDetail'],
   isAuth: state.account.isAuth,
+  currentUser: state.account.currentUser,
   circleDetail: state.circle.circleDetail
 });
 
@@ -67,6 +67,12 @@ class CircleDetail extends React.Component<IProps, IState> {
     this.queryCircleDetail(route.params.circle_id);
   }
 
+  componentDidUpdate(prevProps: IProps) {
+    if (this.props.isAuth && this.props.isAuth !== prevProps.isAuth) {
+      this.checkJoinStatus();
+    }
+  }
+ 
   componentWillUnmount() {
     this.props.dispatch({
       type: 'circle/clearCircleDetail'
@@ -81,6 +87,17 @@ class CircleDetail extends React.Component<IProps, IState> {
       }
     });
   };
+
+  checkJoinStatus = () => {
+    const { route, currentUser } = this.props;
+    this.props.dispatch({
+      type: 'circle/checkJoinStatus',
+      payload: {
+        circle_id: route.params.circle_id,
+        user_id: currentUser._id
+      }
+    });
+  }
 
   // 加入圈子
   handleClickCircleJoinBtn = async () => {
@@ -259,13 +276,16 @@ class CircleDetail extends React.Component<IProps, IState> {
         backgroundScrollSpeed={10}
         onChangeHeaderVisibility={this.onChangeHeaderVisibility}
         {...renderConfig}>
-        {this.renderContentView()}
+        <View style={styles.contentView}>
+          {this.renderContentView()}
+        </View>
       </ParallaxScrollView>
     );
   }
 }
 
 const PARALLAX_HEADER_HEIGHT = 300;
+const CONTENT_VIEW_HEIGHT = GlobalStyles.screenHeight - PARALLAX_HEADER_HEIGHT - 65;
 const TOP = Platform.OS === 'ios' ? 20 + (GlobalStyles.is_IphoneX ? 24 : 0) : 0;
 const STICKY_HEADER_HEIGHT =
   Platform.OS === 'ios'
@@ -276,6 +296,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'black'
+  },
+  contentView: {
+    height: CONTENT_VIEW_HEIGHT
   },
   background: {
     position: 'absolute',

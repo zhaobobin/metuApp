@@ -1,14 +1,14 @@
 import { Model, Effect } from 'dva-core-ts';
 import { Reducer } from 'redux';
 import { circleApi } from '@/api/index';
-import { ICircleItem } from '@/types/CircleTypes';
+import { ICircleItem, ICircleMembers } from '@/types/CircleTypes';
 import { Toast } from '@/components/index';
-import { IUserInfo } from '@/types/CommonTypes';
+import { RootState } from './index';
 
 export interface ICircleState {
   circleList: ICircleItem[];
   circleDetail: ICircleItem | null;
-  circleMembers: IUserInfo[];
+  circleMembers: ICircleMembers;
 }
 
 interface CircleModel extends Model {
@@ -18,6 +18,7 @@ interface CircleModel extends Model {
     queryCircleList: Effect;
     queryCircleDetail: Effect;
     queryCircleMembers: Effect;
+    checkJoinStatus: Effect;
     joinCircle: Effect;
     exitCircle: Effect;
   };
@@ -31,7 +32,15 @@ interface CircleModel extends Model {
 const initialState: ICircleState = {
   circleList: [],
   circleDetail: null,
-  circleMembers: [],
+  circleMembers: {
+    list: [],
+    pageInfo: {
+      page: 1,
+      per_page: 10,
+      count: 0,
+      has_more: true
+    }
+  },
 };
 
 const circleModel: CircleModel = {
@@ -66,14 +75,52 @@ const circleModel: CircleModel = {
         Toast.info(res.message, 2);
       }
     },
-    *queryCircleMembers({ payload }, { call, put }) {
-      const res = yield call(circleApi.getCircleMembers, payload);
+    *queryCircleMembers({ payload, callback }, { call, put, select }) {
+      // const res = yield call(circleApi.getCircleMembers, payload);
+      const { list, pageInfo } = yield select(
+        (state: RootState) => state.circle.circleMembers
+      );
+      let page = 1;
+      if (payload && payload.loadMore) {
+        page = pageInfo.page + 1;
+      }
+      const res = yield call(circleApi.getCircleMembers, {
+        circle_id: payload.circle_id,
+        page,
+        per_page: pageInfo.per_page
+      });
+      let newList = res.data.list;
+      if (payload && payload.loadMore) {
+        newList = list.concat(newList);
+      }
       if (res.code === 0) {
         yield put({
           type: 'setState',
           payload: {
-            circleMembers: res.data
+            circleMembers: {
+              list: newList,
+              pageInfo: {
+                page,
+                per_page: pageInfo.per_page,
+                count: res.data.count,
+                has_more: res.data.hasMore
+              }
+            }
           }
+        });
+        if (callback) {
+          callback();
+        }
+      } else {
+        Toast.info(res.message, 2);
+      }
+    },
+    *checkJoinStatus({ payload }, { call, put }) {
+      const res = yield call(circleApi.getCircleDetail, payload);
+      if (res.code === 0) {
+        yield put({
+          type: 'updateCircleDetail',
+          payload: res.data
         });
       } else {
         Toast.info(res.message, 2);

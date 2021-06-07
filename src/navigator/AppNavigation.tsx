@@ -209,6 +209,14 @@ function getUserDetailOptions() {
     headerTitleStyle: {
       opacity: 0
     },
+    headerBackImage: ({ tintColor }: { tintColor: string }) => (
+      <Icon
+        name="icon-arrow-lift"
+        size={30}
+        color={tintColor}
+        style={styles.headerBackImage}
+      />
+    ),
     headerBackground: () => {
       return <Animated.View style={styles.userDetailBg} />;
     },

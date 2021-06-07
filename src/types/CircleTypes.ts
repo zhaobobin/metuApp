@@ -1,4 +1,4 @@
-import { IUserInfo } from "./CommonTypes";
+import { IPageInfo, IUserInfo } from '@/types/CommonTypes';
 
 export type ICircleType = 'popular' | 'interest' | 'study' | 'region';
 
@@ -28,4 +28,9 @@ export interface ICircleList {
 export interface ICircleValues {
   name: string;
   description: string;
+}
+
+export interface ICircleMembers {
+  list: IUserInfo[];
+  pageInfo: IPageInfo;
 }

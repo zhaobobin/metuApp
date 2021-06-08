@@ -84,7 +84,6 @@ class CircleDetailMember extends React.Component<IProps, IState> {
   render() {
     const { circleMembersList } = this.props;
     const { refreshing } = this.state;
-    console.log(circleMembersList)
     return (
       <View style={styles.container}>
         <FlatList

@@ -49,7 +49,7 @@ const circleModel: CircleModel = {
   state: initialState,
 
   effects: {
-    *queryCircleList({ payload }, { call, put }) {
+    *queryCircleList({ payload, callback }, { call, put }) {
       const res = yield call(circleApi.getCircleList, payload);
       if (res.code === 0) {
         yield put({
@@ -58,6 +58,7 @@ const circleModel: CircleModel = {
             circleList: res.data.list
           }
         });
+        callback && callback();
       } else {
         Toast.info(res.message, 2);
       }

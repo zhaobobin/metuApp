@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   View,
+  Text,
   Image,
   StyleSheet,
   ScrollView,
@@ -265,22 +266,23 @@ class PublishPhoto extends React.Component<IProps> {
                     onChange={this.onChangeTitle}
                   />
                 </FormItem>
-                <FormItem style={styles.formItem}>
+
+                {/* <FormItem style={styles.formItem}>
                   <Field
                     name="description"
                     placeholder="描述"
                     component={InputText}
                     onChange={this.onChangeDescription}
                   />
-                </FormItem>
-                <FormItem style={styles.formItem}>
+                </FormItem> */}
+                {/* <FormItem style={styles.formItem}>
                   <Field
                     name="tags"
                     placeholder="标签"
                     component={InputText}
                     onChange={this.onChangeTags}
                   />
-                </FormItem>
+                </FormItem> */}
 
                 <View style={styles.imageList}>
                   {photoPickerImages.map((item: any, index: number) => (
@@ -296,6 +298,19 @@ class PublishPhoto extends React.Component<IProps> {
                     />
                   </View>
                 </View>
+
+                <View style={styles.section}>
+                  <View style={styles.sectionTitle}>
+                    <Text style={styles.sectionTitleText}>同步到圈子</Text>
+                  </View>
+                </View>
+
+                <View style={styles.section}>
+                  <View style={styles.sectionTitle}>
+                    <Text style={styles.sectionTitleText}>添加标签</Text>
+                  </View>
+                </View>
+
               </View>
             );
           }}
@@ -328,6 +343,7 @@ const styles = StyleSheet.create({
   },
   imageList: {
     marginHorizontal: -2,
+    marginBottom: 40,
     paddingHorizontal: 15,
     flexDirection: 'row',
     flexWrap: 'wrap'
@@ -342,6 +358,16 @@ const styles = StyleSheet.create({
   image: {
     width: itemWidth,
     height: itemHeight
+  },
+  section: {
+    marginVertical: 20,
+    paddingHorizontal: 15,
+  },
+  sectionTitle: {
+
+  },
+  sectionTitleText: {
+    fontSize: 16
   }
 });
 

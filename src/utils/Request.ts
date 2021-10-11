@@ -31,7 +31,7 @@ export default async function Request(options: IOptions) {
   options.headers = {
     Accept: 'application/json'
   };
-
+  console.log(url)
   if (options.params) {
     if (options.method === 'get') {
       let query = '';

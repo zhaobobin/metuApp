@@ -7,7 +7,7 @@ export default {
   api: {
     old: 'http://127.0.0.1:8080', // express
     test: 'http://127.0.0.1:7001/api/v1', // egg
-    pro: 'http://swww.metuwang.com/api/v1',
+    pro: 'https://www.metuwang.com/api/v1',
     github: 'https://api.github.com'
   },
 

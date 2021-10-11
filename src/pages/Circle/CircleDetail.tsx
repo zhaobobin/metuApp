@@ -293,7 +293,7 @@ const STICKY_HEADER_HEIGHT =
   Platform.OS === 'ios'
     ? GlobalStyles.nav_bar_height_ios + TOP
     : GlobalStyles.nav_bar_height_android;
-console.log(CONTENT_VIEW_HEIGHT);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

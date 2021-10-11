@@ -135,7 +135,6 @@ class Login extends React.Component<IProps, IState> {
       type: 'account/login',
       payload,
       callback: async (res: IResponse) => {
-        console.log(res)
         if (res.code === 0) {
           const loginRedirect = await Storage.get(ENV.storage.loginRedirect);
           if (loginRedirect) {

@@ -14,7 +14,7 @@ interface IOptions {
   method: RequestMethod;
   headers?: Record<string | number | symbol, any>;
   params?: Record<string | number | symbol, any>;
-  body?: Record<string | number | symbol, any> | string;
+  body?: any;
 }
 
 function checkStatus(response: any) {

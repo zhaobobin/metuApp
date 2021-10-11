@@ -72,7 +72,7 @@ class CircleDetail extends React.Component<IProps, IState> {
       this.checkJoinStatus();
     }
   }
- 
+
   componentWillUnmount() {
     this.props.dispatch({
       type: 'circle/clearCircleDetail'
@@ -97,7 +97,7 @@ class CircleDetail extends React.Component<IProps, IState> {
         user_id: currentUser._id
       }
     });
-  }
+  };
 
   // 加入圈子
   handleClickCircleJoinBtn = async () => {
@@ -137,12 +137,14 @@ class CircleDetail extends React.Component<IProps, IState> {
   joinCircle = (circleId: string) => {
     const { circleDetail } = this.props;
     this.props.dispatch({
-      type: circleDetail?.following_state ? 'circle/exitCircle' : 'circle/joinCircle',
+      type: circleDetail?.following_state
+        ? 'circle/exitCircle'
+        : 'circle/joinCircle',
       payload: {
         circle_id: circleId
       }
-    })
-  }
+    });
+  };
 
   getParallaxRenderConfig = () => {
     const { circleDetail } = this.props;
@@ -276,22 +278,22 @@ class CircleDetail extends React.Component<IProps, IState> {
         backgroundScrollSpeed={10}
         onChangeHeaderVisibility={this.onChangeHeaderVisibility}
         {...renderConfig}>
-        <View style={styles.contentView}>
-          {this.renderContentView()}
-        </View>
+        <View style={styles.contentView}>{this.renderContentView()}</View>
       </ParallaxScrollView>
     );
   }
 }
 
 const PARALLAX_HEADER_HEIGHT = 300;
-const CONTENT_VIEW_HEIGHT = GlobalStyles.screenHeight - PARALLAX_HEADER_HEIGHT - 65;
+const CONTENT_VIEW_HEIGHT = GlobalStyles.is_IphoneX
+  ? GlobalStyles.screenHeight - PARALLAX_HEADER_HEIGHT - 65
+  : GlobalStyles.screenHeight - PARALLAX_HEADER_HEIGHT;
 const TOP = Platform.OS === 'ios' ? 20 + (GlobalStyles.is_IphoneX ? 24 : 0) : 0;
 const STICKY_HEADER_HEIGHT =
   Platform.OS === 'ios'
     ? GlobalStyles.nav_bar_height_ios + TOP
     : GlobalStyles.nav_bar_height_android;
-
+console.log(CONTENT_VIEW_HEIGHT);
 const styles = StyleSheet.create({
   container: {
     flex: 1,

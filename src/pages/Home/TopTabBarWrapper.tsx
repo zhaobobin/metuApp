@@ -34,7 +34,7 @@ const gradientColor = [
   ['#fa709a', '#fee140'],
   ['#a18cd1', '#fbc2eb'],
   ['#e0c3fc', '#8ec5fc'],
-  ['#fff1eb', '#ace0f9']
+  ['#89f7fe', '#66a6ff']
 ];
 
 class TopTabBarWrapper extends React.Component<IProps> {

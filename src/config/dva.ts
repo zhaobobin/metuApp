@@ -1,7 +1,7 @@
 import { create } from 'dva-core-ts';
 import createLoading from 'dva-loading-ts';
 import models from '@/models/index';
-import { Toast } from '@/components/index';
+// import { Toast } from '@/components/index';
 
 // 1、创建dva实例
 const app = create({

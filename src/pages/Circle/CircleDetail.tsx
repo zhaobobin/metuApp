@@ -51,6 +51,7 @@ interface IProps extends ModelState {
 interface IState {
   routes: IRoute[];
   headerIconColor: string;
+  scrollHeight: number;
 }
 
 class CircleDetail extends React.Component<IProps, IState> {
@@ -58,7 +59,8 @@ class CircleDetail extends React.Component<IProps, IState> {
     super(props);
     this.state = {
       headerIconColor: '#fff',
-      routes: Routes
+      routes: Routes,
+      scrollHeight: 0
     };
   }
 
@@ -267,7 +269,21 @@ class CircleDetail extends React.Component<IProps, IState> {
     );
   };
 
+  scrollEvent = (event: any) => {
+    const scrollHeight = event.nativeEvent.contentOffset.y; //垂直滚动距离
+    if (scrollHeight < 212) {
+      this.setState({
+        scrollHeight
+      });
+    }
+  };
+
   render() {
+    const { scrollHeight } = this.state;
+    const CONTENT_VIEW_HEIGHT = GlobalStyles.screenHeight - PARALLAX_HEADER_HEIGHT + scrollHeight;
+    // if (GlobalStyles.is_IphoneX) {
+    //   CONTENT_VIEW_HEIGHT -= 65;
+    // }
     const renderConfig = this.getParallaxRenderConfig();
     return (
       <ParallaxScrollView
@@ -277,17 +293,20 @@ class CircleDetail extends React.Component<IProps, IState> {
         stickyHeaderHeight={STICKY_HEADER_HEIGHT}
         backgroundScrollSpeed={10}
         onChangeHeaderVisibility={this.onChangeHeaderVisibility}
+        scrollEvent={this.scrollEvent}
         {...renderConfig}>
-        <View style={styles.contentView}>{this.renderContentView()}</View>
+        <View style={{ height: CONTENT_VIEW_HEIGHT }}>
+          {this.renderContentView()}
+        </View>
       </ParallaxScrollView>
     );
   }
 }
 
 const PARALLAX_HEADER_HEIGHT = 300;
-const CONTENT_VIEW_HEIGHT = GlobalStyles.is_IphoneX
-  ? GlobalStyles.screenHeight - PARALLAX_HEADER_HEIGHT - 65
-  : GlobalStyles.screenHeight - PARALLAX_HEADER_HEIGHT;
+// const CONTENT_VIEW_HEIGHT = GlobalStyles.is_IphoneX
+//   ? GlobalStyles.screenHeight - PARALLAX_HEADER_HEIGHT - 65
+//   : GlobalStyles.screenHeight - PARALLAX_HEADER_HEIGHT;
 const TOP = Platform.OS === 'ios' ? 20 + (GlobalStyles.is_IphoneX ? 24 : 0) : 0;
 const STICKY_HEADER_HEIGHT =
   Platform.OS === 'ios'
@@ -300,7 +319,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'black'
   },
   contentView: {
-    height: CONTENT_VIEW_HEIGHT
+    // height: CONTENT_VIEW_HEIGHT
   },
   background: {
     position: 'absolute',
